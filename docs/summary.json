@@ -1,67 +1,71 @@
 {
-  "schema": 2,
-  "audit_utc": "2026-11-06T09:48:00.395925+00:00",
+  "schema": 3,
+  "audit_utc": "2026-11-09T14:39:02.217131+00:00",
   "types": [
     {
       "id": "stocks",
       "confirmed_series": 6265,
       "confirmed_units": 895,
-      "provisional_series": 0,
-      "additional_failed": 5505,
-      "additional_review": 2170,
-      "unvalidated_groups": 213,
+      "excluded_series": 128430,
+      "excluded_measured": 126140,
+      "excluded_missing_evidence": 2290,
+      "source_failures": 165,
       "issues": [
         {
-          "id": "cadence_unknown",
-          "count": 1
+          "id": "availability_unverified",
+          "count": 313
         },
         {
           "id": "calendar_unverified",
-          "count": 3330
+          "count": 122874
         },
         {
           "id": "coarse_resolution",
-          "count": 504
+          "count": 119736
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 124354
         },
         {
           "id": "conflicting_duplicates",
-          "count": 1
+          "count": 89
         },
         {
           "id": "hourly_gaps",
-          "count": 2900
+          "count": 3845
         },
         {
           "id": "inconsistent_ohlc",
-          "count": 4
+          "count": 7452
         },
         {
           "id": "invalid_values",
-          "count": 14
+          "count": 187
         },
         {
           "id": "long_gaps",
-          "count": 2900
+          "count": 4069
         },
         {
           "id": "missing_months",
-          "count": 2544
+          "count": 8209
         },
         {
           "id": "no_window_data",
-          "count": 5
+          "count": 16
         },
         {
           "id": "price_definition_unverified",
-          "count": 7675
-        },
-        {
-          "id": "provisional_calendar_gaps",
-          "count": 2170
+          "count": 126920
         },
         {
           "id": "short_history",
-          "count": 2434
+          "count": 116665
+        },
+        {
+          "id": "source_parse_error",
+          "count": 188
         }
       ]
     },
@@ -69,42 +73,58 @@
       "id": "crypto",
       "confirmed_series": 72,
       "confirmed_units": 8,
-      "provisional_series": 0,
-      "additional_failed": 23,
-      "additional_review": 290,
-      "unvalidated_groups": 0,
+      "excluded_series": 1089,
+      "excluded_measured": 797,
+      "excluded_missing_evidence": 292,
+      "source_failures": 0,
       "issues": [
         {
-          "id": "cadence_unknown",
-          "count": 1
+          "id": "availability_unverified",
+          "count": 2
         },
         {
           "id": "calendar_unverified",
-          "count": 313
+          "count": 459
         },
         {
           "id": "coarse_resolution",
-          "count": 12
+          "count": 157
         },
         {
-          "id": "conflicting_duplicates",
-          "count": 1
+          "id": "completeness_unverified",
+          "count": 851
+        },
+        {
+          "id": "hourly_gaps",
+          "count": 238
+        },
+        {
+          "id": "invalid_values",
+          "count": 57
+        },
+        {
+          "id": "long_gaps",
+          "count": 238
         },
         {
           "id": "missing_months",
-          "count": 10
+          "count": 407
+        },
+        {
+          "id": "not_source_observations",
+          "count": 2
         },
         {
           "id": "price_definition_unverified",
-          "count": 313
+          "count": 1087
         },
         {
-          "id": "provisional_calendar_gaps",
-          "count": 290
+          "id": "series_type_unknown",
+          "count": 2
         },
         {
           "id": "short_history",
-          "count": 10
+          "count": 175
         }
       ]
     },
@@ -112,30 +132,34 @@
       "id": "commodities",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 209,
-      "additional_review": 419,
-      "unvalidated_groups": 42,
+      "excluded_series": 1070353,
+      "excluded_measured": 1005558,
+      "excluded_missing_evidence": 64795,
+      "source_failures": 32,
       "issues": [
         {
           "id": "availability_unverified",
-          "count": 53
+          "count": 1024961
         },
         {
           "id": "calendar_unverified",
-          "count": 626
+          "count": 142802
         },
         {
           "id": "coarse_resolution",
-          "count": 70
+          "count": 44887
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 142802
         },
         {
           "id": "conflicting_duplicates",
-          "count": 32
+          "count": 2281
         },
         {
           "id": "context_gaps",
-          "count": 2
+          "count": 927551
         },
         {
           "id": "invalid_times",
@@ -147,23 +171,27 @@
         },
         {
           "id": "missing_months",
-          "count": 78
+          "count": 44835
         },
         {
           "id": "no_window_data",
-          "count": 4
+          "count": 989445
+        },
+        {
+          "id": "not_source_observations",
+          "count": 435
         },
         {
           "id": "price_definition_unverified",
-          "count": 395
+          "count": 45212
         },
         {
-          "id": "provisional_calendar_gaps",
-          "count": 405
+          "id": "series_type_unknown",
+          "count": 435
         },
         {
           "id": "short_history",
-          "count": 100
+          "count": 39540
         }
       ]
     },
@@ -171,54 +199,54 @@
       "id": "currencies",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 124,
-      "additional_review": 1440,
-      "unvalidated_groups": 10,
+      "excluded_series": 3252,
+      "excluded_measured": 1780,
+      "excluded_missing_evidence": 1472,
+      "source_failures": 10,
       "issues": [
         {
           "id": "availability_unverified",
-          "count": 1
+          "count": 72
         },
         {
           "id": "cadence_unknown",
-          "count": 11
+          "count": 10
         },
         {
           "id": "calendar_unverified",
-          "count": 1564
+          "count": 3252
         },
         {
           "id": "coarse_resolution",
-          "count": 12
+          "count": 1630
         },
         {
-          "id": "conflicting_duplicates",
-          "count": 2
-        },
-        {
-          "id": "inconsistent_ohlc",
-          "count": 8
+          "id": "completeness_unverified",
+          "count": 3252
         },
         {
           "id": "invalid_values",
-          "count": 23
+          "count": 10
         },
         {
           "id": "missing_months",
           "count": 100
         },
         {
-          "id": "price_definition_unverified",
-          "count": 1563
+          "id": "not_source_observations",
+          "count": 72
         },
         {
-          "id": "provisional_calendar_gaps",
-          "count": 1440
+          "id": "price_definition_unverified",
+          "count": 3180
+        },
+        {
+          "id": "series_type_unknown",
+          "count": 72
         },
         {
           "id": "short_history",
-          "count": 100
+          "count": 140
         }
       ]
     },
@@ -226,18 +254,26 @@
       "id": "derivatives",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 82649,
-      "additional_review": 0,
-      "unvalidated_groups": 382,
+      "excluded_series": 869918,
+      "excluded_measured": 681653,
+      "excluded_missing_evidence": 188265,
+      "source_failures": 249,
       "issues": [
         {
+          "id": "availability_unverified",
+          "count": 787269
+        },
+        {
           "id": "calendar_unverified",
-          "count": 672
+          "count": 787941
         },
         {
           "id": "coarse_resolution",
           "count": 224
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 869841
         },
         {
           "id": "hourly_gaps",
@@ -246,6 +282,10 @@
         {
           "id": "inconsistent_ohlc",
           "count": 16
+        },
+        {
+          "id": "invalid_values",
+          "count": 23850
         },
         {
           "id": "long_gaps",
@@ -257,7 +297,7 @@
         },
         {
           "id": "no_window_data",
-          "count": 2436
+          "count": 474782
         },
         {
           "id": "price_definition_unverified",
@@ -265,7 +305,7 @@
         },
         {
           "id": "short_history",
-          "count": 82397
+          "count": 438887
         }
       ]
     },
@@ -273,18 +313,22 @@
       "id": "economics",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 18,
-      "additional_review": 110,
-      "unvalidated_groups": 11,
+      "excluded_series": 121,
+      "excluded_measured": 20,
+      "excluded_missing_evidence": 101,
+      "source_failures": 11,
       "issues": [
         {
           "id": "availability_unverified",
-          "count": 128
+          "count": 121
         },
         {
           "id": "calendar_unverified",
-          "count": 60
+          "count": 65
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 65
         },
         {
           "id": "conflicting_duplicates",
@@ -292,7 +336,7 @@
         },
         {
           "id": "context_gaps",
-          "count": 8
+          "count": 2
         },
         {
           "id": "invalid_values",
@@ -308,22 +352,50 @@
       "id": "gdelt",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 3,
-      "additional_review": 29,
-      "unvalidated_groups": 0,
+      "excluded_series": 5363,
+      "excluded_measured": 5360,
+      "excluded_missing_evidence": 3,
+      "source_failures": 1103,
       "issues": [
         {
+          "id": "aggregation_unverified",
+          "count": 4926
+        },
+        {
           "id": "availability_unverified",
-          "count": 32
+          "count": 5363
         },
         {
-          "id": "context_gaps",
-          "count": 32
+          "id": "calendar_unverified",
+          "count": 437
         },
         {
-          "id": "no_window_data",
-          "count": 3
+          "id": "collection_completeness_unverified",
+          "count": 4926
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 437
+        },
+        {
+          "id": "invalid_values",
+          "count": 212
+        },
+        {
+          "id": "not_source_observations",
+          "count": 434
+        },
+        {
+          "id": "series_type_unknown",
+          "count": 434
+        },
+        {
+          "id": "short_history",
+          "count": 5360
+        },
+        {
+          "id": "source_parse_error",
+          "count": 4918
         }
       ]
     },
@@ -331,46 +403,50 @@
       "id": "prediction-markets",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 4294,
-      "additional_review": 0,
-      "unvalidated_groups": 619,
+      "excluded_series": 4286,
+      "excluded_measured": 4284,
+      "excluded_missing_evidence": 2,
+      "source_failures": 618,
       "issues": [
         {
           "id": "availability_unverified",
-          "count": 464
+          "count": 489
         },
         {
           "id": "cadence_unknown",
-          "count": 66
+          "count": 33
         },
         {
           "id": "calendar_unverified",
-          "count": 4294
+          "count": 4286
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 4286
         },
         {
           "id": "conflicting_duplicates",
-          "count": 309
+          "count": 330
         },
         {
           "id": "invalid_values",
-          "count": 1136
+          "count": 1145
         },
         {
           "id": "missing_months",
-          "count": 3830
+          "count": 3797
         },
         {
           "id": "no_window_data",
-          "count": 938
+          "count": 919
         },
         {
           "id": "price_definition_unverified",
-          "count": 3830
+          "count": 3797
         },
         {
           "id": "short_history",
-          "count": 4294
+          "count": 4269
         }
       ]
     },
@@ -378,18 +454,54 @@
       "id": "sentiment",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 129,
-      "additional_failed": 0,
-      "additional_review": 0,
-      "unvalidated_groups": 0,
+      "excluded_series": 203008,
+      "excluded_measured": 170211,
+      "excluded_missing_evidence": 32797,
+      "source_failures": 1,
       "issues": [
         {
+          "id": "aggregation_unverified",
+          "count": 173809
+        },
+        {
           "id": "availability_unverified",
-          "count": 129
+          "count": 203008
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 24
+        },
+        {
+          "id": "causal_processing_unverified",
+          "count": 144729
+        },
+        {
+          "id": "collection_completeness_unverified",
+          "count": 173809
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 24
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 1
+        },
+        {
+          "id": "invalid_values",
+          "count": 12
+        },
+        {
+          "id": "no_window_data",
+          "count": 8821
         },
         {
           "id": "scrape_completeness",
-          "count": 129
+          "count": 203008
+        },
+        {
+          "id": "short_history",
+          "count": 170182
         }
       ]
     },
@@ -397,24 +509,32 @@
       "id": "emotions",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 0,
-      "additional_review": 0,
-      "unvalidated_groups": 0,
+      "excluded_series": 0,
+      "excluded_measured": 0,
+      "excluded_missing_evidence": 0,
+      "source_failures": 0,
       "issues": []
     },
     {
       "id": "trade",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 2172039,
-      "additional_review": 252036,
-      "unvalidated_groups": 0,
+      "excluded_series": 2423683,
+      "excluded_measured": 2423291,
+      "excluded_missing_evidence": 392,
+      "source_failures": 0,
       "issues": [
         {
           "id": "availability_unverified",
-          "count": 2424075
+          "count": 2423683
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 392
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 392
         },
         {
           "id": "conflicting_duplicates",
@@ -422,7 +542,7 @@
         },
         {
           "id": "context_gaps",
-          "count": 2423683
+          "count": 2423291
         },
         {
           "id": "invalid_values",
@@ -433,12 +553,8 @@
           "count": 1390400
         },
         {
-          "id": "parse_errors",
-          "count": 392
-        },
-        {
           "id": "short_history",
-          "count": 1728162
+          "count": 1727770
         }
       ]
     },
@@ -446,10 +562,10 @@
       "id": "weather",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 510,
-      "additional_review": 2329,
-      "unvalidated_groups": 31,
+      "excluded_series": 2839,
+      "excluded_measured": 510,
+      "excluded_missing_evidence": 2329,
+      "source_failures": 31,
       "issues": [
         {
           "id": "availability_unverified",
@@ -457,11 +573,15 @@
         },
         {
           "id": "calendar_unverified",
-          "count": 1
+          "count": 281
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 281
         },
         {
           "id": "context_gaps",
-          "count": 509
+          "count": 279
         },
         {
           "id": "invalid_values",
@@ -477,10 +597,10 @@
       "id": "reddit",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 193,
-      "additional_review": 66,
-      "unvalidated_groups": 0,
+      "excluded_series": 259,
+      "excluded_measured": 193,
+      "excluded_missing_evidence": 66,
+      "source_failures": 0,
       "issues": [
         {
           "id": "availability_unverified",
@@ -488,6 +608,10 @@
         },
         {
           "id": "calendar_unverified",
+          "count": 259
+        },
+        {
+          "id": "completeness_unverified",
           "count": 259
         },
         {
@@ -512,30 +636,34 @@
       "id": "other-markets",
       "confirmed_series": 0,
       "confirmed_units": 0,
-      "provisional_series": 0,
-      "additional_failed": 60,
-      "additional_review": 215,
-      "unvalidated_groups": 0,
+      "excluded_series": 445,
+      "excluded_measured": 230,
+      "excluded_missing_evidence": 215,
+      "source_failures": 0,
       "issues": [
         {
           "id": "calendar_unverified",
-          "count": 275
+          "count": 445
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 170
+        },
+        {
+          "id": "completeness_unverified",
+          "count": 445
         },
         {
           "id": "missing_months",
-          "count": 60
+          "count": 115
         },
         {
           "id": "price_definition_unverified",
-          "count": 275
-        },
-        {
-          "id": "provisional_calendar_gaps",
-          "count": 215
+          "count": 445
         },
         {
           "id": "short_history",
-          "count": 50
+          "count": 95
         }
       ]
     }
