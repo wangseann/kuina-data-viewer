@@ -21,6 +21,11 @@ class CountsTests(unittest.TestCase):
         self.assertIn('Provisional',html)
         self.assertNotIn('6,466 confirmed',html)
 
+    def test_one_square_per_confirmed_field_and_provisional_signal(self):
+        page=render(validate(snapshot()))
+        self.assertEqual(page.count('class="square confirmed-square"'),6337)
+        self.assertEqual(page.count('class="square provisional-square"'),129)
+
     def test_observation_fields_are_rejected(self):
         data=snapshot();data['prices']=[100,101]
         with self.assertRaises(ValueError):validate(data)
