@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "audit_utc": "2026-11-06T09:48:00.395925+00:00",
+  "types": [
+    {
+      "id": "stocks",
+      "confirmed_series": 6265,
+      "confirmed_units": 895,
+      "provisional_series": 0,
+      "additional_failed": 5505,
+      "additional_review": 2170,
+      "unvalidated_groups": 213
+    },
+    {
+      "id": "crypto",
+      "confirmed_series": 72,
+      "confirmed_units": 8,
+      "provisional_series": 0,
+      "additional_failed": 23,
+      "additional_review": 290,
+      "unvalidated_groups": 0
+    },
+    {
+      "id": "commodities",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 209,
+      "additional_review": 419,
+      "unvalidated_groups": 42
+    },
+    {
+      "id": "currencies",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 124,
+      "additional_review": 1440,
+      "unvalidated_groups": 10
+    },
+    {
+      "id": "derivatives",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 82649,
+      "additional_review": 0,
+      "unvalidated_groups": 382
+    },
+    {
+      "id": "economics",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 18,
+      "additional_review": 110,
+      "unvalidated_groups": 11
+    },
+    {
+      "id": "gdelt",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 3,
+      "additional_review": 29,
+      "unvalidated_groups": 0
+    },
+    {
+      "id": "prediction-markets",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 4294,
+      "additional_review": 0,
+      "unvalidated_groups": 619
+    },
+    {
+      "id": "sentiment",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 129,
+      "additional_failed": 0,
+      "additional_review": 0,
+      "unvalidated_groups": 0
+    },
+    {
+      "id": "emotions",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 0,
+      "additional_review": 0,
+      "unvalidated_groups": 0
+    },
+    {
+      "id": "trade",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 2172039,
+      "additional_review": 252036,
+      "unvalidated_groups": 0
+    },
+    {
+      "id": "weather",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 510,
+      "additional_review": 2329,
+      "unvalidated_groups": 31
+    },
+    {
+      "id": "reddit",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 193,
+      "additional_review": 66,
+      "unvalidated_groups": 0
+    },
+    {
+      "id": "other-markets",
+      "confirmed_series": 0,
+      "confirmed_units": 0,
+      "provisional_series": 0,
+      "additional_failed": 60,
+      "additional_review": 215,
+      "unvalidated_groups": 0
+    }
+  ]
+}

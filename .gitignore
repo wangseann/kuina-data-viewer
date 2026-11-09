@@ -1,0 +1,14 @@
+__pycache__/
+.local/
+.DS_Store
+*.csv
+*.parquet
+*.jsonl
+*.gz
+*.npy
+*.npz
+*.pkl
+*.h5
+*.xlsx
+*.zip
+.env*
