@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "audit_utc": "2026-11-06T09:48:00.395925+00:00",
   "types": [
     {
@@ -9,7 +9,61 @@
       "provisional_series": 0,
       "additional_failed": 5505,
       "additional_review": 2170,
-      "unvalidated_groups": 213
+      "unvalidated_groups": 213,
+      "issues": [
+        {
+          "id": "cadence_unknown",
+          "count": 1
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 3330
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 504
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 1
+        },
+        {
+          "id": "hourly_gaps",
+          "count": 2900
+        },
+        {
+          "id": "inconsistent_ohlc",
+          "count": 4
+        },
+        {
+          "id": "invalid_values",
+          "count": 14
+        },
+        {
+          "id": "long_gaps",
+          "count": 2900
+        },
+        {
+          "id": "missing_months",
+          "count": 2544
+        },
+        {
+          "id": "no_window_data",
+          "count": 5
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 7675
+        },
+        {
+          "id": "provisional_calendar_gaps",
+          "count": 2170
+        },
+        {
+          "id": "short_history",
+          "count": 2434
+        }
+      ]
     },
     {
       "id": "crypto",
@@ -18,7 +72,41 @@
       "provisional_series": 0,
       "additional_failed": 23,
       "additional_review": 290,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": [
+        {
+          "id": "cadence_unknown",
+          "count": 1
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 313
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 12
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 1
+        },
+        {
+          "id": "missing_months",
+          "count": 10
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 313
+        },
+        {
+          "id": "provisional_calendar_gaps",
+          "count": 290
+        },
+        {
+          "id": "short_history",
+          "count": 10
+        }
+      ]
     },
     {
       "id": "commodities",
@@ -27,7 +115,57 @@
       "provisional_series": 0,
       "additional_failed": 209,
       "additional_review": 419,
-      "unvalidated_groups": 42
+      "unvalidated_groups": 42,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 53
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 626
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 70
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 32
+        },
+        {
+          "id": "context_gaps",
+          "count": 2
+        },
+        {
+          "id": "invalid_times",
+          "count": 4
+        },
+        {
+          "id": "invalid_values",
+          "count": 12
+        },
+        {
+          "id": "missing_months",
+          "count": 78
+        },
+        {
+          "id": "no_window_data",
+          "count": 4
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 395
+        },
+        {
+          "id": "provisional_calendar_gaps",
+          "count": 405
+        },
+        {
+          "id": "short_history",
+          "count": 100
+        }
+      ]
     },
     {
       "id": "currencies",
@@ -36,7 +174,53 @@
       "provisional_series": 0,
       "additional_failed": 124,
       "additional_review": 1440,
-      "unvalidated_groups": 10
+      "unvalidated_groups": 10,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 1
+        },
+        {
+          "id": "cadence_unknown",
+          "count": 11
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 1564
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 12
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 2
+        },
+        {
+          "id": "inconsistent_ohlc",
+          "count": 8
+        },
+        {
+          "id": "invalid_values",
+          "count": 23
+        },
+        {
+          "id": "missing_months",
+          "count": 100
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 1563
+        },
+        {
+          "id": "provisional_calendar_gaps",
+          "count": 1440
+        },
+        {
+          "id": "short_history",
+          "count": 100
+        }
+      ]
     },
     {
       "id": "derivatives",
@@ -45,7 +229,45 @@
       "provisional_series": 0,
       "additional_failed": 82649,
       "additional_review": 0,
-      "unvalidated_groups": 382
+      "unvalidated_groups": 382,
+      "issues": [
+        {
+          "id": "calendar_unverified",
+          "count": 672
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 224
+        },
+        {
+          "id": "hourly_gaps",
+          "count": 77
+        },
+        {
+          "id": "inconsistent_ohlc",
+          "count": 16
+        },
+        {
+          "id": "long_gaps",
+          "count": 77
+        },
+        {
+          "id": "missing_months",
+          "count": 82481
+        },
+        {
+          "id": "no_window_data",
+          "count": 2436
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 672
+        },
+        {
+          "id": "short_history",
+          "count": 82397
+        }
+      ]
     },
     {
       "id": "economics",
@@ -54,7 +276,33 @@
       "provisional_series": 0,
       "additional_failed": 18,
       "additional_review": 110,
-      "unvalidated_groups": 11
+      "unvalidated_groups": 11,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 128
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 60
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 9
+        },
+        {
+          "id": "context_gaps",
+          "count": 8
+        },
+        {
+          "id": "invalid_values",
+          "count": 10
+        },
+        {
+          "id": "no_window_data",
+          "count": 3
+        }
+      ]
     },
     {
       "id": "gdelt",
@@ -63,7 +311,21 @@
       "provisional_series": 0,
       "additional_failed": 3,
       "additional_review": 29,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 32
+        },
+        {
+          "id": "context_gaps",
+          "count": 32
+        },
+        {
+          "id": "no_window_data",
+          "count": 3
+        }
+      ]
     },
     {
       "id": "prediction-markets",
@@ -72,7 +334,45 @@
       "provisional_series": 0,
       "additional_failed": 4294,
       "additional_review": 0,
-      "unvalidated_groups": 619
+      "unvalidated_groups": 619,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 464
+        },
+        {
+          "id": "cadence_unknown",
+          "count": 66
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 4294
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 309
+        },
+        {
+          "id": "invalid_values",
+          "count": 1136
+        },
+        {
+          "id": "missing_months",
+          "count": 3830
+        },
+        {
+          "id": "no_window_data",
+          "count": 938
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 3830
+        },
+        {
+          "id": "short_history",
+          "count": 4294
+        }
+      ]
     },
     {
       "id": "sentiment",
@@ -81,7 +381,17 @@
       "provisional_series": 129,
       "additional_failed": 0,
       "additional_review": 0,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 129
+        },
+        {
+          "id": "scrape_completeness",
+          "count": 129
+        }
+      ]
     },
     {
       "id": "emotions",
@@ -90,7 +400,8 @@
       "provisional_series": 0,
       "additional_failed": 0,
       "additional_review": 0,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": []
     },
     {
       "id": "trade",
@@ -99,7 +410,37 @@
       "provisional_series": 0,
       "additional_failed": 2172039,
       "additional_review": 252036,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 2424075
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 3266
+        },
+        {
+          "id": "context_gaps",
+          "count": 2423683
+        },
+        {
+          "id": "invalid_values",
+          "count": 5562
+        },
+        {
+          "id": "no_window_data",
+          "count": 1390400
+        },
+        {
+          "id": "parse_errors",
+          "count": 392
+        },
+        {
+          "id": "short_history",
+          "count": 1728162
+        }
+      ]
     },
     {
       "id": "weather",
@@ -108,7 +449,29 @@
       "provisional_series": 0,
       "additional_failed": 510,
       "additional_review": 2329,
-      "unvalidated_groups": 31
+      "unvalidated_groups": 31,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 2839
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 1
+        },
+        {
+          "id": "context_gaps",
+          "count": 509
+        },
+        {
+          "id": "invalid_values",
+          "count": 279
+        },
+        {
+          "id": "short_history",
+          "count": 231
+        }
+      ]
     },
     {
       "id": "reddit",
@@ -117,7 +480,33 @@
       "provisional_series": 0,
       "additional_failed": 193,
       "additional_review": 66,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": [
+        {
+          "id": "availability_unverified",
+          "count": 259
+        },
+        {
+          "id": "calendar_unverified",
+          "count": 259
+        },
+        {
+          "id": "conflicting_duplicates",
+          "count": 61
+        },
+        {
+          "id": "invalid_values",
+          "count": 129
+        },
+        {
+          "id": "no_window_data",
+          "count": 37
+        },
+        {
+          "id": "short_history",
+          "count": 74
+        }
+      ]
     },
     {
       "id": "other-markets",
@@ -126,7 +515,29 @@
       "provisional_series": 0,
       "additional_failed": 60,
       "additional_review": 215,
-      "unvalidated_groups": 0
+      "unvalidated_groups": 0,
+      "issues": [
+        {
+          "id": "calendar_unverified",
+          "count": 275
+        },
+        {
+          "id": "missing_months",
+          "count": 60
+        },
+        {
+          "id": "price_definition_unverified",
+          "count": 275
+        },
+        {
+          "id": "provisional_calendar_gaps",
+          "count": 215
+        },
+        {
+          "id": "short_history",
+          "count": 50
+        }
+      ]
     }
   ]
 }
