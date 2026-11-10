@@ -57,6 +57,16 @@
     if (!(record.nativeSeconds > 0 && record.nativeSeconds <= 900)) return 'unknown';
     return 'complete';
   }
+  function previewExplanation(record, data) {
+    const explanations = {
+      VERIFIED_DISPLAY:'The preview was read from the saved audited source. Its eligibility result is shown separately.',
+      PARTIAL_SOURCE:'Only part of this source could be read. Grey coverage cells cannot certify completeness.',
+      COUNT_MISMATCH:'The preview observation count differs from the saved audit. Review the source or reader before trusting this preview.',
+      AMBIGUOUS_DISPLAY:'Different values share the same timestamp. The chart is ambiguous and its grey coverage cells are not certified.'
+    };
+    if (!data) return 'No verified preview is available. '+(record.previewStatus||'Exact daily gaps cannot be inferred from the first and last recorded dates.');
+    return (explanations[data.verification?.status]||'This display has no current preview verification.')+' '+(data.note||'');
+  }
   function repairBrief(record, manifest, explanations) {
     const failed = (record.checks || []).filter(check => check.status === 'FAIL');
     return {
@@ -85,7 +95,7 @@
     }
     return data;
   }
-  const api = {DAY,COLOURS,REASON_BITS,safePath,dates,mask,eligible,matches,coverageState,repairBrief,validateManifest};
+  const api = {DAY,COLOURS,REASON_BITS,safePath,dates,mask,eligible,matches,coverageState,previewExplanation,repairBrief,validateManifest};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.KuinaInspection = api;
 })(globalThis);

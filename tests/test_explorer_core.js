@@ -26,3 +26,6 @@ assert.equal(brief.acceptance.max_native_interval_seconds,900);assert.equal(brie
 for(const path of ['/etc/passwd','../data','a/../b','https://example.com/data','a\\b'])assert.throws(()=>K.safePath(path));
 assert.equal(K.dates('2024-10-01','2026-10-01').length,730);
 console.log('Explorer checks passed: eligibility evidence, unknown coverage, calendar closures, overlapping failures, private paths and repair acceptance.');
+assert.match(K.previewExplanation({}, {verification:{status:'COUNT_MISMATCH'}}), /differs from the saved audit/);
+assert.match(K.previewExplanation({}, {verification:{status:'AMBIGUOUS_DISPLAY'}}), /Different values share/);
+assert.match(K.previewExplanation({previewStatus:'source changed'}, null), /source changed/);

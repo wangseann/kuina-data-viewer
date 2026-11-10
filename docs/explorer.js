@@ -168,7 +168,7 @@ async function select(record) {
   try {
     const data=await preview(record);if(generation!==state.generation||state.selected?.id!==record.id)return;
     state.preview=data;
-    $('preview-note').textContent=data?'Daily summaries of recorded values for display; no filling. The original recording interval is shown above. '+(data.note||''):'No verified preview has been generated for this series. Its chart and exact daily gaps cannot be inferred from its first and last dates.';
+    $('preview-note').textContent='Daily summaries of recorded values for display; no filling. '+K.previewExplanation(record,data);
     drawChart();
   }catch(error){if(state.selected?.id===record.id){$('preview-note').textContent=error.message;drawChart();}}
 }
