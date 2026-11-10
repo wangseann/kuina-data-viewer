@@ -43,6 +43,125 @@ FULL_COUNTS={'excluded_missing_evidence', 'source_failures', 'confirmed_units', 
 FULL_ISSUES={'inconsistent_ohlc':'Inconsistent open / high / low / close candles','ohlc_check_missing':'Ohlc could not be established','not_source_observations': 'Source is not established as historical observations', 'input_identity_unverified': 'Source bytes / identity not verified', 'series_type_unknown': 'Price versus contextual variable is not established', 'no_valid_observations': 'No valid timed numerical observations', 'no_window_data': 'No valid observations in the selected test window', 'invalid_values': 'Invalid numerical observations in the selected test window', 'invalid_times': 'Unparseable observation timestamps', 'conflicting_duplicates': 'Different values occur at the same series timestamp', 'source_parse_error': 'At least one input could not be completely parsed', 'aggregation_unverified': 'Raw events lack a verified forecast-feature aggregation rule', 'score_probability_invalid': 'Sentiment probabilities or score formula failed validation', 'grid_alignment_invalid': 'Timestamps disagree with the declared observation grid', 'short_history': 'Less than two calendar years of valid history', 'calendar_unverified': 'Historical trading / reporting calendar not verified', 'coarse_resolution': 'Financial prices are coarser than hourly', 'cadence_unknown': 'Native observation cadence not established', 'missing_months': 'Financial prices are absent from at least one test-window month', 'price_definition_unverified': 'Price construction, side or adjustment not established', 'availability_unverified': 'Historical publication timing / revision evidence missing', 'collection_completeness_unverified': 'Raw-event collection completeness not established', 'completeness_unverified': 'Completeness cannot be established with the available evidence', 'hourly_gaps': 'At least one expected hourly block is empty', 'long_gaps': 'A within-session gap exceeds the accepted hourly limit', 'context_gaps': 'At least one expected contextual reporting period is missing', 'scrape_completeness': 'Account-level tweet collection completeness is not established', 'causal_processing_unverified': 'Feature availability and causal processing lineage not established', 'numeric_observations_check_missing': 'Numeric observations could not be established', 'window_observations_check_missing': 'Window observations could not be established', 'value_check_missing': 'Value could not be established', 'timestamp_check_missing': 'Timestamp could not be established', 'duplicate_check_missing': 'Duplicate could not be established', 'source_parse_check_missing': 'Source parse could not be established', 'sentiment_score_check_missing': 'Sentiment score could not be established', 'grid_alignment_check_missing': 'Grid alignment could not be established', 'history_span_check_missing': 'History span could not be established', 'window_months_check_missing': 'Window months could not be established'}
 
 
+PLAIN_ISSUES = {'inconsistent_ohlc': ('Price candle values contradict each other',
+                       'The opening, highest, lowest or closing price does not fit the others; for '
+                       'example, the highest price is below the closing price.'),
+ 'ohlc_check_missing': ('The price candle consistency check is missing',
+                        'We have not established whether each candle has sensible opening, highest, '
+                        'lowest and closing prices.'),
+ 'not_source_observations': ('We cannot confirm these are recorded historical values',
+                             'The files may contain predictions, summaries or supporting information '
+                             'rather than measurements recorded for that time.'),
+ 'input_identity_unverified': ('We cannot trace the exact file version that was checked',
+                               'The audit lacks a verified file fingerprint, so it cannot prove which '
+                               'version of the source file was checked.'),
+ 'series_type_unknown': ('We do not know what kind of value this is',
+                         'We cannot establish whether this is a market price or another predictor, such '
+                         'as a sentiment score or economic indicator.'),
+ 'no_valid_observations': ('No usable numbers with dates remain',
+                           'The series has no observations that can be used after checking its numbers '
+                           'and dates.'),
+ 'no_window_data': ('No usable data fall inside our test dates',
+                    'We found no usable observations from 1 October 2024 through 30 September 2026, '
+                    'even if data exist outside those dates.'),
+ 'invalid_values': ('Some recorded numbers are invalid',
+                    'Some entries cannot be used as numbers, such as infinity or an unreadable number.'),
+ 'invalid_times': ('Some dates or times cannot be read',
+                   'One or more observations have timestamps the audit could not turn into a usable '
+                   'date and time.'),
+ 'conflicting_duplicates': ('The same time has different recorded values',
+                            'More than one value exists for the same series at the same time, and the '
+                            'conflict needs to be resolved.'),
+ 'source_parse_error': ('Some source files could not be fully read',
+                        'The audit could not read the complete contents of at least one input file, so '
+                        'the result may be incomplete.'),
+ 'aggregation_unverified': ('Individual events have no verified time-series recipe',
+                            'Tweets, trades or other events need a checked rule for turning them into '
+                            'regular values, such as one score per 15 minutes.'),
+ 'score_probability_invalid': ('Sentiment scores failed a maths check',
+                               'The saved scores or probabilities do not meet the scoring rules used by '
+                               'the audit.'),
+ 'grid_alignment_invalid': ('Recorded times do not match the stated schedule',
+                            'The timestamps do not line up with the regular intervals the dataset '
+                            'claims to use.'),
+ 'short_history': ('Less than two years of usable history',
+                   'The first and last valid observations do not span two full calendar years. This '
+                   'check is separate from checks for gaps inside that span.'),
+ 'calendar_unverified': ('We do not know when observations should exist',
+                         'We lack a checked schedule of market opening hours, holidays or reporting '
+                         'dates, so we cannot reliably distinguish normal closures from missing data.'),
+ 'coarse_resolution': ('Values are recorded less often than every 15 minutes',
+                       'The original data are hourly, daily or otherwise too far apart. Adding copied '
+                       'or interpolated values would not make them qualify.'),
+ 'cadence_unknown': ('We cannot confirm how often values were recorded',
+                     'The original recording interval has not been established, so we cannot prove the '
+                     'series meets the 15-minute requirement.'),
+ 'missing_months': ('At least one test month has no price data',
+                    'One or more months inside our test dates contain no valid prices for this series.'),
+ 'price_definition_unverified': ('We do not know exactly what the price represents',
+                                 'We cannot confirm whether it is a buyer bid, seller ask or completed '
+                                 'trade, how candles were built, or whether stock prices account for '
+                                 'splits and dividends.'),
+ 'availability_unverified': ('We cannot confirm what was known at the time',
+                             'We do not know when a value first became available or whether it was '
+                             'changed later. For example, a January figure published in March was not '
+                             'available for a January forecast.'),
+ 'collection_completeness_unverified': ('We cannot confirm all events were collected',
+                                        'The available records do not prove that all expected events '
+                                        'were captured; an empty interval may be inactivity or a '
+                                        'collection failure.'),
+ 'completeness_unverified': ('We cannot confirm the data are complete',
+                             'We lack enough evidence to tell whether expected observations are '
+                             'missing.'),
+ 'hourly_gaps': ('Some expected hours have no data',
+                 'The earlier audit measured at least one empty hour when observations should have '
+                 'existed. That also fails the current 15-minute requirement.'),
+ 'long_gaps': ('A gap between observations is longer than 15 minutes',
+               'Within the checked market schedule, some consecutive observations are more than 15 '
+               'minutes apart.'),
+ 'context_gaps': ('Some expected reports or predictor values are missing',
+                  'An observation is missing at a time when the checked reporting schedule says one '
+                  'should exist.'),
+ 'scrape_completeness': ('We cannot confirm every relevant tweet was collected',
+                         'For an account, we cannot prove the scraper captured all relevant posts. A '
+                         'blank period might mean no posts or a failed scrape.'),
+ 'causal_processing_unverified': ('We cannot confirm the signal uses only earlier information',
+                                  'The processing record does not prove that each historical signal was '
+                                  'made using only information available by that time. Later '
+                                  'information could make a forecast test look better than it really '
+                                  'is.'),
+ 'numeric_observations_check_missing': ('The check for usable numbers is missing',
+                                        'The audit has no completed check proving this series contains '
+                                        'usable numerical observations.'),
+ 'window_observations_check_missing': ('The check for data inside our test dates is missing',
+                                       'The audit has not established whether usable observations exist '
+                                       'from 1 October 2024 through 30 September 2026.'),
+ 'value_check_missing': ('The check for invalid numbers is missing',
+                         'The audit has no completed result showing whether the recorded numbers are '
+                         'valid.'),
+ 'timestamp_check_missing': ('The check for readable dates and times is missing',
+                             'The audit has no completed result showing whether observation timestamps '
+                             'can be read.'),
+ 'duplicate_check_missing': ('The check for conflicting values at the same time is missing',
+                             'The audit has not established whether duplicate timestamps contain '
+                             'different values.'),
+ 'source_parse_check_missing': ('The check that source files were fully read is missing',
+                                'The audit has not established whether all input files could be read '
+                                'completely.'),
+ 'sentiment_score_check_missing': ('The sentiment score calculation check is missing',
+                                   'The audit has no completed result showing whether saved sentiment '
+                                   'scores follow the intended calculation.'),
+ 'grid_alignment_check_missing': ('The check that times match the stated schedule is missing',
+                                  'The audit has not established whether timestamps line up with the '
+                                  'claimed recording intervals.'),
+ 'history_span_check_missing': ('The two-year history check is missing',
+                                'The audit has not established the first and last valid observation '
+                                'dates, so two years of history cannot be confirmed.'),
+ 'window_months_check_missing': ('The check for data in every test month is missing',
+                                 'The audit has not established whether prices exist in every month of '
+                                 'our test dates.')}
+
+
 def validate(data):
     if not isinstance(data,dict) or type(data.get('schema')) is not int or data['schema'] not in (1,2,3,4):
         raise ValueError('Only the counts-only schema is accepted')
@@ -202,40 +321,62 @@ def colour_styles():
     return ''.join('.failure-'+str(bit)+'{color:'+colour+';background:'+colour+'15}'for bit,(_,colour)in FAILURE_COLOURS.items())
 
 
+GRID_STYLE = """
+.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(10px,1fr));gap:3px;width:100%;margin:14px 0}
+.series-grid .square{display:block;aspect-ratio:1;min-width:0}
+.series-grid .confirmed-square{background:#25826b}
+.reason-explanation{display:block;font-weight:400;font-size:13px;line-height:1.6;margin-top:5px;max-width:850px;color:#394e60}
+"""
+
+
+def eligible_grid(count):
+    if not count:
+        return '<p class="small">0 eligible</p>'
+    shown = min(count, 20000)
+    squares = '<span class="square confirmed-square"></span>' * shown
+    note = f'<p class="small">First {shown:,} of {count:,} eligible series shown.</p>' if shown < count else ''
+    return f'<div class="series-grid" role="img" aria-label="{count:,} eligible numeric series">' + squares + '</div>' + note
+
+
 def failure_waffle(buckets, identifier):
-    if not buckets:return '<span class="small">0 excluded</span>'
-    counts=visible_counts(buckets)
-    total=sum(item['count']for item in buckets)
-    shown=sum(counts.values());definitions=[];squares=[];position=0
-    for mask,count in sorted(counts.items()):
-        colours=[colour for bit,(_,colour)in FAILURE_COLOURS.items()if mask&bit]
-        label='; '.join(label for bit,(label,_)in FAILURE_COLOURS.items()if mask&bit)
-        gradient='failure-mask-'+identifier+'-'+str(mask)
-        stops=[]
-        for index,colour in enumerate(colours):
-            stops.append('<stop offset="'+str(index/len(colours)*100)+'%" stop-color="'+colour+'"/>')
-            stops.append('<stop offset="'+str((index+1)/len(colours)*100)+'%" stop-color="'+colour+'"/>')
-        definitions.append('<linearGradient id="'+gradient+'">'+''.join(stops)+'</linearGradient>')
-        for _ in range(count):
-            squares.append(f'<rect class="square failed-square mask-{mask}" x="{position%160*4}" y="{position//160*4}" width="3" height="3" style="fill:url(#{gradient})"><title>'+html.escape(label)+'</title></rect>')
-            position+=1
-    note=f'<p class="small">{shown:,} of {total:,} excluded series shown. Colour combinations are sampled proportionally; every square represents one series. Exact totals are in the tables.</p>'if shown<total else ''
-    return f'<svg viewBox="0 0 640 {((shown+159)//160)*4}" role="img" aria-label="{total:,} excluded series by failure combination"><defs>'+''.join(definitions)+'</defs>'+''.join(squares)+'</svg>'+note
+    if not buckets:
+        return '<p class="small">0 excluded</p>'
+    counts = visible_counts(buckets)
+    total = sum(item['count'] for item in buckets)
+    shown = sum(counts.values())
+    squares = []
+    for mask, count in sorted(counts.items()):
+        colours = [colour for bit, (_, colour) in FAILURE_COLOURS.items() if mask & bit]
+        label = '; '.join(label for bit, (label, _) in FAILURE_COLOURS.items() if mask & bit)
+        bands = [f'{colour} {index / len(colours) * 100}% {(index + 1) / len(colours) * 100}%' for index, colour in enumerate(colours)]
+        background = colours[0] if len(colours) == 1 else 'linear-gradient(90deg,' + ','.join(bands) + ')'
+        tile = f'<span class="square failed-square failure-mask-{identifier}-{mask}" style="background:{background}" title="{html.escape(label, quote=True)}"></span>'
+        squares.append(tile * count)
+    note = f'<p class="small">{shown:,} of {total:,} excluded series shown. Colour combinations are sampled proportionally; every square represents one series. Exact totals are in the tables.</p>' if shown < total else ''
+    return f'<div class="series-grid" role="img" aria-label="{total:,} excluded series by failure combination">' + ''.join(squares) + '</div>' + note
+
+
+def reason_row(issue, coloured):
+    identifier = issue['id']
+    label = html.escape(FULL_ISSUES[identifier])
+    style = ''
+    if coloured:
+        title, explanation = PLAIN_ISSUES[identifier]
+        label = html.escape(title) + '<span class="reason-explanation">' + html.escape(explanation) + '</span>'
+        style = ' class="failure-' + str(REASON_BITS.get(identifier, 8)) + '"'
+    return '<tr' + style + '><th scope="row">' + label + '</th><td>' + f"{issue['count']:,}" + '</td></tr>'
 
 
 def render_full(data):
     coloured=data['schema']==4
-    descriptions=dict(FULL_ISSUES)
-    if coloured:
-        descriptions.update(coarse_resolution='Native observations are coarser than 15 minutes',long_gaps='A within-session gap exceeds the 15-minute observation requirement')
     confirmed=sum(r['confirmed_series']for r in data['types']);excluded=sum(r['excluded_series']for r in data['types'])
     rows={r['id']:r for r in data['types']};table=[];grids=[];problems=[]
     for identifier,label in LABELS.items():
         row=rows[identifier]
         cells=[html.escape(label)]+[f"{row[k]:,}"for k in ['confirmed_series','confirmed_units','excluded_series','excluded_measured','excluded_missing_evidence','source_failures']]
         table.append('<tr><th scope="row">'+cells[0]+'</th>'+''.join('<td>'+c+'</td>'for c in cells[1:])+'<td><a href="#issues-'+identifier+'">Reasons</a></td></tr>')
-        grids.append('<section><h3>'+html.escape(label)+f" · {row['confirmed_series']:,} eligible · {row['excluded_series']:,} excluded</h3>"+waffle(row['confirmed_series'])+(failure_waffle(row['failure_masks'],identifier)if coloured else failed_waffle(row['excluded_series']))+'</section>')
-        reasons=''.join('<tr'+(' class="failure-'+str(REASON_BITS.get(i['id'],8))+'"'if coloured else '')+'><th scope="row">'+html.escape(descriptions[i['id']])+'</th><td>'+f"{i['count']:,}"+'</td></tr>'for i in sorted(row['issues'],key=lambda i:(-i['count'],i['id'])))
+        grids.append('<section><h3>'+html.escape(label)+f" · {row['confirmed_series']:,} eligible · {row['excluded_series']:,} excluded</h3>"+(eligible_grid(row['confirmed_series'])if coloured else waffle(row['confirmed_series']))+(failure_waffle(row['failure_masks'],identifier)if coloured else failed_waffle(row['excluded_series']))+'</section>')
+        reasons=''.join(reason_row(issue,coloured)for issue in sorted(row['issues'],key=lambda issue:(-issue['count'],issue['id'])))
         if not reasons:reasons='<tr><td colspan="2">No excluded numerical series identified for this type.</td></tr>'
         source_note=f"<p>{row['source_failures']:,} source groups did not yield an identified historical time/value table. Their numerical-series count is unknown; they are excluded separately.</p>"if row['source_failures']else ''
         problems.append('<details class="panel" id="issues-'+identifier+'"><summary>'+html.escape(label)+'</summary><table><thead><tr><th>Failed requirement</th><th>Affected series</th></tr></thead><tbody>'+reasons+'</tbody></table>'+source_note+'</details>')
@@ -243,9 +384,9 @@ def render_full(data):
     requirement='Financial prices require at least two calendar years of actual history, hourly or finer native data (15 minutes preferred), valid timestamps and values, a verified price definition and no unexplained empty expected hourly blocks under the correct historical calendar.'
     if coloured:
         legend='<span class="legend-green">Green = eligible.</span> '+ ' '.join('<span style="color:'+colour+'">'+html.escape(label)+'.</span>'for label,colour in FAILURE_COLOURS.values())+' Several colours in one square mean that series failed several requirements.'
-        requirement='Regular time series require native observations every 15 minutes or finer and at least two calendar years of valid history. Hourly data now fail the resolution check. Financial observation gaps must also stay within the 15-minute limit under the verified trading calendar.'
+        requirement='A series needs original recorded values every 15 minutes or more often and at least two full years of usable history. Hourly data fail this requirement. During times when the market should be open, gaps between financial observations must also stay within 15 minutes.'
     audit=html.escape(datetime.fromisoformat(data['audit_utc'].replace('Z','+00:00')).astimezone(timezone.utc).strftime('%d %B %Y, %H:%M UTC'))
-    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="1800"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>Kuina · Full dataset eligibility</title><style>body{font:15px system-ui;color:#1b3040;background:#f4f7f9;margin:32px auto;max-width:1250px;padding:0 20px}p{line-height:1.6;color:#536878}h1{font-size:32px}.cards{display:flex;gap:20px;margin:24px 0}.card,.panel{background:white;border:1px solid #dce4eb;border-radius:12px;padding:20px}.card{flex:1}.card strong{display:block;font-size:34px;color:#207455}.card.red strong{color:#b33440}.panel{margin:18px 0;scroll-margin-top:20px}.panel:target{outline:2px solid #27648b}.wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:11px;border-bottom:1px solid #dce4eb;text-align:right}th:first-child{text-align:left}a{color:#17658b}.small{font-size:12px}svg{display:block;width:100%;max-width:640px;max-height:520px}.confirmed-square{fill:#25826b}.failed-square{fill:#cb4554}'+(colour_styles()if coloured else '')+'summary{cursor:pointer;font-weight:600}.legend-green{color:#207455}.legend-red{color:#b33440}@media(max-width:600px){.cards{display:block}.card{margin-bottom:12px}}</style></head><body><main><h1>Which series meet our requirements?</h1><p>Full stored-source audit: <strong>'+audit+'</strong>'+(' · 15-minute assessment: '+html.escape(data['assessment_utc'])if coloured else '')+'. This page refreshes every 30 minutes; daily publishing only checks for a newer verified audit.</p><div class="cards"><div class="card"><strong>'+f'{confirmed:,}'+'</strong>Eligible numeric series</div><div class="card red"><strong>'+f'{excluded:,}'+'</strong>Excluded numeric series</div></div><section class="panel"><h2>Counts by dataset type</h2><p>One numerical field is one series: open, high, low and close count separately. Duplicate versions do not add series. Different sources, quote variants and native intervals remain separate.</p><div class="wrap"><table><thead><tr><th>Dataset type</th><th>Eligible series</th><th>Eligible units</th><th>Excluded series</th><th>Measured failure</th><th>Required evidence missing only</th><th>Groups without a validated series table</th><th>Details</th></tr></thead><tbody>'+''.join(table)+'</tbody></table></div><p class="small">Measured failure and evidence-only exclusions sum to the excluded total. A measured failure may also have missing evidence. Source groups with unknown series counts are separate.</p></section><section class="panel"><h2>One square per identified numeric series</h2><p>'+legend+' No unverified series is included in the eligible total.</p>'+''.join(grids)+'</section><h2>Exact failed requirements by dataset type</h2><p>One series can fail several requirements, so reason counts overlap. Required evidence missing is an exclusion, even when observed values look complete. The private Kuina report lists each series and its supporting measurements.</p>'+''.join(problems)+'<section class="panel"><h2>Requirements</h2><p>'+requirement+'</p><p>'+('Contextual predictors must also satisfy the 15-minute resolution limit; historical reporting availability and revision evidence remain required.'if coloured else 'Contextual predictors retain their native cadence and require reporting coverage, historical availability and revision evidence.')+' Tweets and derived signals also require account collection completeness and causal processing lineage.</p><p>Audit window: 1 October 2024–30 September 2026. Dataset types follow the storage inventory; GDELT tone/GCAM attributes belong to GDELT. The public page contains aggregate counts only. Observations, identifiers, credentials and delegation tasks remain private.</p></section><p><a href="summary.json">Download public counts metadata</a></p></main></body></html>'
+    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="1800"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>Kuina · Full dataset eligibility</title><style>body{font:15px system-ui;color:#1b3040;background:#f4f7f9;margin:32px auto;max-width:1800px;padding:0 20px}p{line-height:1.6;color:#536878}h1{font-size:32px}.cards{display:flex;gap:20px;margin:24px 0}.card,.panel{background:white;border:1px solid #dce4eb;border-radius:12px;padding:20px}.card{flex:1}.card strong{display:block;font-size:34px;color:#207455}.card.red strong{color:#b33440}.panel{margin:18px 0;scroll-margin-top:20px}.panel:target{outline:2px solid #27648b}.wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:11px;border-bottom:1px solid #dce4eb;text-align:right}th:first-child{text-align:left}a{color:#17658b}.small{font-size:12px}svg{display:block;width:100%;max-width:640px;max-height:520px}.confirmed-square{fill:#25826b}.failed-square{fill:#cb4554}'+(colour_styles()+GRID_STYLE if coloured else '')+'summary{cursor:pointer;font-weight:600}.legend-green{color:#207455}.legend-red{color:#b33440}@media(max-width:600px){.cards{display:block}.card{margin-bottom:12px}}</style></head><body><main><h1>Which series meet our requirements?</h1><p>Full stored-source audit: <strong>'+audit+'</strong>'+(' · 15-minute assessment: '+html.escape(data['assessment_utc'])if coloured else '')+'. This page refreshes every 30 minutes; daily publishing only checks for a newer verified audit.</p><div class="cards"><div class="card"><strong>'+f'{confirmed:,}'+'</strong>Eligible numeric series</div><div class="card red"><strong>'+f'{excluded:,}'+'</strong>Excluded numeric series</div></div><section class="panel"><h2>Counts by dataset type</h2><p>One numerical field is one series: open, high, low and close count separately. Duplicate versions do not add series. Different sources, quote variants and native intervals remain separate.</p><div class="wrap"><table><thead><tr><th>Dataset type</th><th>Eligible series</th><th>Eligible units</th><th>Excluded series</th><th>Measured failure</th><th>Required evidence missing only</th><th>Groups without a validated series table</th><th>Details</th></tr></thead><tbody>'+''.join(table)+'</tbody></table></div><p class="small">Measured failure and evidence-only exclusions sum to the excluded total. A measured failure may also have missing evidence. Source groups with unknown series counts are separate.</p></section><section class="panel"><h2>One square per identified numeric series</h2><p>'+legend+' No unverified series is included in the eligible total.</p>'+''.join(grids)+'</section><h2>Exact failed requirements by dataset type</h2><p>One series can fail several requirements, so the reason counts overlap. A measured problem means a check found an issue in the data. Missing proof means we cannot confirm a requirement; it does not necessarily mean the data are wrong. Both exclude the series until resolved. The private Kuina report lists each series and its supporting measurements.</p>'+''.join(problems)+'<section class="panel"><h2>Requirements</h2><p>'+requirement+'</p><p>'+('Other predictors, such as sentiment scores and economic indicators, also need values every 15 minutes or more often. We must know when values became available and whether they were later changed.'if coloured else 'Contextual predictors retain their native cadence and require reporting coverage, historical availability and revision evidence.')+' For tweets and calculated signals, we also need proof that collection was complete and the calculation used only information available at that time.</p><p>Audit window: 1 October 2024–30 September 2026. Dataset types follow the storage inventory; GDELT tone/GCAM attributes belong to GDELT. The public page contains aggregate counts only. Observations, identifiers, credentials and delegation tasks remain private.</p></section><p><a href="summary.json">Download public counts metadata</a></p></main></body></html>'
 
 
 def build(data,directory):

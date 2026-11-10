@@ -19,7 +19,9 @@ purple identifies short history, and grey identifies other failures or missing
 proof. A striped square retains every applicable failure colour. Each excluded
 series occupies exactly one failure-combination bucket; overlapping reason
 counts must never be summed as if they were distinct series. Large grids display
-a labelled sample while the tables retain the exact counts.
+a labelled sample while the tables retain the exact counts. The current viewer
+uses larger squares that wrap to the available window width. Each failure reason
+has a plain-English explanation, including why missing proof prevents a pass.
 
 The shared `failure_codes.py` is a metadata-only policy helper; this repository
 does not read observations or acquire data. The private research workflow
