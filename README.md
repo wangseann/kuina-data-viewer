@@ -11,6 +11,20 @@ evidence excludes a field even when its observed grid looks complete.
 `docs/summary.json` follows the closed schema in `counts.py`. The builder rejects
 unknown fields, non-integer counts, duplicate categories and observation payloads.
 
+Schema 4 adds the current strict profile: regular series require native intervals
+of 15 minutes or finer and at least two years of valid history. It records the
+original source-audit timestamp separately from the metadata reassessment time.
+Blue identifies measured missing data/gaps, orange identifies coarse resolution,
+purple identifies short history, and grey identifies other failures or missing
+proof. A striped square retains every applicable failure colour. Each excluded
+series occupies exactly one failure-combination bucket; overlapping reason
+counts must never be summed as if they were distinct series. Large grids display
+a labelled sample while the tables retain the exact counts.
+
+The shared `failure_codes.py` is a metadata-only policy helper; this repository
+does not read observations or acquire data. The private research workflow
+reassesses the already measured audit records and provides the aggregate snapshot.
+
 Schema 3 represents the complete audited inventory. All excluded fields are red,
 with aggregate counts for each failed requirement. Measured failures and
 evidence-only exclusions sum to the excluded total. Reason counts can overlap.

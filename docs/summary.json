@@ -1,18 +1,27 @@
 {
-  "schema": 3,
+  "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
+  "assessment_utc": "2026-11-10T00:48:43.402594+00:00",
+  "requirements": {
+    "max_native_seconds": 900,
+    "min_history_years": 2
+  },
   "types": [
     {
       "id": "stocks",
-      "confirmed_series": 6265,
-      "confirmed_units": 895,
-      "excluded_series": 128430,
-      "excluded_measured": 126140,
-      "excluded_missing_evidence": 2290,
+      "confirmed_series": 3766,
+      "confirmed_units": 538,
+      "excluded_series": 130929,
+      "excluded_measured": 130809,
+      "excluded_missing_evidence": 120,
       "source_failures": 165,
       "issues": [
         {
           "id": "availability_unverified",
+          "count": 313
+        },
+        {
+          "id": "cadence_unknown",
           "count": 313
         },
         {
@@ -21,7 +30,7 @@
         },
         {
           "id": "coarse_resolution",
-          "count": 119736
+          "count": 125477
         },
         {
           "id": "completeness_unverified",
@@ -45,7 +54,7 @@
         },
         {
           "id": "long_gaps",
-          "count": 4069
+          "count": 6575
         },
         {
           "id": "missing_months",
@@ -67,6 +76,44 @@
           "id": "source_parse_error",
           "count": 188
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 1,
+          "count": 3668
+        },
+        {
+          "mask": 8,
+          "count": 215
+        },
+        {
+          "mask": 9,
+          "count": 16
+        },
+        {
+          "mask": 10,
+          "count": 7280
+        },
+        {
+          "mask": 11,
+          "count": 3085
+        },
+        {
+          "mask": 12,
+          "count": 87
+        },
+        {
+          "mask": 13,
+          "count": 1466
+        },
+        {
+          "mask": 14,
+          "count": 108552
+        },
+        {
+          "mask": 15,
+          "count": 6560
+        }
       ]
     },
     {
@@ -74,12 +121,16 @@
       "confirmed_series": 72,
       "confirmed_units": 8,
       "excluded_series": 1089,
-      "excluded_measured": 797,
-      "excluded_missing_evidence": 292,
+      "excluded_measured": 942,
+      "excluded_missing_evidence": 147,
       "source_failures": 0,
       "issues": [
         {
           "id": "availability_unverified",
+          "count": 2
+        },
+        {
+          "id": "cadence_unknown",
           "count": 2
         },
         {
@@ -88,7 +139,7 @@
         },
         {
           "id": "coarse_resolution",
-          "count": 157
+          "count": 307
         },
         {
           "id": "completeness_unverified",
@@ -126,6 +177,28 @@
           "id": "short_history",
           "count": 175
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 147
+        },
+        {
+          "mask": 9,
+          "count": 470
+        },
+        {
+          "mask": 10,
+          "count": 297
+        },
+        {
+          "mask": 13,
+          "count": 165
+        },
+        {
+          "mask": 15,
+          "count": 10
+        }
       ]
     },
     {
@@ -133,8 +206,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 1070353,
-      "excluded_measured": 1005558,
-      "excluded_missing_evidence": 64795,
+      "excluded_measured": 1069707,
+      "excluded_missing_evidence": 646,
       "source_failures": 32,
       "issues": [
         {
@@ -142,12 +215,16 @@
           "count": 1024961
         },
         {
+          "id": "cadence_unknown",
+          "count": 1098
+        },
+        {
           "id": "calendar_unverified",
           "count": 142802
         },
         {
           "id": "coarse_resolution",
-          "count": 44887
+          "count": 1069130
         },
         {
           "id": "completeness_unverified",
@@ -193,6 +270,36 @@
           "id": "short_history",
           "count": 39540
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 675
+        },
+        {
+          "mask": 9,
+          "count": 53
+        },
+        {
+          "mask": 10,
+          "count": 64241
+        },
+        {
+          "mask": 11,
+          "count": 965844
+        },
+        {
+          "mask": 12,
+          "count": 190
+        },
+        {
+          "mask": 13,
+          "count": 305
+        },
+        {
+          "mask": 15,
+          "count": 39045
+        }
       ]
     },
     {
@@ -200,8 +307,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 3252,
-      "excluded_measured": 1780,
-      "excluded_missing_evidence": 1472,
+      "excluded_measured": 3220,
+      "excluded_missing_evidence": 32,
       "source_failures": 10,
       "issues": [
         {
@@ -210,7 +317,7 @@
         },
         {
           "id": "cadence_unknown",
-          "count": 10
+          "count": 82
         },
         {
           "id": "calendar_unverified",
@@ -218,7 +325,7 @@
         },
         {
           "id": "coarse_resolution",
-          "count": 1630
+          "count": 3115
         },
         {
           "id": "completeness_unverified",
@@ -248,6 +355,28 @@
           "id": "short_history",
           "count": 140
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 42
+        },
+        {
+          "mask": 10,
+          "count": 3070
+        },
+        {
+          "mask": 12,
+          "count": 40
+        },
+        {
+          "mask": 13,
+          "count": 55
+        },
+        {
+          "mask": 15,
+          "count": 45
+        }
       ]
     },
     {
@@ -255,8 +384,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 869918,
-      "excluded_measured": 681653,
-      "excluded_missing_evidence": 188265,
+      "excluded_measured": 869918,
+      "excluded_missing_evidence": 0,
       "source_failures": 249,
       "issues": [
         {
@@ -264,12 +393,16 @@
           "count": 787269
         },
         {
+          "id": "cadence_unknown",
+          "count": 367
+        },
+        {
           "id": "calendar_unverified",
           "count": 787941
         },
         {
           "id": "coarse_resolution",
-          "count": 224
+          "count": 787350
         },
         {
           "id": "completeness_unverified",
@@ -307,6 +440,44 @@
           "id": "short_history",
           "count": 438887
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 1,
+          "count": 77
+        },
+        {
+          "mask": 8,
+          "count": 3
+        },
+        {
+          "mask": 9,
+          "count": 175
+        },
+        {
+          "mask": 10,
+          "count": 200506
+        },
+        {
+          "mask": 11,
+          "count": 230270
+        },
+        {
+          "mask": 12,
+          "count": 455
+        },
+        {
+          "mask": 13,
+          "count": 81858
+        },
+        {
+          "mask": 14,
+          "count": 114050
+        },
+        {
+          "mask": 15,
+          "count": 242524
+        }
       ]
     },
     {
@@ -314,8 +485,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 121,
-      "excluded_measured": 20,
-      "excluded_missing_evidence": 101,
+      "excluded_measured": 80,
+      "excluded_missing_evidence": 41,
       "source_failures": 11,
       "issues": [
         {
@@ -323,8 +494,16 @@
           "count": 121
         },
         {
+          "id": "cadence_unknown",
+          "count": 59
+        },
+        {
           "id": "calendar_unverified",
           "count": 65
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 62
         },
         {
           "id": "completeness_unverified",
@@ -346,6 +525,24 @@
           "id": "no_window_data",
           "count": 3
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 56
+        },
+        {
+          "mask": 9,
+          "count": 3
+        },
+        {
+          "mask": 10,
+          "count": 60
+        },
+        {
+          "mask": 11,
+          "count": 2
+        }
       ]
     },
     {
@@ -353,8 +550,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 5363,
-      "excluded_measured": 5360,
-      "excluded_missing_evidence": 3,
+      "excluded_measured": 5363,
+      "excluded_missing_evidence": 0,
       "source_failures": 1103,
       "issues": [
         {
@@ -366,8 +563,16 @@
           "count": 5363
         },
         {
+          "id": "cadence_unknown",
+          "count": 434
+        },
+        {
           "id": "calendar_unverified",
           "count": 437
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 3
         },
         {
           "id": "collection_completeness_unverified",
@@ -397,6 +602,16 @@
           "id": "source_parse_error",
           "count": 4918
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 10,
+          "count": 3
+        },
+        {
+          "mask": 12,
+          "count": 5360
+        }
       ]
     },
     {
@@ -414,11 +629,15 @@
         },
         {
           "id": "cadence_unknown",
-          "count": 33
+          "count": 522
         },
         {
           "id": "calendar_unverified",
           "count": 4286
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 3764
         },
         {
           "id": "completeness_unverified",
@@ -448,6 +667,24 @@
           "id": "short_history",
           "count": 4269
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 17
+        },
+        {
+          "mask": 12,
+          "count": 458
+        },
+        {
+          "mask": 13,
+          "count": 47
+        },
+        {
+          "mask": 15,
+          "count": 3764
+        }
       ]
     },
     {
@@ -455,8 +692,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 203008,
-      "excluded_measured": 170211,
-      "excluded_missing_evidence": 32797,
+      "excluded_measured": 189661,
+      "excluded_missing_evidence": 13347,
       "source_failures": 1,
       "issues": [
         {
@@ -468,12 +705,20 @@
           "count": 203008
         },
         {
+          "id": "cadence_unknown",
+          "count": 173833
+        },
+        {
           "id": "calendar_unverified",
           "count": 24
         },
         {
           "id": "causal_processing_unverified",
           "count": 144729
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 19450
         },
         {
           "id": "collection_completeness_unverified",
@@ -503,6 +748,28 @@
           "id": "short_history",
           "count": 170182
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 13359
+        },
+        {
+          "mask": 9,
+          "count": 17
+        },
+        {
+          "mask": 10,
+          "count": 19450
+        },
+        {
+          "mask": 12,
+          "count": 161378
+        },
+        {
+          "mask": 13,
+          "count": 8804
+        }
       ]
     },
     {
@@ -513,15 +780,16 @@
       "excluded_measured": 0,
       "excluded_missing_evidence": 0,
       "source_failures": 0,
-      "issues": []
+      "issues": [],
+      "failure_masks": []
     },
     {
       "id": "trade",
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 2423683,
-      "excluded_measured": 2423291,
-      "excluded_missing_evidence": 392,
+      "excluded_measured": 2423683,
+      "excluded_missing_evidence": 0,
       "source_failures": 0,
       "issues": [
         {
@@ -531,6 +799,10 @@
         {
           "id": "calendar_unverified",
           "count": 392
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 2423683
         },
         {
           "id": "completeness_unverified",
@@ -556,6 +828,20 @@
           "id": "short_history",
           "count": 1727770
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 10,
+          "count": 392
+        },
+        {
+          "mask": 11,
+          "count": 695521
+        },
+        {
+          "mask": 15,
+          "count": 1727770
+        }
       ]
     },
     {
@@ -563,8 +849,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 2839,
-      "excluded_measured": 510,
-      "excluded_missing_evidence": 2329,
+      "excluded_measured": 2839,
+      "excluded_missing_evidence": 0,
       "source_failures": 31,
       "issues": [
         {
@@ -572,8 +858,16 @@
           "count": 2839
         },
         {
+          "id": "cadence_unknown",
+          "count": 1
+        },
+        {
           "id": "calendar_unverified",
           "count": 281
+        },
+        {
+          "id": "coarse_resolution",
+          "count": 2838
         },
         {
           "id": "completeness_unverified",
@@ -591,6 +885,24 @@
           "id": "short_history",
           "count": 231
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 10,
+          "count": 2329
+        },
+        {
+          "mask": 11,
+          "count": 279
+        },
+        {
+          "mask": 12,
+          "count": 1
+        },
+        {
+          "mask": 14,
+          "count": 230
+        }
       ]
     },
     {
@@ -604,6 +916,10 @@
       "issues": [
         {
           "id": "availability_unverified",
+          "count": 259
+        },
+        {
+          "id": "cadence_unknown",
           "count": 259
         },
         {
@@ -630,6 +946,24 @@
           "id": "short_history",
           "count": 74
         }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 173
+        },
+        {
+          "mask": 9,
+          "count": 12
+        },
+        {
+          "mask": 12,
+          "count": 49
+        },
+        {
+          "mask": 13,
+          "count": 25
+        }
       ]
     },
     {
@@ -637,8 +971,8 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 445,
-      "excluded_measured": 230,
-      "excluded_missing_evidence": 215,
+      "excluded_measured": 345,
+      "excluded_missing_evidence": 100,
       "source_failures": 0,
       "issues": [
         {
@@ -647,7 +981,7 @@
         },
         {
           "id": "coarse_resolution",
-          "count": 170
+          "count": 325
         },
         {
           "id": "completeness_unverified",
@@ -664,6 +998,32 @@
         {
           "id": "short_history",
           "count": 95
+        }
+      ],
+      "failure_masks": [
+        {
+          "mask": 8,
+          "count": 100
+        },
+        {
+          "mask": 9,
+          "count": 5
+        },
+        {
+          "mask": 10,
+          "count": 230
+        },
+        {
+          "mask": 11,
+          "count": 15
+        },
+        {
+          "mask": 13,
+          "count": 15
+        },
+        {
+          "mask": 15,
+          "count": 80
         }
       ]
     }

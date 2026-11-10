@@ -12,3 +12,8 @@ Do not sum overlapping audit scopes or promote data because files appeared.
 Keep the actual audit date; a publish/sync time is not a new scientific audit.
 
 Run `python3 -B -m unittest discover -s tests -v` before publication.
+
+The current schema 4 profile requires 15-minute or finer native intervals for all
+regular series. Preserve all failure colours through their exact joint mask
+counts; never infer combinations from overlapping marginal reason counts.
+Keep source audit and metadata reassessment timestamps separate.
