@@ -59,6 +59,7 @@ function activate() {
   $('workspace').hidden=false;
   $('audit-date').textContent=state.manifest.legacy?'Earlier preview · current eligibility not linked':'Source audit: '+state.manifest.auditUtc;
   $('requirements').textContent='Required window: '+state.manifest.windowStart+' to '+state.manifest.windowEnd+' (end excluded). At least two years of usable history and original values every 15 minutes or more often.';
+  if(state.manifest.sourceFailures>0)$('requirements').textContent+=' The audit also found '+state.manifest.sourceFailures.toLocaleString()+' source groups whose number of series could not be established. These are counted separately on the quality-counts page.';
   resetChartDates();
   $('type').replaceChildren();
   for(const id of Object.keys(TYPE_LABELS)) {
