@@ -56,3 +56,17 @@ if no new verified snapshot exists, the audit date and counts remain unchanged.
 
 To update eligibility, the research workflow must first produce and approve a
 new consolidated counts snapshot. This website cannot certify a dataset itself.
+
+The code-only `docs/explorer.html` adds private dataset/source selection, paged
+series lists, daily coverage heatmaps, selected-series charts and repair-brief
+exports. It reads a user-selected private inspection folder in the browser;
+its CSP blocks network connections. No observations or populated private
+catalogues belong in this repository. Historical HTML payloads can be imported
+as data, without executing the selected HTML or trusting its old pass labels.
+
+A new private package uses `kuina-inspection-v1`, with hash-pinned gzip catalogue
+pages and separate lazy preview pages. The source audit date, assessment date,
+15-minute interval and two-year window are explicit. Unknown daily coverage is
+grey; endpoint dates alone never imply complete coverage. The catalogue generator
+and observation-preview pipeline run under the research project's execution
+rules. An empty viewer is not evidence that the complete catalogue was generated.

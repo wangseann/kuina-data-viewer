@@ -374,7 +374,7 @@ def render_full(data):
     for identifier,label in LABELS.items():
         row=rows[identifier]
         cells=[html.escape(label)]+[f"{row[k]:,}"for k in ['confirmed_series','confirmed_units','excluded_series','excluded_measured','excluded_missing_evidence','source_failures']]
-        table.append('<tr><th scope="row">'+cells[0]+'</th>'+''.join('<td>'+c+'</td>'for c in cells[1:])+'<td><a href="#issues-'+identifier+'">Reasons</a></td></tr>')
+        table.append('<tr><th scope="row">'+cells[0]+'</th>'+''.join('<td>'+c+'</td>'for c in cells[1:])+'<td><a href="#issues-'+identifier+'">Reasons</a> · <a href="explorer.html#type='+identifier+'">Inspect series</a></td></tr>')
         grids.append('<section><h3>'+html.escape(label)+f" · {row['confirmed_series']:,} eligible · {row['excluded_series']:,} excluded</h3>"+(eligible_grid(row['confirmed_series'])if coloured else waffle(row['confirmed_series']))+(failure_waffle(row['failure_masks'],identifier)if coloured else failed_waffle(row['excluded_series']))+'</section>')
         reasons=''.join(reason_row(issue,coloured)for issue in sorted(row['issues'],key=lambda issue:(-issue['count'],issue['id'])))
         if not reasons:reasons='<tr><td colspan="2">No excluded numerical series identified for this type.</td></tr>'

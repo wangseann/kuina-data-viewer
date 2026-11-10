@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Kuina · Inspect and repair series</title>
+<link rel="stylesheet" href="explorer.css">
+<script src="explorer-core.js" defer></script>
+<script src="explorer-reasons.js" defer></script>
+<script src="explorer.js" defer></script>
+</head>
+<body><main>
+<header><a href="index.html">← Quality counts</a><p class="eyebrow">Kuina · Private series inspection</p><h1>See what we have. See what needs fixing.</h1>
+<p>Choose a dataset, inspect its series and coverage, then copy a repair brief for your agent. A series becomes green only after a new audit confirms every requirement passes.</p></header>
+<section class="panel"><h2>Open a private inspection package</h2>
+<p>Select the preview folder from Kuina. Files are read in your browser as you choose datasets; they are never uploaded to this website.</p>
+<label class="file-label">Choose inspection folder<input id="folder" type="file" webkitdirectory multiple></label>
+<details><summary>Open an earlier time-series viewer instead</summary><p>Earlier charts can be inspected, but their old eligibility labels do not count as current passes.</p><input id="legacy" type="file" accept=".html"></details>
+<p id="load-status" role="status" aria-live="polite">No private data loaded. This public page contains viewer code only.</p>
+</section>
+<section id="workspace" hidden>
+<section class="panel"><div class="heading"><h2>Choose what to inspect</h2><span id="audit-date"></span></div>
+<p id="requirements"></p><div class="controls">
+<label>Dataset type<select id="type"></select></label><label>Source / subtype<select id="dataset"></select></label>
+<label>Series name or variable<input id="search" type="search" placeholder="Search this source"></label>
+<label>Show<select id="quality"><option value="all">All series</option><option value="eligible">Eligible only</option><option value="failed">Needs fixing</option><option value="1">Missing data / gaps</option><option value="2">Too coarse</option><option value="4">Too short</option><option value="8">Other failures / missing proof</option></select></label>
+<button id="find">Find series</button></div><p id="results" aria-live="polite"></p>
+</section>
+<section class="panel"><div class="heading"><h2>Coverage across the required window</h2><div class="pager"><button id="previous">← Previous</button><span id="page"></span><button id="next">Next →</button></div></div>
+<p>One row per listed series; one column per UTC day. Select a row to inspect its values and failed checks. The entire audit window stays visible.</p>
+<div class="legend"><span class="complete">Green: checked coverage</span><span class="missing">Blue: missing observations</span><span class="coarse">Orange: recording interval too coarse</span><span class="outside">Purple: outside recorded dates</span><span class="unknown">Grey: coverage not measured / proof missing</span><span class="closed">White: no observations expected</span></div>
+<p class="small">Coverage cells and overall eligibility are separate: complete coverage alone does not prove that every other check passes.</p>
+<div class="heat-wrap"><canvas id="heatmap" aria-label="Coverage heatmap for the listed series"></canvas></div>
+<p id="heat-detail" class="small" role="status">Hover over a cell for the date and observation counts.</p>
+<div class="scroll"><table><thead><tr><th>Series / variable</th><th>Overall result</th><th>Original interval</th><th>Recorded dates</th><th>Preview</th></tr></thead><tbody id="series-list"></tbody></table></div>
+</section>
+<section class="panel" id="detail-panel"><div class="heading"><h2 id="selected-title">Choose a series</h2><button id="brief" disabled>Download repair brief</button></div>
+<p id="selected-source"></p><p id="preview-note"></p>
+<div class="controls"><label>Chart from<input id="chart-start" type="date"></label><label>Chart through<input id="chart-end" type="date"></label><button id="chart-reset">Full required window</button></div>
+<canvas id="chart" aria-label="Selected time-series values"></canvas><p id="chart-detail" class="small"></p>
+<h3>What needs fixing</h3><div id="checks"></div><p id="brief-status" role="status"></p>
+</section>
+</section>
+<footer><p>Keep the package in private project storage. New files, smoother-looking charts and an agent's “completed” report do not automatically certify eligibility. Recheck the source, then publish a new verified snapshot.</p></footer>
+</main></body></html>
