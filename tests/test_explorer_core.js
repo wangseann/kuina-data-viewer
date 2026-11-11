@@ -29,3 +29,7 @@ console.log('Explorer checks passed: eligibility evidence, unknown coverage, cal
 assert.match(K.previewExplanation({}, {verification:{status:'COUNT_MISMATCH'}}), /differs from the saved audit/);
 assert.match(K.previewExplanation({}, {verification:{status:'AMBIGUOUS_DISPLAY'}}), /Different values share/);
 assert.match(K.previewExplanation({previewStatus:'source changed'}, null), /source changed/);
+
+assert.equal(K.checkOutcome({kind:'measured_failure'}),'Data problem found');
+assert.equal(K.checkOutcome({kind:'missing_evidence'}),'Audit check unfinished');
+assert.equal(K.checkOutcome({}),'Check unresolved');

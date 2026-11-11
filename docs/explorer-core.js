@@ -67,6 +67,11 @@
     if (!data) return 'No verified preview is available. '+(record.previewStatus||'Exact daily gaps cannot be inferred from the first and last recorded dates.');
     return (explanations[data.verification?.status]||'This display has no current preview verification.')+' '+(data.note||'');
   }
+  function checkOutcome(check) {
+    if (check.kind === 'measured_failure') return 'Data problem found';
+    if (check.kind === 'missing_evidence') return 'Audit check unfinished';
+    return 'Check unresolved';
+  }
   function repairBrief(record, manifest, explanations) {
     const failed = (record.checks || []).filter(check => check.status === 'FAIL');
     return {
@@ -75,8 +80,8 @@
       audit_utc:manifest.auditUtc,assessment_utc:manifest.assessmentUtc || null,
       required_window:{start:manifest.windowStart,end_exclusive:manifest.windowEnd},
       acceptance:{minimum_calendar_years:2,max_native_interval_seconds:900,verify_internal_gaps:true,preserve_exact_instrument_source_venue_quote_and_units:true,rerun_all_eligibility_checks:true},
-      failures:failed.map(check => ({check:check.id,reason:check.reason,meaning:(explanations[check.reason] || ['Other failed check','Inspect the saved audit evidence.'])[1],evidence:check.evidence ?? null})),
-      instructions:['Check source availability and recording intervals before bulk collection.','Keep old data and prior releases. Do not fill gaps, copy values onto a finer grid, or substitute another instrument/venue/quote to claim a repair.','Collect or document the missing coverage, interval or evidence identified above.','Record source versions, retrieval dates, price meaning, calendar and historical publication details.','Report the result with provenance. Publish a new verified audit snapshot before changing the eligibility result.'],
+      failures:failed.map(check => ({check:check.id,reason:check.reason,kind:check.kind||null,audit_status:checkOutcome(check),meaning:(explanations[check.reason] || ['Other failed check','Inspect the saved audit evidence.'])[1],evidence:check.evidence ?? null})),
+      instructions:['Inspect existing files, timestamps, source metadata, collection logs and processing code first. An unfinished audit check alone is not a request for new scraping.','Check source availability and recording intervals before bulk collection.','Keep old data and prior releases. Do not fill gaps, copy values onto a finer grid, or substitute another instrument/venue/quote to claim a repair.','Collect or document the missing coverage, interval or evidence identified above.','Record source versions, retrieval dates, price meaning, calendar and historical publication details.','Report the result with provenance. Publish a new verified audit snapshot before changing the eligibility result.'],
       note:'Repair brief only. This file does not run collection, assign a participant or grant execution authority.'
     };
   }
@@ -95,7 +100,7 @@
     }
     return data;
   }
-  const api = {DAY,COLOURS,REASON_BITS,safePath,dates,mask,eligible,matches,coverageState,previewExplanation,repairBrief,validateManifest};
+  const api = {DAY,COLOURS,REASON_BITS,safePath,dates,mask,eligible,matches,coverageState,previewExplanation,checkOutcome,repairBrief,validateManifest};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.KuinaInspection = api;
 })(globalThis);

@@ -52,9 +52,10 @@ PLAIN_ISSUES = {'inconsistent_ohlc': ('Price candle values contradict each other
  'not_source_observations': ('We cannot confirm these are recorded historical values',
                              'The files may contain predictions, summaries or supporting information '
                              'rather than measurements recorded for that time.'),
- 'input_identity_unverified': ('We cannot trace the exact file version that was checked',
-                               'The audit lacks a verified file fingerprint, so it cannot prove which '
-                               'version of the source file was checked.'),
+ 'input_identity_unverified': ('File-version check unfinished',
+                               'The audit has not tied this result to a verified input fingerprint. Check the existing file '
+                               'inventory and hashes, then rerun affected checks if necessary. New observations are not '
+                               'required for this check.'),
  'series_type_unknown': ('We do not know what kind of value this is',
                          'We cannot establish whether this is a market price or another predictor, such '
                          'as a sentiment score or economic indicator.'),
@@ -75,9 +76,10 @@ PLAIN_ISSUES = {'inconsistent_ohlc': ('Price candle values contradict each other
  'source_parse_error': ('Some source files could not be fully read',
                         'The audit could not read the complete contents of at least one input file, so '
                         'the result may be incomplete.'),
- 'aggregation_unverified': ('Individual events have no verified time-series recipe',
-                            'Tweets, trades or other events need a checked rule for turning them into '
-                            'regular values, such as one score per 15 minutes.'),
+ 'aggregation_unverified': ('Event-to-series calculation not checked',
+                            'The audit has not verified how individual events become regular predictor values. Inspect '
+                            'the existing aggregation code, interval boundaries and timestamps before treating this as a '
+                            'request for new data.'),
  'score_probability_invalid': ('Sentiment scores failed a maths check',
                                'The saved scores or probabilities do not meet the scoring rules used by '
                                'the audit.'),
@@ -87,32 +89,35 @@ PLAIN_ISSUES = {'inconsistent_ohlc': ('Price candle values contradict each other
  'short_history': ('Less than two years of usable history',
                    'The first and last valid observations do not span two full calendar years. This '
                    'check is separate from checks for gaps inside that span.'),
- 'calendar_unverified': ('We do not know when observations should exist',
-                         'We lack a checked schedule of market opening hours, holidays or reporting '
-                         'dates, so we cannot reliably distinguish normal closures from missing data.'),
+ 'calendar_unverified': ('Market or reporting schedule not checked',
+                         'The audit has not matched this series to its opening hours, holidays or reporting schedule. '
+                         'Check the existing source and exchange information before deciding whether an empty period '
+                         'is a gap.'),
  'coarse_resolution': ('Values are recorded less often than every 15 minutes',
                        'The original data are hourly, daily or otherwise too far apart. Adding copied '
                        'or interpolated values would not make them qualify.'),
- 'cadence_unknown': ('We cannot confirm how often values were recorded',
-                     'The original recording interval has not been established, so we cannot prove the '
-                     'series meets the 15-minute requirement.'),
+ 'cadence_unknown': ('Recording interval not established by the audit',
+                     'Check the existing timestamps and interval labels to establish how often values were '
+                     'originally recorded. This flag does not establish that the data are too coarse.'),
  'missing_months': ('At least one test month has no price data',
                     'One or more months inside our test dates contain no valid prices for this series.'),
- 'price_definition_unverified': ('We do not know exactly what the price represents',
-                                 'We cannot confirm whether it is a buyer bid, seller ask or completed '
-                                 'trade, how candles were built, or whether stock prices account for '
-                                 'splits and dividends.'),
- 'availability_unverified': ('We cannot confirm what was known at the time',
-                             'We do not know when a value first became available or whether it was '
-                             'changed later. For example, a January figure published in March was not '
-                             'available for a January forecast.'),
- 'collection_completeness_unverified': ('We cannot confirm all events were collected',
-                                        'The available records do not prove that all expected events '
-                                        'were captured; an empty interval may be inactivity or a '
-                                        'collection failure.'),
- 'completeness_unverified': ('We cannot confirm the data are complete',
-                             'We lack enough evidence to tell whether expected observations are '
-                             'missing.'),
+ 'price_definition_unverified': ('Price meaning not checked',
+                                 'Inspect the existing column names and source metadata for bid, ask or trade prices, candle '
+                                 'construction, and adjustment for splits or dividends. Consult the provider description if '
+                                 'those details are absent. This flag is not a finding that the prices are wrong.'),
+ 'availability_unverified': ('Historical release timing not checked',
+                             'The audit did not establish when each value first became available or which revision it '
+                             'contains. An observation date alone cannot answer that: a January figure published in March '
+                             'was unavailable for a January forecast. Inspect stored publication, release and collection '
+                             'timestamps first.'),
+ 'collection_completeness_unverified': ('Event collection not cross-checked',
+                                        'The audit has not established whether the stored events cover the intended collection. '
+                                        'Check existing collection logs and source coverage; the observed events alone cannot reveal '
+                                        'every missed event.'),
+ 'completeness_unverified': ('Gap check unfinished',
+                             'The audit could not complete the gap test using a verified schedule and coverage counts. '
+                             'This flag does not establish that observations are missing. Inspect the existing timestamps '
+                             'and schedule first.'),
  'hourly_gaps': ('Some expected hours have no data',
                  'The earlier audit measured at least one empty hour when observations should have '
                  'existed. That also fails the current 15-minute requirement.'),
@@ -122,14 +127,13 @@ PLAIN_ISSUES = {'inconsistent_ohlc': ('Price candle values contradict each other
  'context_gaps': ('Some expected reports or predictor values are missing',
                   'An observation is missing at a time when the checked reporting schedule says one '
                   'should exist.'),
- 'scrape_completeness': ('We cannot confirm every relevant tweet was collected',
-                         'For an account, we cannot prove the scraper captured all relevant posts. A '
-                         'blank period might mean no posts or a failed scrape.'),
- 'causal_processing_unverified': ('We cannot confirm the signal uses only earlier information',
-                                  'The processing record does not prove that each historical signal was '
-                                  'made using only information available by that time. Later '
-                                  'information could make a forecast test look better than it really '
-                                  'is.'),
+ 'scrape_completeness': ('Account scraping not cross-checked',
+                         'Collected tweets alone cannot show which posts were missed. Check the existing scrape logs, '
+                         'pagination and account coverage. An empty period is not automatically a scrape failure.'),
+ 'causal_processing_unverified': ('Signal calculation timing not checked',
+                                  'The audit has not verified from the existing calculation code and logs that a signal uses '
+                                  'only information available by its timestamp. This requires checking the processing, not '
+                                  'automatically collecting more data.'),
  'numeric_observations_check_missing': ('The check for usable numbers is missing',
                                         'The audit has no completed check proving this series contains '
                                         'usable numerical observations.'),
@@ -379,14 +383,14 @@ def render_full(data):
         reasons=''.join(reason_row(issue,coloured)for issue in sorted(row['issues'],key=lambda issue:(-issue['count'],issue['id'])))
         if not reasons:reasons='<tr><td colspan="2">No excluded numerical series identified for this type.</td></tr>'
         source_note=f"<p>{row['source_failures']:,} source groups did not yield an identified historical time/value table. Their numerical-series count is unknown; they are excluded separately.</p>"if row['source_failures']else ''
-        problems.append('<details class="panel" id="issues-'+identifier+'"><summary>'+html.escape(label)+'</summary><table><thead><tr><th>Failed requirement</th><th>Affected series</th></tr></thead><tbody>'+reasons+'</tbody></table>'+source_note+'</details>')
+        problems.append('<details class="panel" id="issues-'+identifier+'"><summary>'+html.escape(label)+'</summary><table><thead><tr><th>Problem or unfinished check</th><th>Affected series</th></tr></thead><tbody>'+reasons+'</tbody></table>'+source_note+'</details>')
     legend='<span class="legend-green">Green = eligible.</span> <span class="legend-red">Red = excluded, including missing mandatory evidence.</span>'
     requirement='Financial prices require at least two calendar years of actual history, hourly or finer native data (15 minutes preferred), valid timestamps and values, a verified price definition and no unexplained empty expected hourly blocks under the correct historical calendar.'
     if coloured:
         legend='<span class="legend-green">Green = eligible.</span> '+ ' '.join('<span style="color:'+colour+'">'+html.escape(label)+'.</span>'for label,colour in FAILURE_COLOURS.values())+' Several colours in one square mean that series failed several requirements.'
         requirement='A series needs original recorded values every 15 minutes or more often and at least two full years of usable history. Hourly data fail this requirement. During times when the market should be open, gaps between financial observations must also stay within 15 minutes.'
     audit=html.escape(datetime.fromisoformat(data['audit_utc'].replace('Z','+00:00')).astimezone(timezone.utc).strftime('%d %B %Y, %H:%M UTC'))
-    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="1800"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>Kuina · Full dataset eligibility</title><style>body{font:15px system-ui;color:#1b3040;background:#f4f7f9;margin:32px auto;max-width:1800px;padding:0 20px}p{line-height:1.6;color:#536878}h1{font-size:32px}.cards{display:flex;gap:20px;margin:24px 0}.card,.panel{background:white;border:1px solid #dce4eb;border-radius:12px;padding:20px}.card{flex:1}.card strong{display:block;font-size:34px;color:#207455}.card.red strong{color:#b33440}.panel{margin:18px 0;scroll-margin-top:20px}.panel:target{outline:2px solid #27648b}.wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:11px;border-bottom:1px solid #dce4eb;text-align:right}th:first-child{text-align:left}a{color:#17658b}.small{font-size:12px}svg{display:block;width:100%;max-width:640px;max-height:520px}.confirmed-square{fill:#25826b}.failed-square{fill:#cb4554}'+(colour_styles()+GRID_STYLE if coloured else '')+'summary{cursor:pointer;font-weight:600}.legend-green{color:#207455}.legend-red{color:#b33440}@media(max-width:600px){.cards{display:block}.card{margin-bottom:12px}}</style></head><body><main><h1>Which series meet our requirements?</h1><p>Full stored-source audit: <strong>'+audit+'</strong>'+(' · 15-minute assessment: '+html.escape(data['assessment_utc'])if coloured else '')+'. This page refreshes every 30 minutes; daily publishing only checks for a newer verified audit.</p><div class="cards"><div class="card"><strong>'+f'{confirmed:,}'+'</strong>Eligible numeric series</div><div class="card red"><strong>'+f'{excluded:,}'+'</strong>Excluded numeric series</div></div><section class="panel"><h2>Counts by dataset type</h2><p>One numerical field is one series: open, high, low and close count separately. Duplicate versions do not add series. Different sources, quote variants and native intervals remain separate.</p><div class="wrap"><table><thead><tr><th>Dataset type</th><th>Eligible series</th><th>Eligible units</th><th>Excluded series</th><th>Measured failure</th><th>Required evidence missing only</th><th>Groups without a validated series table</th><th>Details</th></tr></thead><tbody>'+''.join(table)+'</tbody></table></div><p class="small">Measured failure and evidence-only exclusions sum to the excluded total. A measured failure may also have missing evidence. Source groups with unknown series counts are separate.</p></section><section class="panel"><h2>One square per identified numeric series</h2><p>'+legend+' No unverified series is included in the eligible total.</p>'+''.join(grids)+'</section><h2>Exact failed requirements by dataset type</h2><p>One series can fail several requirements, so the reason counts overlap. A measured problem means a check found an issue in the data. Missing proof means we cannot confirm a requirement; it does not necessarily mean the data are wrong. Both exclude the series until resolved. The private Kuina report lists each series and its supporting measurements.</p>'+''.join(problems)+'<section class="panel"><h2>Requirements</h2><p>'+requirement+'</p><p>'+('Other predictors, such as sentiment scores and economic indicators, also need values every 15 minutes or more often. We must know when values became available and whether they were later changed.'if coloured else 'Contextual predictors retain their native cadence and require reporting coverage, historical availability and revision evidence.')+' For tweets and calculated signals, we also need proof that collection was complete and the calculation used only information available at that time.</p><p>Audit window: 1 October 2024–30 September 2026. Dataset types follow the storage inventory; GDELT tone/GCAM attributes belong to GDELT. The public page contains aggregate counts only. Observations, identifiers, credentials and delegation tasks remain private.</p></section><p><a href="summary.json">Download public counts metadata</a></p></main></body></html>'
+    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="1800"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>Kuina · Full dataset eligibility</title><style>body{font:15px system-ui;color:#1b3040;background:#f4f7f9;margin:32px auto;max-width:1800px;padding:0 20px}p{line-height:1.6;color:#536878}h1{font-size:32px}.cards{display:flex;gap:20px;margin:24px 0}.card,.panel{background:white;border:1px solid #dce4eb;border-radius:12px;padding:20px}.card{flex:1}.card strong{display:block;font-size:34px;color:#207455}.card.red strong{color:#b33440}.panel{margin:18px 0;scroll-margin-top:20px}.panel:target{outline:2px solid #27648b}.wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:11px;border-bottom:1px solid #dce4eb;text-align:right}th:first-child{text-align:left}a{color:#17658b}.small{font-size:12px}svg{display:block;width:100%;max-width:640px;max-height:520px}.confirmed-square{fill:#25826b}.failed-square{fill:#cb4554}'+(colour_styles()+GRID_STYLE if coloured else '')+'summary{cursor:pointer;font-weight:600}.legend-green{color:#207455}.legend-red{color:#b33440}@media(max-width:600px){.cards{display:block}.card{margin-bottom:12px}}</style></head><body><main><h1>Which series meet our requirements?</h1><p>Full stored-source audit: <strong>'+audit+'</strong>'+(' · 15-minute assessment: '+html.escape(data['assessment_utc'])if coloured else '')+'. This page refreshes every 30 minutes; daily publishing only checks for a newer verified audit.</p><div class="cards"><div class="card"><strong>'+f'{confirmed:,}'+'</strong>Eligible numeric series</div><div class="card red"><strong>'+f'{excluded:,}'+'</strong>Excluded numeric series</div></div><section class="panel"><h2>Counts by dataset type</h2><p>One numerical field is one series: open, high, low and close count separately. Duplicate versions do not add series. Different sources, quote variants and native intervals remain separate.</p><div class="wrap"><table><thead><tr><th>Dataset type</th><th>Eligible series</th><th>Eligible units</th><th>Excluded series</th><th>Known data problem</th><th>Only unfinished checks</th><th>Groups without a validated series table</th><th>Details</th></tr></thead><tbody>'+''.join(table)+'</tbody></table></div><p class="small">Known data problems and unfinished-check-only counts sum to the excluded total. A series with a known problem may also have unfinished checks. Source groups with unknown series counts are separate.</p></section><section class="panel"><h2>One square per identified numeric series</h2><p>'+legend+' No unverified series is included in the eligible total.</p>'+''.join(grids)+'</section><h2>Data problems and unfinished audit checks</h2><p>One series can have several flags, so counts overlap. A known data problem is a measured failure, such as hourly data or a gap. An unfinished check means the audit has not established the answer; it is not proof that the series is wrong or missing. The saved eligibility total still excludes unresolved checks. Agents should inspect existing files, metadata and processing code first; an unfinished check alone is not a request to scrape more data.</p>'+''.join(problems)+'<section class="panel"><h2>What the series can tell us</h2><p>Existing timestamps and values can establish history, recording intervals, invalid values and conflicting duplicates. Gap checks also need the correct market or reporting schedule. Forecast-use checks ask a different question: when was a value available, and did its calculation use later information? Existing release timestamps, source descriptions, processing code and collection logs may already answer these questions.</p><h2>Requirements</h2><p>'+requirement+'</p><p>'+('Other predictors, such as sentiment scores and economic indicators, also need values every 15 minutes or more often. We must know when values became available and whether they were later changed.'if coloured else 'Contextual predictors retain their native cadence and require reporting coverage, historical availability and revision evidence.')+' For tweets and calculated signals, we also need proof that collection was complete and the calculation used only information available at that time.</p><p>Audit window: 1 October 2024–30 September 2026. Dataset types follow the storage inventory; GDELT tone/GCAM attributes belong to GDELT. The public page contains aggregate counts only. Observations, identifiers, credentials and delegation tasks remain private.</p></section><p><a href="summary.json">Download public counts metadata</a></p></main></body></html>'
 
 
 def build(data,directory):

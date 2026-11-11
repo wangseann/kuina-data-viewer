@@ -13,8 +13,8 @@ const KuinaReasons = {
     "The files may contain predictions, summaries or supporting information rather than measurements recorded for that time."
   ],
   "input_identity_unverified": [
-    "We cannot trace the exact file version that was checked",
-    "The audit lacks a verified file fingerprint, so it cannot prove which version of the source file was checked."
+    "File-version check unfinished",
+    "The audit has not tied this result to a verified input fingerprint. Check the existing file inventory and hashes, then rerun affected checks if necessary. New observations are not required for this check."
   ],
   "series_type_unknown": [
     "We do not know what kind of value this is",
@@ -45,8 +45,8 @@ const KuinaReasons = {
     "The audit could not read the complete contents of at least one input file, so the result may be incomplete."
   ],
   "aggregation_unverified": [
-    "Individual events have no verified time-series recipe",
-    "Tweets, trades or other events need a checked rule for turning them into regular values, such as one score per 15 minutes."
+    "Event-to-series calculation not checked",
+    "The audit has not verified how individual events become regular predictor values. Inspect the existing aggregation code, interval boundaries and timestamps before treating this as a request for new data."
   ],
   "score_probability_invalid": [
     "Sentiment scores failed a maths check",
@@ -61,36 +61,36 @@ const KuinaReasons = {
     "The first and last valid observations do not span two full calendar years. This check is separate from checks for gaps inside that span."
   ],
   "calendar_unverified": [
-    "We do not know when observations should exist",
-    "We lack a checked schedule of market opening hours, holidays or reporting dates, so we cannot reliably distinguish normal closures from missing data."
+    "Market or reporting schedule not checked",
+    "The audit has not matched this series to its opening hours, holidays or reporting schedule. Check the existing source and exchange information before deciding whether an empty period is a gap."
   ],
   "coarse_resolution": [
     "Values are recorded less often than every 15 minutes",
     "The original data are hourly, daily or otherwise too far apart. Adding copied or interpolated values would not make them qualify."
   ],
   "cadence_unknown": [
-    "We cannot confirm how often values were recorded",
-    "The original recording interval has not been established, so we cannot prove the series meets the 15-minute requirement."
+    "Recording interval not established by the audit",
+    "Check the existing timestamps and interval labels to establish how often values were originally recorded. This flag does not establish that the data are too coarse."
   ],
   "missing_months": [
     "At least one test month has no price data",
     "One or more months inside our test dates contain no valid prices for this series."
   ],
   "price_definition_unverified": [
-    "We do not know exactly what the price represents",
-    "We cannot confirm whether it is a buyer bid, seller ask or completed trade, how candles were built, or whether stock prices account for splits and dividends."
+    "Price meaning not checked",
+    "Inspect the existing column names and source metadata for bid, ask or trade prices, candle construction, and adjustment for splits or dividends. Consult the provider description if those details are absent. This flag is not a finding that the prices are wrong."
   ],
   "availability_unverified": [
-    "We cannot confirm what was known at the time",
-    "We do not know when a value first became available or whether it was changed later. For example, a January figure published in March was not available for a January forecast."
+    "Historical release timing not checked",
+    "The audit did not establish when each value first became available or which revision it contains. An observation date alone cannot answer that: a January figure published in March was unavailable for a January forecast. Inspect stored publication, release and collection timestamps first."
   ],
   "collection_completeness_unverified": [
-    "We cannot confirm all events were collected",
-    "The available records do not prove that all expected events were captured; an empty interval may be inactivity or a collection failure."
+    "Event collection not cross-checked",
+    "The audit has not established whether the stored events cover the intended collection. Check existing collection logs and source coverage; the observed events alone cannot reveal every missed event."
   ],
   "completeness_unverified": [
-    "We cannot confirm the data are complete",
-    "We lack enough evidence to tell whether expected observations are missing."
+    "Gap check unfinished",
+    "The audit could not complete the gap test using a verified schedule and coverage counts. This flag does not establish that observations are missing. Inspect the existing timestamps and schedule first."
   ],
   "hourly_gaps": [
     "Some expected hours have no data",
@@ -105,12 +105,12 @@ const KuinaReasons = {
     "An observation is missing at a time when the checked reporting schedule says one should exist."
   ],
   "scrape_completeness": [
-    "We cannot confirm every relevant tweet was collected",
-    "For an account, we cannot prove the scraper captured all relevant posts. A blank period might mean no posts or a failed scrape."
+    "Account scraping not cross-checked",
+    "Collected tweets alone cannot show which posts were missed. Check the existing scrape logs, pagination and account coverage. An empty period is not automatically a scrape failure."
   ],
   "causal_processing_unverified": [
-    "We cannot confirm the signal uses only earlier information",
-    "The processing record does not prove that each historical signal was made using only information available by that time. Later information could make a forecast test look better than it really is."
+    "Signal calculation timing not checked",
+    "The audit has not verified from the existing calculation code and logs that a signal uses only information available by its timestamp. This requires checking the processing, not automatically collecting more data."
   ],
   "numeric_observations_check_missing": [
     "The check for usable numbers is missing",

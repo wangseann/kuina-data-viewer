@@ -161,8 +161,8 @@ async function select(record) {
   const failures=(record.checks||[]).filter(check=>check.status==='FAIL');
   if(!failures.length)$('checks').append(element('p',K.eligible(record)?'All mandatory checks passed in this saved audit.':'No completed current eligibility result is available.'));
   for(const check of failures) {
-    const explanation=KuinaReasons[check.reason]||['Other failed check','Inspect the saved audit evidence before treating this series as usable.'];
-    const box=element('div',undefined,'failure failure-'+(K.REASON_BITS[check.reason]||8));box.append(element('strong',explanation[0]),element('p',explanation[1]));
+    const explanation=KuinaReasons[check.reason]||['Check requires review','Inspect the existing inputs and the saved check result before treating this series as usable.'];
+    const box=element('div',undefined,'failure failure-'+(K.REASON_BITS[check.reason]||8));box.append(element('p',K.checkOutcome(check),'small'),element('strong',explanation[0]),element('p',explanation[1]));
     if(check.evidence!==undefined&&check.evidence!==null)box.append(element('p','Saved evidence: '+JSON.stringify(check.evidence),'small'));
     $('checks').append(box);
   }

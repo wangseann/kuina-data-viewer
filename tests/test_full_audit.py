@@ -15,7 +15,7 @@ class FullAuditTests(unittest.TestCase):
         self.assertEqual(page.count('class="square failed-square"'),5)
         self.assertEqual(page.count('class="square confirmed-square"'),7)
         self.assertNotIn('need checks',page.lower())
-        self.assertIn('Required evidence missing',page)
+        self.assertIn('Only unfinished checks',page)
         self.assertIn('Financial prices are coarser than hourly',page)
 
     def test_full_scope_counts_cannot_be_added_incorrectly(self):

@@ -4,7 +4,7 @@ FAILURE_COLOURS = {
     1: ('Missing data / gaps', '#237cb6'),
     2: ('Coarser than 15 minutes', '#e18c1f'),
     4: ('Less than two years', '#8654a8'),
-    8: ('Other failed checks / missing evidence', '#7b8795'),
+    8: ('Other data issues / unfinished checks', '#7b8795'),
 }
 REASON_BITS = dict.fromkeys([
     'no_valid_observations', 'no_window_data', 'missing_months',

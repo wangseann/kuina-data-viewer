@@ -24,12 +24,12 @@
 <p id="requirements"></p><div class="controls">
 <label>Dataset type<select id="type"></select></label><label>Source / subtype<select id="dataset"></select></label>
 <label>Series name or variable<input id="search" type="search" placeholder="Search this source"></label>
-<label>Show<select id="quality"><option value="all">All series</option><option value="eligible">Eligible only</option><option value="failed">Needs fixing</option><option value="1">Missing data / gaps</option><option value="2">Too coarse</option><option value="4">Too short</option><option value="8">Other failures / missing proof</option></select></label>
+<label>Show<select id="quality"><option value="all">All series</option><option value="eligible">Eligible only</option><option value="failed">Needs fixing</option><option value="1">Missing data / gaps</option><option value="2">Too coarse</option><option value="4">Too short</option><option value="8">Other issues / unfinished checks</option></select></label>
 <button id="find">Find series</button></div><p id="results" aria-live="polite"></p>
 </section>
 <section class="panel"><div class="heading"><h2>Coverage across the required window</h2><div class="pager"><button id="previous">← Previous</button><span id="page"></span><button id="next">Next →</button></div></div>
 <p>One row per listed series; one column per UTC day. Select a row to inspect its values and failed checks. The entire audit window stays visible.</p>
-<div class="legend"><span class="complete">Green: checked coverage</span><span class="missing">Blue: missing observations</span><span class="coarse">Orange: recording interval too coarse</span><span class="outside">Purple: outside recorded dates</span><span class="unknown">Grey: coverage not measured / proof missing</span><span class="closed">White: no observations expected</span></div>
+<div class="legend"><span class="complete">Green: checked coverage</span><span class="missing">Blue: missing observations</span><span class="coarse">Orange: recording interval too coarse</span><span class="outside">Purple: outside recorded dates</span><span class="unknown">Grey: coverage check unfinished</span><span class="closed">White: no observations expected</span></div>
 <p class="small">Coverage cells and overall eligibility are separate: complete coverage alone does not prove that every other check passes.</p>
 <div class="heat-wrap"><canvas id="heatmap" aria-label="Coverage heatmap for the listed series"></canvas></div>
 <p id="heat-detail" class="small" role="status">Hover over a cell for the date and observation counts.</p>
@@ -39,7 +39,7 @@
 <p id="selected-source"></p><p id="preview-note"></p>
 <div class="controls"><label>Chart from<input id="chart-start" type="date"></label><label>Chart through<input id="chart-end" type="date"></label><button id="chart-reset">Full required window</button></div>
 <canvas id="chart" aria-label="Selected time-series values"></canvas><p id="chart-detail" class="small"></p>
-<h3>What needs fixing</h3><div id="checks"></div><p id="brief-status" role="status"></p>
+<h3>Data problems and unfinished checks</h3><p class="small">An unfinished audit check is not a measured data failure. Inspect existing files, metadata and calculation code before requesting new data.</p><div id="checks"></div><p id="brief-status" role="status"></p>
 </section>
 </section>
 <footer><p>Keep the package in private project storage. New files, smoother-looking charts and an agent's “completed” report do not automatically certify eligibility. Recheck the source, then publish a new verified snapshot.</p></footer>
