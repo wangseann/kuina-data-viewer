@@ -22,7 +22,7 @@ function interval(seconds) {
 function option(select,value,label) { const node=element('option',label); node.value=value; select.append(node); }
 function dataset() { return state.manifest.datasets.find(item=>item.id===$('dataset').value); }
 function clearDetail() {
-  state.selected=null;state.preview=null;$('selected-title').textContent='Choose a series';$('selected-source').textContent='';$('preview-note').textContent='';$('checks').replaceChildren();$('brief').disabled=true;$('brief-status').textContent='';drawChart();
+  state.selected=null;state.preview=null;$('selected-title').textContent='Choose a series';$('selected-source').textContent='';$('field-facts').replaceChildren();$('warning-review').replaceChildren();$('preview-note').textContent='';$('checks').replaceChildren();$('brief').disabled=true;$('brief-status').textContent='';drawChart();
 }
 function reset() {
   state.generation++;state.records=[];state.page=0;state.cache.clear();state.files.clear();state.legacyPages.clear();state.legacyPreviews.clear();state.manifest=null;
@@ -52,7 +52,7 @@ async function readAsset(reference) {
 async function readPage(reference) {
   if(state.legacyPages.has(reference.path))return state.legacyPages.get(reference.path);
   const page=await readAsset(reference);
-  if(page.schema!=='kuina-series-page-v1'||page.datasetId!==dataset().id||!Array.isArray(page.series)||page.series.length>1000)throw Error('Invalid series catalogue page');
+  if(page.schema!=='kuina-series-page-v1'||page.datasetId!==dataset().id||!Array.isArray(page.series)||page.series.length>2500)throw Error('Invalid series catalogue page');
   return page.series;
 }
 function activate() {
@@ -157,6 +157,7 @@ async function select(record) {
   const generation=state.generation;state.selected=record;state.preview=null;renderRows();
   $('selected-title').textContent=record.label+' · '+record.variable;
   $('selected-source').textContent=[record.source,record.datasetName,interval(record.nativeSeconds),'units: '+(record.units||'Not established'),record.quoteSide,record.priceConstruction,record.adjustment].filter(Boolean).join(' · ');
+  renderReview(record);
   $('brief').disabled=K.eligible(record)||state.manifest.legacy;$('brief-status').textContent='';$('checks').replaceChildren();
   const failures=(record.checks||[]).filter(check=>check.status==='FAIL');
   if(!failures.length)$('checks').append(element('p',K.eligible(record)?'All mandatory checks passed in this saved audit.':'No completed current eligibility result is available.'));
@@ -172,6 +173,28 @@ async function select(record) {
     $('preview-note').textContent='Daily summaries of recorded values for display; no filling. '+K.previewExplanation(record,data);
     drawChart();
   }catch(error){if(state.selected?.id===record.id){$('preview-note').textContent=error.message;drawChart();}}
+}
+function renderReview(record) {
+  $('field-facts').replaceChildren();$('warning-review').replaceChildren();
+  if(record.fieldFacts) {
+    $('field-facts').append(element('h3','What this field records'));
+    for(const [key,label] of [['recorded','Recorded value'],['units','Units'],['price_basis','Price basis'],['adjustment','Adjustment']]) {
+      if(record.fieldFacts[key])$('field-facts').append(element('p',label+': '+record.fieldFacts[key]));
+    }
+    const remaining=record.fieldFacts.unresolved||[];
+    if(remaining.length)$('field-facts').append(element('p','Still to verify: '+remaining.map(K.factMeaning).join('; '),'small'));
+  }
+  if(!record.warningReview?.length)return;
+  $('warning-review').append(element('h3','Review of existing information'));
+  for(const review of record.warningReview) {
+    const box=element('details'),summary=element('summary',(K.REVIEW_LABELS[review.outcome]||'Review incomplete')+' · '+(KuinaReasons[review.original_reason]||[review.check])[0]);box.append(summary);
+    box.append(element('p',review.explanation));
+    if(review.review_scope)box.append(element('p','What was checked: '+review.review_scope,'small'));
+    if(review.processing_facts)box.append(element('p','Processing information: '+JSON.stringify(review.processing_facts),'small'));
+    for(const reference of review.references||[])box.append(element('p','Existing source: '+JSON.stringify(reference),'small'));
+    if(review.search_id)box.append(element('p','Search ledger reference: '+review.search_id,'small'));
+    $('warning-review').append(box);
+  }
 }
 function canvas(id,height) {
   const node=$(id),width=Math.max(id==='heatmap'?700:280,node.getBoundingClientRect().width),ratio=devicePixelRatio||1;

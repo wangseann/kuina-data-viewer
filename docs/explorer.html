@@ -11,7 +11,7 @@
 <script src="explorer.js" defer></script>
 </head>
 <body><main>
-<header><a href="index.html">← Quality counts</a><p class="eyebrow">Kuina · Private series inspection</p><h1>See what we have. See what needs fixing.</h1>
+<header><a href="index.html">← Quality counts</a> · <a href="tasks.html">Agent tasks</a><p class="eyebrow">Kuina · Private series inspection</p><h1>See what we have. See what needs fixing.</h1>
 <p>Choose a dataset, inspect its series and coverage, then copy a repair brief for your agent. A series becomes green only after a new audit confirms every requirement passes.</p></header>
 <section class="panel"><h2>Open a private inspection package</h2>
 <p>Select the preview folder from Kuina. Files are read in your browser as you choose datasets; they are never uploaded to this website.</p>
@@ -36,10 +36,10 @@
 <div class="scroll"><table><thead><tr><th>Series / variable</th><th>Overall result</th><th>Original interval</th><th>Recorded dates</th><th>Preview</th></tr></thead><tbody id="series-list"></tbody></table></div>
 </section>
 <section class="panel" id="detail-panel"><div class="heading"><h2 id="selected-title">Choose a series</h2><button id="brief" disabled>Download repair brief</button></div>
-<p id="selected-source"></p><p id="preview-note"></p>
+<p id="selected-source"></p><div id="field-facts"></div><p id="preview-note"></p>
 <div class="controls"><label>Chart from<input id="chart-start" type="date"></label><label>Chart through<input id="chart-end" type="date"></label><button id="chart-reset">Full required window</button></div>
 <canvas id="chart" aria-label="Selected time-series values"></canvas><p id="chart-detail" class="small"></p>
-<h3>Data problems and unfinished checks</h3><p class="small">An unfinished audit check is not a measured data failure. Inspect existing files, metadata and calculation code before requesting new data.</p><div id="checks"></div><p id="brief-status" role="status"></p>
+<h3>Data problems and unfinished checks</h3><p class="small">An unfinished audit check is not a measured data failure. Inspect existing files, metadata and calculation code before requesting new data.</p><div id="checks"></div><div id="warning-review"></div><p id="brief-status" role="status"></p>
 </section>
 </section>
 <footer><p>Keep the package in private project storage. New files, smoother-looking charts and an agent's “completed” report do not automatically certify eligibility. Recheck the source, then publish a new verified snapshot.</p></footer>

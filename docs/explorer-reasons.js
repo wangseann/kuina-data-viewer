@@ -1,5 +1,9 @@
 /* Plain-English check descriptions; no dataset observations. */
 const KuinaReasons = {
+  "mixed_price_construction": [
+    "Prices combine trades and quote midpoints",
+    "The meaning is known: these prices mix executed trades with the midpoint between bid and ask quotes. They do not meet the agreed requirement for clearly labelled trade or bid candles."
+  ],
   "inconsistent_ohlc": [
     "Price candle values contradict each other",
     "The opening, highest, lowest or closing price does not fit the others; for example, the highest price is below the closing price."

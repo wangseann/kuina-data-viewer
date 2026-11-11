@@ -8,6 +8,9 @@ const good=record();assert.equal(K.eligible(good),true);
 assert.equal(K.eligible({...good,checks:[]}),false);
 assert.equal(K.eligible({...good,checks:[{id:'unrelated',status:'PASS'}]}),false,'A pass label cannot replace a full checklist');
 assert.equal(K.eligible({...good,nativeSeconds:3600}),false);
+const quantity={...good,variable:'trade_count',fieldFacts:{price_basis:'Not applicable',unresolved:[]},checks:good.checks.map(check=>check.id==='price_definition'?{...check,status:'NOT_APPLICABLE'}:check)};
+assert.equal(K.eligible(quantity),true,'Trade count does not need a bid or ask side');
+assert.equal(K.eligible({...quantity,variable:'close'}),false);
 assert.equal(K.eligible({...good,checks:[...good.checks,{id:'extra',status:'FAIL',reason:'availability_unverified'}]}),false);
 const date='2025-04-01';
 assert.equal(K.coverageState(good,null,date),'unknown');
@@ -33,3 +36,6 @@ assert.match(K.previewExplanation({previewStatus:'source changed'}, null), /sour
 assert.equal(K.checkOutcome({kind:'measured_failure'}),'Data problem found');
 assert.equal(K.checkOutcome({kind:'missing_evidence'}),'Audit check unfinished');
 assert.equal(K.checkOutcome({}),'Check unresolved');
+assert.match(K.factMeaning('volume_units'),/what the volume counts/);
+assert.equal(K.coverageState({...good,checks:[{id:'calendar',status:'FAIL'}]},{checked:true,observed:96,expected:96,longestGapSeconds:900},date),'unknown');
+assert.equal(K.repairBrief({...warning,warningReview:[{outcome:'RESOLVED_USING_EXISTING_INFORMATION'}]}, {auditUtc:'2026-11-09',windowStart:'2024-10-01',windowEnd:'2026-10-01'},{}).warning_review.length,1);

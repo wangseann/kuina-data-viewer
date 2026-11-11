@@ -1,8 +1,9 @@
 # Kuina dataset quality counts
 
 Public, buildless GitHub Pages dashboard. Only code and aggregate quality counts
-are published. Observations, data-bearing plot exports and delegation tasks stay
-in the private project storage.
+are published. The user also authorized the nine volunteer names and a sanitized
+task-status board. Observations, data-bearing plot exports, collection scopes and
+agent reports stay in private project storage.
 
 Each numeric field counts as one series; assets/accounts are shown separately.
 The full audit counts eligible and excluded fields separately. Missing mandatory
@@ -49,7 +50,8 @@ python3 -B -m unittest discover -s tests -v
 ```
 
 GitHub Pages publishes `docs/` on `main`. A private publisher on the maintainer's
-Mac checks the approved counts snapshot daily and pushes changed counts. No SSH
+Mac checks approved counts and shared task status every 15 minutes and pushes
+changed metadata (with a daily status heartbeat). No SSH
 keys or cluster credentials are held in GitHub or GitHub Actions. The Mac must
 be available and able to reach the source. Publishing does not run another audit;
 if no new verified snapshot exists, the audit date and counts remain unchanged.
@@ -63,6 +65,19 @@ exports. It reads a user-selected private inspection folder in the browser;
 its CSP blocks network connections. No observations or populated private
 catalogues belong in this repository. Historical HTML payloads can be imported
 as data, without executing the selected HTML or trusting its old pass labels.
+
+`docs/tasks.html` shows balanced assignments and filterable progress. The static
+website cannot claim tasks. Agents use the private shared-filesystem CLI described
+in [coordination/README.md](coordination/README.md) and the private hub's
+`AGENT_TASKS.md`. Exclusive persistent claims prevent duplicate work; source and
+window overlap checks combine warnings for the same repair. Completion waits for
+coordinator verification, and collection repairs need a fresh matching eligibility
+audit. No participant's agent is installed or run by this website.
+
+The series inspector preserves known field meanings and shows the outcome of each
+warning review, including what existing information was checked and what remains
+unresolved. Catalogues without measured previews do not imply known daily gaps;
+their chart and coverage availability is explicitly shown.
 
 A new private package uses `kuina-inspection-v1`, with hash-pinned gzip catalogue
 pages and separate lazy preview pages. The source audit date, assessment date,

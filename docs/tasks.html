@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<title>Kuina · Agent task manager</title>
+<link rel="stylesheet" href="explorer.css"><link rel="stylesheet" href="tasks.css">
+<script src="tasks-core.js" defer></script><script src="explorer-reasons.js" defer></script><script src="tasks.js" defer></script>
+</head>
+<body><main>
+<header><nav><a href="index.html">Quality counts</a> · <a href="explorer.html">Inspect series</a> · <a href="tasks.html" aria-current="page">Agent tasks</a></nav>
+<p class="eyebrow">Kuina · Shared data improvement</p><h1>One repair. One owner. A verified result.</h1>
+<p>Tasks are shared across Juan, Emily, Brian, Amir, Seann, Taha, Saswato, TH and Jion. Assignments balance outstanding work. The private Kuina queue is authoritative; this public page is a status snapshot.</p>
+<div class="requirements">15 minutes or finer · At least two years · No unexplained gaps</div>
+</header>
+<section class="panel"><div class="heading"><h2>Team workload</h2><button id="refresh">Refresh status</button></div><p id="sync" role="status" aria-live="polite">Loading the shared task snapshot…</p><div id="people" class="people"></div>
+<p class="small">Effort points balance assignments; they are estimates, not hours. Verified planning tasks do not make data eligible.</p></section>
+<section class="panel"><div class="heading"><h2>Repair queue</h2><span id="task-count"></span></div>
+<div class="controls"><label>Assigned to<select id="person"><option value="all">Everyone</option></select></label><label>Dataset type<select id="category"><option value="all">All types</option></select></label><label>Progress<select id="status"><option value="all">All statuses</option></select></label></div>
+<div class="scroll"><table><thead><tr><th>Task / dataset</th><th>Owner</th><th>Work</th><th>Progress</th><th>Series to investigate</th><th>Problems</th><th>Agent command</th></tr></thead><tbody id="task-list"></tbody></table></div>
+<p class="small">Series counts describe the audit scope to investigate; they are not a promise that every series can be repaired. Several warnings can refer to the same series. Child repair tasks can overlap these planning counts.</p></section>
+<section class="panel"><h2>Connect your agent</h2><p>Use the <strong>AGENT_TASKS.md</strong> instructions in the private Kuina project hub to set the shared hub and task-manager paths. Configure your own agent to check once a day.</p>
+<pre><code id="poll-command">python3 "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" list --person juan</code></pre><p class="small">Replace <code>juan</code> with your lowercase participant ID. This website does not install or run anyone's agent.</p>
+<ol><li>Read your assignment and claim it atomically in the shared hub. If the claim fails, do not start it.</li><li>Inspect existing files and metadata first. Propose one repair per underlying source/instrument/window, combining its warnings and numeric fields.</li><li>Before collection, verify the provider can meet the interval, history and coverage requirements. Keep prior releases and use your approved execution environment.</li><li>Report the work and provenance. Data repairs wait for a new matching eligibility audit before they can be verified.</li></ol>
+<p>Claims never expire automatically. A blocked or abandoned task needs reconciliation before anyone takes it over. Do not start a second copy because this page looks stale.</p>
+<p>Some sources are inherently daily, weekly or too young. Mark those as blocked with a specific reason or propose a compatible alternative; copying values onto a finer grid does not meet the requirements.</p>
+<p class="small">Public: names, counts and task status. Private: collection targets, source paths, claims, reports and evidence. <a href="agent-protocol.json">Machine-readable workflow</a>.</p>
+</section>
+</main></body></html>

@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-10T00:48:43.402594+00:00",
+  "assessment_utc": "2026-11-11T09:13:17.617981+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -26,7 +26,7 @@
         },
         {
           "id": "calendar_unverified",
-          "count": 122874
+          "count": 122970
         },
         {
           "id": "coarse_resolution",
@@ -162,12 +162,16 @@
           "count": 407
         },
         {
+          "id": "mixed_price_construction",
+          "count": 365
+        },
+        {
           "id": "not_source_observations",
           "count": 2
         },
         {
           "id": "price_definition_unverified",
-          "count": 1087
+          "count": 559
         },
         {
           "id": "series_type_unknown",
@@ -180,12 +184,16 @@
       ],
       "failure_masks": [
         {
+          "mask": 1,
+          "count": 55
+        },
+        {
           "mask": 8,
           "count": 147
         },
         {
           "mask": 9,
-          "count": 470
+          "count": 415
         },
         {
           "mask": 10,

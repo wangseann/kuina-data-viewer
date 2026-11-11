@@ -2,8 +2,11 @@
 
 Publish only viewer source and the strict counts metadata accepted by counts.py.
 Never commit dataset observations, data-bearing HTML exports, timestamp arrays,
-credentials, participant lists or delegation tasks. The private Kuina hub owns
-collection/delegation; this repository does not run collection or scientific audits.
+credentials or private collection targets, paths and agent reports. The user's
+November 2026 task-manager request authorizes the nine volunteer names and a
+whitelisted public task-status snapshot. The private Kuina hub owns authoritative
+claims, collection scopes and delegation records; this repository does not run
+collection or scientific audits. Never publish arbitrary task/report text.
 
 Historical snapshots treated 129 derived sentiment signals as provisional.
 New snapshots must pass the full mandatory checks; a complete derived grid alone

@@ -4,6 +4,17 @@
   const DAY = 86400000;
   const COLOURS = {complete:'#25826b',missing:'#237cb6',coarse:'#e18c1f',outside:'#8654a8',unknown:'#7b8795',closed:'#ffffff'};
   const REASON_BITS = {no_valid_observations:1,no_window_data:1,missing_months:1,hourly_gaps:1,long_gaps:1,context_gaps:1,coarse_resolution:2,short_history:4};
+  const REVIEW_LABELS = {
+    RESOLVED_USING_EXISTING_INFORMATION:'Resolved from existing information',
+    CONFIRMED_DATA_PROBLEM:'Confirmed problem in recorded data',
+    CONFIRMED_METADATA_REQUIREMENT_PROBLEM:'Known field meaning does not meet the requirement',
+    EXISTING_INFORMATION_NEEDS_APPLICATION:'Information found; its application still needs checking',
+    PARTIALLY_RESOLVED_USING_EXISTING_INFORMATION:'Partly resolved from existing information',
+    UNRESOLVED_FROM_REVIEWED_INFORMATION:'Not resolved by the information reviewed',
+    NATIVE_METADATA_READ_INCOMPLETE:'Source metadata could not be completely read'
+  };
+  const FACT_MEANINGS = {source_bound_field_schema:'which column belongs to this exact source version',volume_units:'what the volume counts (for example shares, contracts or base currency)',volume_adjustment:'whether volume was adjusted for stock splits',accepted_price_basis:'whether the price construction meets the agreed bid/trade rule',price_basis:'whether prices are bids, asks or executed trades',price_units:'the currency or units of prices',adjustment_method:'how prices were adjusted for splits or dividends',field_meaning:'what this numeric field measures',conflicting_price_basis_metadata:'contradictory descriptions of the price basis',conflicting_units_metadata:'contradictory units in the metadata',conflicting_adjustment_metadata:'contradictory adjustment descriptions',corporate_action_handling:'how unadjusted stock values handle splits and dividends',instrument_identity:'whether the ticker refers to the same instrument throughout its history'};
+  function factMeaning(key) { return FACT_MEANINGS[key] || String(key).replaceAll('_',' '); }
   function safePath(value) {
     if (typeof value !== 'string' || !value || value.includes('\\') || value.startsWith('/') || value.split('/').some(part => !part || part === '.' || part === '..') || value.includes(':')) throw Error('Unsafe package path');
     return value;
@@ -33,7 +44,13 @@
     if (['derived sentiment','scored tweet events'].includes(record.role)) required.push('causal_processing');
     if (record.role==='scored tweet events') required.push('sentiment_score');
     const checks=new Map(record.checks.map(check=>[check.id,check.status]));
-    return required.every(id=>checks.get(id)==='PASS'||(id==='calendar'&&events&&checks.get(id)==='NOT_APPLICABLE'));
+    return required.every(id=>{
+      if(checks.get(id)==='PASS')return true;
+      if(checks.get(id)!=='NOT_APPLICABLE')return false;
+      if(id==='calendar'&&events)return true;
+      const quantities=['trade_count','trades','volume','v','quote_volume','taker_buy_base','taker_buy_quote'];
+      return id==='price_definition'&&quantities.includes(String(record.variable).toLowerCase())&&record.fieldFacts?.price_basis==='Not applicable'&&record.fieldFacts.unresolved?.length===0;
+    });
   }
   function matches(record, term, filter) {
     const words = String(term).toLowerCase().trim().split(/\s+/).filter(Boolean);
@@ -45,6 +62,7 @@
     return true;
   }
   function coverageState(record, cell, date) {
+    if ((record.checks||[]).some(check=>check.id==='calendar'&&check.status==='FAIL')) return 'unknown';
     if (!cell || cell.checked !== true) return 'unknown';
     if (cell.expected === 0) return 'closed';
     if (!Number.isInteger(cell.observed) || cell.observed < 0) return 'unknown';
@@ -77,6 +95,7 @@
     return {
       kind:'kuina-repair-brief',version:1,series_id:record.id,dataset:record.datasetName||record.dataset,unit:record.label,variable:record.variable,entity:record.entity || {},source:record.source,source_group:record.sourceGroup||null,source_references:record.sourceReferences || [],source_reference_count:record.sourceReferenceCount||null,private_source_provenance:record.sourceProvenance||null,
       recorded_fields:{quote_side:record.quoteSide||null,construction:record.priceConstruction||null,adjustment:record.adjustment||null,units:record.units||null},
+      field_facts:record.fieldFacts||null,warning_review:record.warningReview||[],
       audit_utc:manifest.auditUtc,assessment_utc:manifest.assessmentUtc || null,
       required_window:{start:manifest.windowStart,end_exclusive:manifest.windowEnd},
       acceptance:{minimum_calendar_years:2,max_native_interval_seconds:900,verify_internal_gaps:true,preserve_exact_instrument_source_venue_quote_and_units:true,rerun_all_eligibility_checks:true},
@@ -100,7 +119,7 @@
     }
     return data;
   }
-  const api = {DAY,COLOURS,REASON_BITS,safePath,dates,mask,eligible,matches,coverageState,previewExplanation,checkOutcome,repairBrief,validateManifest};
+  const api = {DAY,COLOURS,REASON_BITS,REVIEW_LABELS,factMeaning,safePath,dates,mask,eligible,matches,coverageState,previewExplanation,checkOutcome,repairBrief,validateManifest};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.KuinaInspection = api;
 })(globalThis);

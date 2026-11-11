@@ -1,0 +1,17 @@
+'use strict';
+const assert = require('node:assert/strict');
+const T = require('../docs/tasks-core.js');
+const people = ['juan','emily','brian','amir','seann','taha','saswato','th','jion'].map(id => ({id,name:id,queued:0,active:0,awaiting_verification:0,verified:0,load:0}));
+const task = {id:'task_123',category:'stocks',kind:'triage',status:'queued',assignee:'juan',effort:1,affected_series:42,issues:['short_history'],created_at:'2026-11-11T00:00:00Z',updated_at:'2026-11-11T00:00:00Z'};
+const snapshot = {schema_version:1,updated_at:'2026-11-11T00:00:00Z',profile:{max_interval_seconds:900,min_years:2,unexplained_gaps_allowed:0},people,tasks:[task]};
+assert.equal(T.validate(snapshot).tasks.length,1);
+assert.throws(() => T.validate({...snapshot,private_paths:['secret']}));
+assert.throws(() => T.validate({...snapshot,tasks:[{...task,note:'private target'}]}));
+assert.throws(() => T.validate({...snapshot,profile:{...snapshot.profile,max_interval_seconds:3600}}));
+assert.throws(() => T.validate({...snapshot,tasks:[{...task,assignee:'stranger'}]}));
+assert.throws(() => T.validate({...snapshot,tasks:[task,task]}));
+assert.equal(T.matches(task,{person:'emily',category:'all',status:'all'}),false);
+assert.equal(T.matches(task,{person:'juan',category:'stocks',status:'queued'}),true);
+assert.equal(T.stale(snapshot.updated_at,Date.parse('2026-11-12T01:00:00Z')),true);
+assert.equal(T.stale(snapshot.updated_at,Date.parse('2026-11-11T01:00:00Z')),false);
+console.log('Task board privacy, profile and filter checks passed');
