@@ -101,10 +101,12 @@ PLAIN_ISSUES = {'inconsistent_ohlc': ('Price candle values contradict each other
                      'originally recorded. This flag does not establish that the data are too coarse.'),
  'missing_months': ('At least one test month has no price data',
                     'One or more months inside our test dates contain no valid prices for this series.'),
- 'price_definition_unverified': ('Price meaning not checked',
-                                 'Inspect the existing column names and source metadata for bid, ask or trade prices, candle '
-                                 'construction, and adjustment for splits or dividends. Consult the provider description if '
-                                 'those details are absent. This flag is not a finding that the prices are wrong.'),
+ 'price_definition_unverified': ('Financial-field metadata review unfinished',
+                                 'The saved audit combines several questions: price basis, adjustment, units and instrument '
+                                 'identity. OHLC, volume or adjusted-close columns may already establish part of the meaning. '
+                                 'Preserve those known facts and verify only the remaining details from existing metadata. '
+                                 'Bid/ask price basis does not apply to volume or trade counts. This flag does not mean that '
+                                 'the files contain no price information.'),
  'availability_unverified': ('Historical release timing not checked',
                              'The audit did not establish when each value first became available or which revision it '
                              'contains. An observation date alone cannot answer that: a January figure published in March '
