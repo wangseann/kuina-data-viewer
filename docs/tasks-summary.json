@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-12T06:21:55.758294+00:00",
+  "updated_at": "2026-11-12T07:11:23.723468+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -19,11 +19,11 @@
     {
       "id": "emily",
       "name": "Emily",
-      "assigned": 0,
+      "assigned": 1,
       "active": 0,
       "awaiting_verification": 0,
       "verified": 0,
-      "remaining_series": 0
+      "remaining_series": 500
     },
     {
       "id": "brian",
@@ -260134,9 +260134,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:51:41.540649+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:51:41.540649+00:00",
-      "assignee": null,
+      "status": "assigned",
+      "updated_at": "2026-11-12T07:10:40.696433+00:00",
+      "assignee": "emily",
       "issues": [
         "aggregation_unverified",
         "availability_unverified",
@@ -260154,7 +260154,7 @@
       "parent_id": "triage-f2e8fda3848fb74b83110e9b",
       "batch_number": 1,
       "batch_total": 12,
-      "assignment_issue": null
+      "assignment_issue": 6
     },
     {
       "id": "batch-e873c21467368d356f4bbfdf-000002",
