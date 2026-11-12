@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-12T08:25:00.421415+00:00",
+  "updated_at": "2026-11-12T23:20:29.340038+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -248054,7 +248054,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:51:35.292213+00:00",
       "status": "active",
-      "updated_at": "2026-11-12T08:24:44.747713+00:00",
+      "updated_at": "2026-11-12T23:17:45.646119+00:00",
       "assignee": "th",
       "issues": [
         "availability_unverified",
