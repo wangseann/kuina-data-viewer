@@ -66,5 +66,52 @@
     "release_allowed": "own reservation only before a real worker claim exists",
     "reassignment_requires_reconciliation": true
   },
-  "publication": "Only roster, aggregate counts, whitelisted task statuses and GitHub assignment requests are public. Catalogue scopes, targets, paths, reports and evidence remain private."
+  "publication": "Only roster, aggregate counts, whitelisted task statuses and GitHub assignment requests are public. Catalogue scopes, targets, paths, reports and evidence remain private.",
+  "participants": [
+    {
+      "id": "juan",
+      "name": "Juan"
+    },
+    {
+      "id": "emily",
+      "name": "Emily"
+    },
+    {
+      "id": "brian",
+      "name": "Brian"
+    },
+    {
+      "id": "amir",
+      "name": "Amir"
+    },
+    {
+      "id": "seann",
+      "name": "Seann"
+    },
+    {
+      "id": "taha",
+      "name": "Taha"
+    },
+    {
+      "id": "saswato",
+      "name": "Saswato"
+    },
+    {
+      "id": "th",
+      "name": "TH"
+    },
+    {
+      "id": "jion",
+      "name": "Jion"
+    },
+    {
+      "id": "vitoria",
+      "name": "Vitoria"
+    },
+    {
+      "id": "olga",
+      "name": "Olga"
+    }
+  ],
+  "snapshot_roster_compatibility": "Readers accept only the complete historical nine-person roster or the complete eleven-person roster. Every assigned participant and legacy category lead must be present in that snapshot. New snapshots include all eleven participants."
 }

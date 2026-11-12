@@ -128,7 +128,9 @@ GitHub Pages build latency is separate from the authoritative reservation.
 
 ## Legacy allocation policy (self-service off)
 
-The nine explicitly requested names are the roster. Initial seed creates one
+The eleven explicitly requested names are the roster: Juan, Emily, Brian, Amir,
+Seann, Taha, Saswato, TH, Jion, Vitoria and Olga. Adding a participant does not
+rewrite existing task definitions, assignments, claims, category leads or effort. Initial seed creates one
 bounded triage task per dataset type, including private aggregate issue totals,
 source-failure totals, and source audit/assessment timestamps. IDs are stable by
 audit/category; repeating a seed creates nothing. Reassessment does not silently
@@ -306,3 +308,10 @@ parents and children). `batched` is a public parent status. Each person adds
 The strict validator checks exact fields, roster totals, category/lead continuity,
 parent relationships and complete numbering, with a 20,000-task cap. The public
 snapshot never includes private selectors, hashes, paths or catalogue metadata.
+
+Roster rollout: new snapshots include all eleven participants. Readers temporarily
+accept the complete historical nine-person roster as well as the complete new
+roster; partial rosters are rejected. Assigned people and legacy category leads
+must occur in the actual snapshot roster. Vitoria and Olga choose available work
+through the same request, reservation, worker-claim and report flow as everyone
+else; adding their names performs no allocation.

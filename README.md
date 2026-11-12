@@ -2,7 +2,7 @@
 
 Public, buildless GitHub Pages dashboard. Code, aggregate quality counts, and an
 approved sample of series names, field labels, public source labels and native
-intervals are published. The user also authorized the nine volunteer names and a sanitized
+intervals are published. The user also authorized the eleven volunteer names (including Vitoria and Olga) and a sanitized
 task-status board. Observations, data-bearing plot exports, collection scopes and
 agent reports stay in private project storage.
 

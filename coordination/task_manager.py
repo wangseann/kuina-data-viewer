@@ -20,7 +20,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from counts import FULL_ISSUES, IDS, validate as validate_summary
 
 PEOPLE = {name.lower(): name for name in
-          ('Juan', 'Emily', 'Brian', 'Amir', 'Seann', 'Taha', 'Saswato', 'TH', 'Jion')}
+          ('Juan', 'Emily', 'Brian', 'Amir', 'Seann', 'Taha', 'Saswato', 'TH', 'Jion', 'Vitoria', 'Olga')}
+LEGACY_PEOPLE = frozenset(('juan', 'emily', 'brian', 'amir', 'seann', 'taha', 'saswato', 'th', 'jion'))
 PROFILE = {'max_interval_seconds': 900, 'min_years': 2, 'unexplained_gaps_allowed': 0}
 IDENTITY = ('provider', 'instrument', 'venue', 'feed', 'currency', 'adjustment')
 SCOPE_FIELDS = set(IDENTITY) | {'start', 'end', 'native_interval_seconds',
@@ -102,6 +103,18 @@ def overlaps(left, right):
     return same_resource and left['start'] < right['end'] and right['start'] < left['end']
 
 
+def public_roster(people):
+    """Accept complete historical snapshots during the eleven-person rollout."""
+    require(isinstance(people, list), 'invalid public roster')
+    ids = []
+    for person in people:
+        require(isinstance(person, dict) and isinstance(person.get('id'), str), 'invalid public person')
+        ids.append(person['id'])
+    require(len(ids) == len(set(ids)) and set(ids) in (LEGACY_PEOPLE, set(PEOPLE)),
+            'invalid public roster')
+    return {person: PEOPLE[person] for person in ids}
+
+
 def validate_public_snapshot(data):
     """Fail closed before publishing the explicitly authorized aggregate schema."""
     require(isinstance(data, dict), 'invalid snapshot')
@@ -125,9 +138,9 @@ def validate_public_snapshot(data):
         require(type(value) is int and 0 <= value <= maximum, 'invalid public count')
 
     timestamp(data['updated_at'])
-    require(isinstance(data['people'], list) and len(data['people']) == len(PEOPLE), 'invalid public roster')
+    roster = public_roster(data['people'])
     expected = {p: dict(id=p, name=name, queued=0, active=0, awaiting_verification=0, verified=0, load=0)
-                for p, name in PEOPLE.items()}
+                for p, name in roster.items()}
     if batched:
         for person in expected.values():
             person.update(batched=0, remaining_series=0)
@@ -142,7 +155,7 @@ def validate_public_snapshot(data):
         identifier(task['id'])
         require(task['id'] not in rows, 'duplicate task ID')
         rows[task['id']] = task
-        require(task['category'] in IDS and task['kind'] in KINDS and task['assignee'] in PEOPLE, 'invalid public task category/kind/person')
+        require(task['category'] in IDS and task['kind'] in KINDS and task['assignee'] in roster, 'invalid public task category/kind/person')
         statuses = ('queued', 'active', 'blocked', 'awaiting_verification', 'verified') + (('batched',) if batched else ())
         require(task['status'] in statuses, 'invalid public task status')
         number(task['effort'], 100)
@@ -153,7 +166,7 @@ def validate_public_snapshot(data):
         timestamp(task['created_at'])
         timestamp(task['updated_at'])
         if batched:
-            require(task['lead'] in PEOPLE, 'invalid category lead')
+            require(task['lead'] in roster, 'invalid category lead')
             number(task['batch_number'], 20000)
             number(task['batch_total'], 20000)
             if task['parent_id'] is not None:
@@ -212,8 +225,9 @@ def validate_self_service_snapshot(data):
 
     timestamp(data['updated_at'])
     require(isinstance(data['tasks'], list) and len(data['tasks']) <= 20000, 'invalid public task list')
+    roster = public_roster(data['people'])
     expected = {p: dict(id=p, name=name, assigned=0, active=0, awaiting_verification=0,
-                        verified=0, remaining_series=0) for p, name in PEOPLE.items()}
+                        verified=0, remaining_series=0) for p, name in roster.items()}
     fields = {'id', 'category', 'kind', 'status', 'assignee', 'affected_series', 'issues',
               'created_at', 'updated_at', 'parent_id', 'batch_number', 'batch_total', 'assignment_issue'}
     rows, children = {}, {}
@@ -227,7 +241,7 @@ def validate_self_service_snapshot(data):
         require(status in ('available', 'assigned', 'active', 'blocked', 'awaiting_verification', 'verified', 'batched'),
                 'invalid public task status')
         require((person is None and status in ('available', 'batched')) or
-                (isinstance(person, str) and person in PEOPLE and status not in ('available', 'batched')),
+                (isinstance(person, str) and person in roster and status not in ('available', 'batched')),
                 'invalid public assignment')
         issue = task['assignment_issue']
         require(issue is None or type(issue) is int and 0 < issue <= 9007199254740991,
@@ -265,7 +279,6 @@ def validate_self_service_snapshot(data):
         require(len(batches) == total and {t['batch_number'] for t in batches} == set(range(1, total + 1)) and
                 all(t['batch_total'] == total and t['category'] == parent['category'] for t in batches),
                 'inconsistent batch numbering/category')
-    require(isinstance(data['people'], list) and len(data['people']) == len(PEOPLE), 'invalid public roster')
     seen = set()
     for person in data['people']:
         require(isinstance(person, dict) and set(person) == set(next(iter(expected.values()))), 'invalid public person fields')

@@ -61,3 +61,31 @@ assert.throws(()=>T.requestURL({...assigned,assignment_issue:0},'seann','release
 assert.throws(()=>T.requestURL({...assigned,status:'active'},'seann','release'));
 assert.throws(()=>T.requestURL(assigned,'juan','release'));
 console.log('Release requests bind the exact assignment issue and unstarted owner');
+
+// Both complete rosters are readable during rollout; arbitrary subsets fail closed.
+const addedPeople=['vitoria','olga'].map(id=>({id,name:id==='vitoria'?'Vitoria':'Olga',assigned:0,active:0,awaiting_verification:0,verified:0,remaining_series:0}));
+const expanded={...manual,people:[...manual.people,...addedPeople]};
+assert.equal(T.validate(expanded).people.length,11);
+for (const missing of [['olga'],['jion','olga'],['jion']]) {
+  assert.throws(()=>T.validate({...expanded,people:expanded.people.filter(p=>!missing.includes(p.id))}));
+}
+for (const person of ['vitoria','olga']) {
+  const requestURL=new URL(T.requestURL(manualTasks[1],person,'assign'));
+  const payload=JSON.parse(requestURL.searchParams.get('body').split('\n')[1]);
+  assert.equal(payload.person,person);
+  const active={...manualTasks[1],status:'active',assignee:person};
+  const activePeople=expanded.people.map(p=>p.id===person?{...p,active:1,remaining_series:2}:p);
+  assert.equal(T.validate({...expanded,people:activePeople,tasks:[manualTasks[0],active,manualTasks[2]]}).tasks[1].assignee,person);
+  assert.throws(()=>T.validate({...manual,tasks:[manualTasks[0],active,manualTasks[2]]}));
+  const legacyTask={...task,assignee:person};
+  assert.throws(()=>T.validate({...snapshot,tasks:[legacyTask]}));
+  assert.throws(()=>T.validate({...batched,tasks:batched.tasks.map(t=>({...t,lead:person}))}));
+}
+console.log('Eleven-person roster, request links and closed rollout compatibility passed');
+
+for (const legacySnapshot of [snapshot,batched]) {
+  const extra=['vitoria','olga'].map(id=>Object.fromEntries(Object.keys(legacySnapshot.people[0]).map(key=>[key,key==='id'?id:key==='name'?id:0])));
+  const expandedLegacy={...legacySnapshot,people:[...legacySnapshot.people,...extra]};
+  assert.equal(T.validate(expandedLegacy).people.length,11);
+  assert.throws(()=>T.validate({...expandedLegacy,people:expandedLegacy.people.filter(p=>p.id!=='jion'&&p.id!=='olga')}));
+}

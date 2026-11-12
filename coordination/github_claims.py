@@ -4,7 +4,7 @@ import re
 import shlex
 import subprocess
 
-PEOPLE = ('juan', 'emily', 'brian', 'amir', 'seann', 'taha', 'saswato', 'th', 'jion')
+PEOPLE = ('juan', 'emily', 'brian', 'amir', 'seann', 'taha', 'saswato', 'th', 'jion', 'vitoria', 'olga')
 MARKER = '<!-- kuina-request-v1'
 TASK_ID = re.compile(r'[A-Za-z0-9_-]{1,96}')
 LOGIN = re.compile(r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})')

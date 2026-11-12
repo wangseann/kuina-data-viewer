@@ -3,7 +3,7 @@
 Publish only viewer source and the strict counts metadata accepted by counts.py.
 Never commit dataset observations, data-bearing HTML exports, timestamp arrays,
 credentials or private collection targets, paths and agent reports. The user's
-November 2026 task-manager request authorizes the nine volunteer names and a
+November 2026 task-manager request authorizes the eleven volunteer names (including Vitoria and Olga) and a
 whitelisted public task-status snapshot. The private Kuina hub owns authoritative
 claims, collection scopes and delegation records. The 12 November series-hover
 request additionally authorizes a closed, audit-bound name index containing only
