@@ -29,6 +29,35 @@ assert.equal(T.reviewTasks(batched,{person:'all',category:'all',status:'all'}).l
 assert.equal(T.page(Array.from({length:91},(_,i)=>i),1).rows.length,40);
 assert.deepEqual(T.page([1,2],100).rows,[1,2]);
 const rollup=T.rollups(batched)[0];
-assert.equal(rollup.lead,'juan');assert.equal(rollup.batches,2);assert.equal(rollup.records,3);
+assert.equal('lead' in rollup,false);assert.equal(rollup.batches,2);assert.equal(rollup.records,3);
 assert.equal(T.remaining(snapshot.people[0],snapshot),42);
 console.log('Bounded batch validation, continuity, workload and pagination checks passed');
+
+const manualTasks=batched.tasks.map(t=>{
+  const {lead,effort,...rest}=t;
+  return {...rest,assignee:null,status:t.status==='batched'?'batched':'available',assignment_issue:null};
+});
+const manualPeople=people.map(p=>({id:p.id,name:p.name,assigned:0,active:0,awaiting_verification:0,verified:0,remaining_series:0}));
+const manual={...batched,schema_version:3,people:manualPeople,tasks:manualTasks};
+assert.equal(T.validate(manual).tasks.length,3);
+assert.equal(T.availableRecords(manual),3);
+assert.throws(()=>T.validate({...manual,tasks:[{...manualTasks[0],lead:'juan'},...manualTasks.slice(1)]}));
+assert.throws(()=>T.validate({...manual,tasks:[manualTasks[0],{...manualTasks[1],assignee:'juan'},manualTasks[2]]}));
+const url=new URL(T.requestURL(manualTasks[1],'seann','assign'));
+assert.equal(url.hostname,'github.com');assert.equal(url.pathname,'/wangseann/kuina-data-viewer/issues/new');
+const request=JSON.parse(url.searchParams.get('body').split('<!-- kuina-request-v1\n')[1].split('\n-->')[0]);
+assert.deepEqual(request,{version:1,action:'assign',task_id:'batch-one',person:'seann'});
+assert.throws(()=>T.requestURL(manualTasks[1],'stranger','assign'));
+assert.equal(T.reviewTasks(manual,{person:'all',category:'all',status:'available'}).length,2);
+console.log('Self-service privacy, availability and GitHub request contract checks passed');
+
+const assigned={...manualTasks[1],status:'assigned',assignee:'seann',assignment_issue:81};
+const releaseURL=new URL(T.requestURL(assigned,'seann','release'));
+assert.equal(releaseURL.searchParams.get('title'),'[Kuina release] batch-one');
+const releaseRequest=JSON.parse(releaseURL.searchParams.get('body').split('<!-- kuina-request-v1\n')[1].split('\n-->')[0]);
+assert.deepEqual(releaseRequest,{version:1,action:'release',task_id:'batch-one',person:'seann',assignment_issue:81});
+assert.throws(()=>T.requestURL({...assigned,assignment_issue:null},'seann','release'));
+assert.throws(()=>T.requestURL({...assigned,assignment_issue:0},'seann','release'));
+assert.throws(()=>T.requestURL({...assigned,status:'active'},'seann','release'));
+assert.throws(()=>T.requestURL(assigned,'juan','release'));
+console.log('Release requests bind the exact assignment issue and unstarted owner');

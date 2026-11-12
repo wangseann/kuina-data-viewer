@@ -1,12 +1,70 @@
 {
-  "schema": "kuina-agent-coordination-v2",
+  "schema": "kuina-agent-coordination-v3",
   "authoritative_store": "Private shared Kuina task hub, configured by AGENT_TASKS.md",
   "poll_interval_hours": 24,
   "public_snapshot": "tasks-summary.json",
-  "review_batches": {"maximum_catalogue_records": 500, "lead_continuity": true, "assignment_basis": "outstanding review records", "eligible_records": "skipped by read-batch", "parent_jobs": "retained as nonclaimable coordination records"},
-  "commands_use_environment": ["KUINA_TASK_MANAGER", "KUINA_TASK_HUB"],
-  "requirements": {"max_native_interval_seconds": 900, "minimum_calendar_years": 2, "unexplained_gaps_allowed": 0},
-  "workflow": ["list next assigned tasks; resume active work first", "atomic claim; stop if denied", "read-batch for the exact private catalogue section", "inspect existing data and metadata using the dataset lead's shared decisions", "submit deduplicated repair scope across batches", "verify source feasibility before collection", "run bounded authorized work", "report provenance", "await matching independent eligibility audit"],
-  "claims": {"website_can_claim": false, "automatic_expiry": false, "reassignment_requires_reconciliation": true},
-  "publication": "Only roster, aggregate counts and whitelisted task statuses are public. Targets, paths, reports and evidence remain private."
+  "public_snapshot_schema": 3,
+  "review_batches": {
+    "maximum_catalogue_records": 500,
+    "assignment_basis": "participant chooses available work",
+    "eligible_records": "skipped by read-batch",
+    "parent_jobs": "retained as unassigned nonclaimable coordination records"
+  },
+  "commands_use_environment": [
+    "KUINA_TASK_MANAGER",
+    "KUINA_TASK_HUB"
+  ],
+  "requirements": {
+    "max_native_interval_seconds": 900,
+    "minimum_calendar_years": 2,
+    "unexplained_gaps_allowed": 0
+  },
+  "assignment_requests": {
+    "repository": "wangseann/kuina-data-viewer",
+    "transport": "GitHub issue created by participant using normal website link",
+    "title": "[Kuina claim] TASK_ID or [Kuina release] TASK_ID",
+    "marker": "kuina-request-v1",
+    "payload_fields": [
+      "version",
+      "action",
+      "task_id",
+      "person"
+    ],
+    "version": 1,
+    "actions": [
+      "assign",
+      "release"
+    ],
+    "confirmation": "Mac broker validates author and request, atomically reserves or releases in Native, and records result on issue; snapshot then reflects confirmed status",
+    "request_is_assignment": false,
+    "release_payload_fields": [
+      "version",
+      "action",
+      "task_id",
+      "person",
+      "assignment_issue"
+    ],
+    "release_generation": "positive assignment_issue must match the current reservation origin"
+  },
+  "workflow": [
+    "choose your identity and an available batch on the website",
+    "submit the prepared GitHub issue and wait for broker confirmation",
+    "list your assigned tasks; resume active work first",
+    "claim using your own Native agent process and stop if denied",
+    "read-batch for the exact private catalogue section",
+    "inspect existing data and metadata and reuse shared source findings",
+    "submit deduplicated repair scope across batches",
+    "verify source feasibility before collection",
+    "run bounded authorized work",
+    "report provenance",
+    "await matching independent eligibility audit"
+  ],
+  "claims": {
+    "website_can_request_assignment": true,
+    "website_creates_worker_claim": false,
+    "automatic_expiry": false,
+    "release_allowed": "own reservation only before a real worker claim exists",
+    "reassignment_requires_reconciliation": true
+  },
+  "publication": "Only roster, aggregate counts, whitelisted task statuses and GitHub assignment requests are public. Catalogue scopes, targets, paths, reports and evidence remain private."
 }

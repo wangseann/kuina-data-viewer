@@ -66,27 +66,34 @@ its CSP blocks network connections. No observations or populated private
 catalogues belong in this repository. Historical HTML payloads can be imported
 as data, without executing the selected HTML or trusting its old pass labels.
 
-`docs/tasks.html` shows dataset leads, bounded review batches and filterable progress. The static
-website cannot claim tasks. Agents use the private shared-filesystem CLI described
-in [coordination/README.md](coordination/README.md) and the private hub's
-`AGENT_TASKS.md`. Exclusive persistent claims prevent duplicate work; source and
-window overlap checks combine warnings for the same repair. Completion waits for
-coordinator verification, and collection repairs need a fresh matching eligibility
-audit. No participant's agent is installed or run by this website.
+`docs/tasks.html` shows available batches, confirmed assignees and filterable
+progress. Choose your name explicitly, select an available batch and submit its
+prepared GitHub claim issue. The Mac broker validates the request, atomically
+reserves the task in the private Native hub and records its result on GitHub.
+Requests stay pending until confirmed; selecting a name or opening a link does
+not reserve work. There are no dataset leads, effort weights or automatic
+assignments in self-service mode.
 
-Review batches contain at most 500 saved catalogue records. Original dataset
-leads remain responsible for shared decisions; batches can be distributed by
-outstanding record count across the team. Private selectors pin the source
-manifest, page hash and disjoint row ranges. Already-eligible records in mixed
-pages are skipped when agents read a batch. Source groups with unknown series
-counts remain separate inventory work, visible in the quality counts.
+The participant's own agent then creates the actual persistent worker claim using
+the private shared-filesystem CLI in [coordination/README.md](coordination/README.md)
+and the hub's `AGENT_TASKS.md`. A reservation is distinct from a worker claim.
+Only your own unstarted assignment offers a release request, bound to its current
+GitHub assignment issue so an old request cannot release a later reservation.
+No participant's agent is installed or run by the website. Source/window overlap
+checks prevent duplicate repairs. Completion waits for coordinator verification;
+collection repairs require a fresh matching eligibility audit.
 
-The public board shows 40 jobs at a time, distinguishes lead from assignee, and
-counts review records rather than treating every category as one unit of work.
-Its closed schema accepts at most 20,000 tasks and 16 MiB of status metadata.
-It contains no source selectors or observed values. Earlier queued parent jobs
-are retained as coordination records; persistent reservations prevent older
-clients from claiming them after subdivision. Existing worker claims are kept.
+Review batches contain at most 500 saved catalogue records. Private selectors pin
+the source manifest, page hash and disjoint row ranges. Already-eligible records
+in mixed pages are skipped by `read-batch`. Shared findings can be reused across
+batches. Source groups with unknown series counts remain separate inventory work.
+
+The public board shows 40 jobs per page, dataset availability and actual assigned
+review counts. Its closed schema 3 accepts at most 20,000 tasks and 16 MiB of
+status metadata, with no source selectors, observed values, leads, effort or load.
+Schemas 1/2 remain readable during transition and expose no claim links. Batched
+parents stay unassigned coordination records. Protected legacy sentinels prevent
+old clients bypassing the new policy; real existing worker claims are preserved.
 
 The series inspector preserves known field meanings and shows the outcome of each
 warning review, including what existing information was checked and what remains

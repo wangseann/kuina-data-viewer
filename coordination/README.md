@@ -6,6 +6,128 @@ evidence, update counts, or turn the website green. Only an independently audite
 counts update may change dataset eligibility. A verified triage/metadata/preflight
 task certifies its reviewed plan, never the dataset.
 
+## Self-service batches (explicit opt-in)
+
+The coordinator enables the current policy once, after the existing catalogue has
+been partitioned into batches of at most 500 records:
+
+```sh
+python3 -B coordination/task_manager.py --hub "$HUB" enable-self-service
+python3 -B coordination/task_manager.py --hub "$HUB" list --available --category stocks --limit 20 --offset 0
+python3 -B coordination/task_manager.py --hub "$HUB" assign TASK --person juan --issue 42 --github-author volunteer
+python3 -B coordination/task_manager.py --hub "$HUB" assignment-status TASK
+python3 -B coordination/task_manager.py --hub "$HUB" claim TASK --person juan
+python3 -B coordination/task_manager.py --hub "$HUB" release-assignment TASK --person juan --github-author volunteer
+```
+
+People choose available work. There are no category leads, automatic assignments,
+or effort weights in this mode. Historical definitions, hashes, catalogue slices,
+and genuine existing worker claims remain unchanged. New proposals may omit
+`effort`; it is deprecated and has no operational effect. Admitted work and newly
+seeded work have no assignee until reserved or claimed. Splitting and historical
+allocation/load helpers are disabled after enablement; finish partitioning first.
+The older allocation descriptions below apply only while self-service is off.
+
+A Mac broker validates GitHub issue authors and structured requests, then calls
+owner-only `assign` or `release-assignment`. This backend has no credentials,
+provider calls or polling. An assignment reserves the task without pretending a
+worker has started. `assign` returns exactly `{status, task_id, person, issue}`;
+repeating the same person retains the original issue and returns the current
+status. Another person conflicts. `assignment-status` returns exactly
+`{task_id, status, assignee, assignment_issue}`, a safe reconciliation response
+without selectors, scopes or paths. `assignment_issue` is null or a positive
+GitHub issue number from the current reservation.
+
+The participant's own Native process runs `claim` and records its actual Unix UID,
+asserted roster person and unchanged definition hash in `work-claims/TASK/owner.json`.
+An available task or that person's reservation may be claimed. `report` requires
+the actual owning UID/person/hash, including for grandfathered legacy claims.
+`list --person` filters actual assignments and prioritizes active, blocked,
+awaiting-verification, then assigned work. `show`/`list` expose the effective
+assignee and original `task_sha256`, omitting historical `lead` and `effort`.
+`read-batch` retains the original selectors and bounded reader checks.
+
+Reservations live in coordinator-owned, owner-writable `assignments/` (0755,
+records 0644), readable by trusted project users and never published. Each record
+binds the raw task hash and keeps the original issue/author, current reservation
+and release history. Only its origin author (case-insensitive GitHub login) or
+an explicit `--coordinator` release may release a reservation, and only before
+any real worker claim exists. The owner-only release receipt has the same four
+keys as `assign`, with `status: "available"`. No real claim is removed or reassigned.
+
+`work-claims/` and `task-locks/` are coordinator-owned sticky 1777 directories.
+Claim directories are actual-worker-owned 0755, with 0644 records independent of
+umask. Assignment, release and claim share the same exclusive per-task `mkdir`
+lock. An existing lock is never stolen or automatically retried. Sticky parents
+prevent another participant removing a worker's claim or lock. This retains the
+trusted-participant identity model described below; it adds no login enrollment.
+
+Migration creates legacy-compatible sentinel claims for every unclaimed leaf:
+original assignee/hash, actual coordinator UID, and current UTC claim time in the
+old `claims/` path. Their exact IDs are stored in protected `self-service.json`.
+Legacy clients therefore cannot claim these tasks; current clients ignore
+sentinels as worker ownership. Original batched parent reservations keep the old
+validation path. A legacy worker winning the exact atomic-mkdir migration race
+is preserved as a real claim. Migration does not rewrite definitions or claims.
+
+Migration starts with a protected `status: "migrating"` record and an exclusive
+`.self-service-migration-lock/`. A small fsynced `sentinels.jsonl` journal in that
+lock records successfully created sentinel IDs/hashes. Only after all leaves
+are reconciled does one atomic write publish `status: "enabled"` and the complete
+sentinel list; successful migration then removes its journal/lock. Interruptions
+retain state and locks and fail closed for current clients. An interruption
+between creating a sentinel and appending its journal entry can leave one
+unrecorded directory that must also be inspected. Never delete locks or blindly
+repeat an uncertain migration. Manual reconciliation is required; there is no
+automatic resume. The mode configuration is cached once per Hub/CLI invocation;
+restart long-lived readers after deliberate migration.
+
+Only enabled hubs publish schema 3. Its root has exactly `schema_version`,
+`updated_at`, `profile`, `people`, `tasks`, `batch_limit` (500). Each task has exactly
+`id`, `category`, `kind`, `status`, `assignee`, `affected_series`, `issues`,
+`created_at`, `updated_at`, `parent_id`, `batch_number`, `batch_total`,
+`assignment_issue`. Status is `available`, `assigned`, `active`, `blocked`,
+`awaiting_verification`, `verified` or `batched`. Only available/batched tasks
+have null assignees; batched parents have no person or assignment issue.
+Each person has exactly `id`, `name`, `assigned`, `active`,
+`awaiting_verification`, `verified`, `remaining_series`. Blocked work counts as
+active. Counts include only that person's actual reservations/claims;
+`remaining_series` sums unfinished triage leaves, never duplicate parents.
+There are no public lead/effort/load fields. The strict validator rejects all
+other fields, validates complete parent/batch numbering and recomputes totals.
+Schema 1/2 remain unchanged for hubs that have not enabled this policy.
+
+## GitHub request service
+
+The scheduled Mac entry point is `python3 -B -m coordination.claim_service`
+with `--config`, `--state` and `--receipt` pointing to private local JSON files.
+Its private configuration contains `repo`, `host`, `cli`, `hub` and `publisher`
+(an argv list for the existing metadata publisher); optional `gh` selects its CLI.
+Do not put tokens or private configuration in this repository. GitHub credentials
+come from the Mac's existing authenticated `gh` account.
+
+The service uses a nonblocking local lock, a persistent fair issue cursor and
+atomic local terminal receipts written **before** posting/closing GitHub requests.
+Successful queue writes additionally retain immutable request outcomes atomically
+in the private reservation record. `request-status TASK --issue NUMBER` returns
+null or exactly `{task_id, request_issue, action, person, status}`, with
+`confirmed` or `released` as the historical result. Reopening a completed request
+never repeats its assignment action. Current ownership must still be checked.
+
+Release payloads include the displayed positive `assignment_issue`. The broker
+passes `--request-issue` and `--assignment-issue`; the backend checks the original
+reservation generation before release. A stale request cannot release a later
+reservation. Started work cannot be released. The broker never executes issue
+text, runs collection or publishes private reports. Test-labelled integration
+requests are ignored by production discovery.
+
+The broker polls once a minute while the maintainer Mac is awake and connected,
+then requests a metadata refresh after processed requests. Failed publication is
+retained for retry. Worker status changes also use the existing 15-minute sync.
+GitHub Pages build latency is separate from the authoritative reservation.
+
+## Legacy allocation policy (self-service off)
+
 The nine explicitly requested names are the roster. Initial seed creates one
 bounded triage task per dataset type, including private aggregate issue totals,
 source-failure totals, and source audit/assessment timestamps. IDs are stable by

@@ -3,30 +3,36 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
-<title>Kuina · Agent task manager</title>
+<title>Kuina · Shared task manager</title>
 <link rel="stylesheet" href="explorer.css"><link rel="stylesheet" href="tasks.css">
 <script src="tasks-core.js" defer></script><script src="explorer-reasons.js" defer></script><script src="tasks.js" defer></script>
 </head>
 <body><main>
 <header><nav><a href="index.html">Quality counts</a> · <a href="explorer.html">Inspect series</a> · <a href="tasks.html" aria-current="page">Agent tasks</a></nav>
-<p class="eyebrow">Kuina · Shared data improvement</p><h1>Small batches. Clear responsibility.</h1>
-<p>Each dataset keeps its original lead. Review work is divided into batches of at most 500 catalogue records, with a separate assignee for each batch. The private Kuina queue is authoritative; this public page is a status snapshot.</p>
+<p class="eyebrow">Kuina · Shared data improvement</p><h1>Choose a batch. Make progress.</h1>
+<p>Pick available work in batches of at most 500 catalogue records. Everyone chooses their own batches. The private Kuina queue is authoritative; this page shows its confirmed status.</p>
 <div class="requirements">15 minutes or finer · At least two years · No unexplained gaps</div>
 <p id="batch-note" class="small"></p>
 </header>
-<section class="panel"><div class="heading"><h2>Team workload</h2><button id="refresh">Refresh status</button></div><p id="sync" role="status" aria-live="polite">Loading the shared task snapshot…</p><div id="people" class="people"></div>
-<p class="small">Workload counts outstanding review records, rather than treating a million-series dataset as one job. Record counts are a guide to scope, not an estimate of hours. Verified planning tasks do not make data eligible.</p></section>
-<section class="panel"><h2>Dataset leads and batch progress</h2><p>The lead maintains continuity across the dataset. Batch assignees handle bounded sections of its catalogue. Common source fixes should be recorded once and reused across batches.</p><div class="scroll"><table><thead><tr><th>Dataset</th><th>Lead</th><th>Verified / total batches</th><th>Records in review scope</th><th>Outstanding review records</th></tr></thead><tbody id="leads"></tbody></table></div></section>
+<section class="panel"><div class="heading"><h2>Choose your work</h2><button id="refresh">Refresh status</button></div>
+<div class="controls"><label>I am<select id="identity"><option value="">Choose your name</option></select></label><button id="available-work">Available batches</button><button id="my-work" disabled>My work</button></div>
+<p>Choose a batch below and select <strong>Claim via GitHub</strong>. GitHub opens a prepared request: submit the issue using your GitHub account. The Mac broker checks the live queue and records the result on that issue. A request becomes an assignment only after confirmation.</p>
+<p id="request-note" role="status" aria-live="polite">No request sent from this page. Selecting your name does not reserve any work.</p>
+<p id="sync" role="status" aria-live="polite">Loading the confirmed task snapshot…</p>
+<p class="small">If two people request the same batch, the first successful reservation wins. Refresh to see confirmed changes. Assignment requests do not start an agent or run collection.</p></section>
+<section class="panel"><h2>Team progress</h2><div id="people" class="people"></div>
+<p class="small">Counts reflect confirmed assignments and actual worker claims. Remaining review records measure scope, not hours. Blocked work stays with its assignee. Verified planning tasks do not make data eligible.</p></section>
+<section class="panel"><h2>Availability by dataset</h2><p>Choose any available batch. Shared source findings and repair plans can be reused across batches.</p><div class="scroll"><table><thead><tr><th>Dataset</th><th>Available jobs</th><th>Available review records</th><th>Verified / total batches</th><th>Review records remaining</th></tr></thead><tbody id="categories"></tbody></table></div></section>
 <section class="panel"><div class="heading"><h2>Review and repair queue</h2><span id="task-count"></span></div>
-<div class="controls"><label>Assigned to<select id="person"><option value="all">Everyone</option></select></label><label>Dataset type<select id="category"><option value="all">All types</option></select></label><label>Progress<select id="status"><option value="all">All statuses</option></select></label></div>
+<div class="controls"><label>Assignee<select id="person"><option value="all">Everyone</option></select></label><label>Dataset type<select id="category"><option value="all">All types</option></select></label><label>Progress<select id="status"><option value="all">All statuses</option></select></label></div>
 <div class="pager"><button id="previous">← Previous</button><span id="page"></span><button id="next">Next →</button></div>
-<div class="scroll"><table><thead><tr><th>Batch / dataset</th><th>Assignee / lead</th><th>Work</th><th>Progress</th><th>Records in scope</th><th>Dataset warnings to check</th><th>Agent command</th></tr></thead><tbody id="task-list"></tbody></table></div>
-<p class="small">Only 40 jobs are displayed at once. Batch scopes are disjoint saved-catalogue row ranges. A mixed page can include already-eligible records; the agent skips those. Dataset warnings are guidance, not a claim that every record has every warning. Source groups whose series count is unknown remain listed on the quality-counts page.</p></section>
-<section class="panel"><h2>Connect your agent</h2><p>Use the <strong>AGENT_TASKS.md</strong> instructions in the private Kuina project hub to set the shared hub and task-manager paths. Configure your own agent to check once a day.</p>
-<pre><code id="poll-command">python3 "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" list --person juan</code></pre><p class="small">Replace <code>juan</code> with your lowercase participant ID. This website does not install or run anyone's agent.</p>
-<ol><li>Read your next assignments and claim one atomically in the shared hub. If the claim fails, do not start it.</li><li>Use <code>read-batch TASK_ID</code> to read its exact private catalogue section. Skip eligible records and inspect existing information first. Follow the dataset lead's shared decisions.</li><li>Propose one repair per underlying source/instrument/window, combining warnings and numeric fields even when they appear in different review batches. Shared scope checks prevent duplicate collection.</li><li>Before collection, verify the provider can meet the interval, history and coverage requirements. Keep prior releases and use your approved execution environment.</li><li>Report the work and provenance. Data repairs wait for a new matching eligibility audit before they can be verified.</li></ol>
-<p>Claims never expire automatically. A blocked or abandoned task needs reconciliation before anyone takes it over. Do not start a second copy because this page looks stale.</p>
-<p>Some sources are inherently daily, weekly or too young. Mark those as blocked with a specific reason or propose a compatible alternative; copying values onto a finer grid does not meet the requirements.</p>
-<p class="small">Public: names, counts and task status. Private: collection targets, source paths, claims, reports and evidence. <a href="agent-protocol.json">Machine-readable workflow</a>.</p>
+<div class="scroll"><table><thead><tr><th>Batch / dataset</th><th>Assignee</th><th>Work</th><th>Progress</th><th>Records in scope</th><th>Dataset warnings to check</th><th>Actions</th></tr></thead><tbody id="task-list"></tbody></table></div>
+<p class="small">40 jobs per page. Batches use disjoint saved-catalogue row ranges. Your agent skips already-eligible records in a mixed page. Warnings guide inspection; they do not imply every record has every warning. Inventory tasks can describe a category that has not been divided into review batches.</p></section>
+<section class="panel"><h2>Start your agent after confirmation</h2><p>Use <strong>AGENT_TASKS.md</strong> in the private Kuina project hub to set the shared hub and task-manager paths. Configure your own agent to check your assignments once a day. Selecting “I am” above fills your participant ID here.</p>
+<pre><code id="poll-command">python3 "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" list --person YOUR_PERSON_ID</code></pre>
+<ol><li>Resume your active work first. For a confirmed assignment, run its copied agent claim command. Only your own Native process creates the actual worker claim. If that claim fails, stop before starting work.</li><li>Use <code>read-batch TASK_ID</code> to read the exact private catalogue section. Skip eligible records and inspect existing data and metadata first.</li><li>Propose one repair per underlying source/instrument/window, combining warnings and numeric fields across batches. Shared scope checks prevent duplicate collection.</li><li>Before collection, verify the provider can meet the interval, history and coverage requirements. Use your approved execution environment and bounded resource policy.</li><li>Report work and provenance. Data repairs wait for a new matching eligibility audit before verification.</li></ol>
+<p>You may request release of your own assignment before a worker claim exists. Once work starts, claims never expire automatically; blocked or abandoned work requires coordinator reconciliation. Do not start a second copy because a snapshot looks stale.</p>
+<p>Some sources are daily, weekly or too young. Report a specific blocker or propose a compatible alternative. Copying values onto a finer grid does not meet the requirements.</p>
+<p class="small">Public: names, counts, statuses and GitHub assignment requests. Private: catalogue scopes, collection targets, paths, worker claims, reports and evidence. <a href="agent-protocol.json">Machine-readable workflow</a>.</p>
 </section>
 </main></body></html>
