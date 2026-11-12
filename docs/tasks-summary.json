@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-12T07:36:41.047376+00:00",
+  "updated_at": "2026-11-12T07:43:38.692702+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -73,8 +73,8 @@
     {
       "id": "th",
       "name": "TH",
-      "assigned": 1,
-      "active": 0,
+      "assigned": 0,
+      "active": 1,
       "awaiting_verification": 0,
       "verified": 0,
       "remaining_series": 500
@@ -91,11 +91,11 @@
     {
       "id": "vitoria",
       "name": "Vitoria",
-      "assigned": 0,
+      "assigned": 1,
       "active": 0,
       "awaiting_verification": 0,
       "verified": 0,
-      "remaining_series": 0
+      "remaining_series": 500
     },
     {
       "id": "olga",
@@ -248053,8 +248053,8 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:51:35.292213+00:00",
-      "status": "assigned",
-      "updated_at": "2026-11-12T07:21:40.542453+00:00",
+      "status": "active",
+      "updated_at": "2026-11-12T07:38:13.813059+00:00",
       "assignee": "th",
       "issues": [
         "availability_unverified",
@@ -260348,9 +260348,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:51:41.540649+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:51:41.540649+00:00",
-      "assignee": null,
+      "status": "assigned",
+      "updated_at": "2026-11-12T07:42:55.593129+00:00",
+      "assignee": "vitoria",
       "issues": [
         "aggregation_unverified",
         "availability_unverified",
@@ -260368,7 +260368,7 @@
       "parent_id": "triage-f2e8fda3848fb74b83110e9b",
       "batch_number": 8,
       "batch_total": 12,
-      "assignment_issue": null
+      "assignment_issue": 9
     },
     {
       "id": "batch-e873c21467368d356f4bbfdf-000009",
