@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-12T07:31:26.920803+00:00",
+  "updated_at": "2026-11-12T07:36:41.047376+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -82,11 +82,11 @@
     {
       "id": "jion",
       "name": "Jion",
-      "assigned": 0,
+      "assigned": 1,
       "active": 0,
       "awaiting_verification": 0,
       "verified": 0,
-      "remaining_series": 0
+      "remaining_series": 11
     },
     {
       "id": "vitoria",
@@ -248083,9 +248083,9 @@
       "kind": "triage",
       "affected_series": 11,
       "created_at": "2026-11-12T00:51:35.292213+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:51:35.292213+00:00",
-      "assignee": null,
+      "status": "assigned",
+      "updated_at": "2026-11-12T07:35:47.124422+00:00",
+      "assignee": "jion",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -248105,7 +248105,7 @@
       "parent_id": "triage-da8e0563bd544db2fc5eb037",
       "batch_number": 2,
       "batch_total": 6,
-      "assignment_issue": null
+      "assignment_issue": 8
     },
     {
       "id": "batch-d8e20a1279d4f0d523551d8d-000003",
