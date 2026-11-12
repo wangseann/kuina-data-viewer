@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-12T01:50:41.886860+00:00",
+  "updated_at": "2026-11-12T04:11:21.852441+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -46,11 +46,11 @@
     {
       "id": "seann",
       "name": "Seann",
-      "assigned": 0,
+      "assigned": 1,
       "active": 0,
       "awaiting_verification": 0,
       "verified": 0,
-      "remaining_series": 0
+      "remaining_series": 445
     },
     {
       "id": "taha",
@@ -9477,9 +9477,9 @@
       "kind": "triage",
       "affected_series": 445,
       "created_at": "2026-11-12T00:49:49.085642+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:49:49.085642+00:00",
-      "assignee": null,
+      "status": "assigned",
+      "updated_at": "2026-11-12T04:10:34.509989+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -9500,7 +9500,7 @@
       "parent_id": "triage-9e0c2ef9860c98a7ba4d693d",
       "batch_number": 1,
       "batch_total": 2149,
-      "assignment_issue": null
+      "assignment_issue": 4
     },
     {
       "id": "batch-68ea6385a681055aeeee6e98-000002",
