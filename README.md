@@ -1,7 +1,8 @@
 # Kuina dataset quality counts
 
-Public, buildless GitHub Pages dashboard. Only code and aggregate quality counts
-are published. The user also authorized the nine volunteer names and a sanitized
+Public, buildless GitHub Pages dashboard. Code, aggregate quality counts, and an
+approved sample of series names, field labels, public source labels and native
+intervals are published. The user also authorized the nine volunteer names and a sanitized
 task-status board. Observations, data-bearing plot exports, collection scopes and
 agent reports stay in private project storage.
 
@@ -21,7 +22,15 @@ proof. A striped square retains every applicable failure colour. Each excluded
 series occupies exactly one failure-combination bucket; overlapping reason
 counts must never be summed as if they were distinct series. Large grids display
 a labelled sample while the tables retain the exact counts. The current viewer
-uses larger squares that wrap to the available window width. Each failure reason
+uses larger squares that wrap to the available window width. Hover over a square
+to read its actual series name, field, public source, native interval and failure
+combination. Names are loaded only after their complete closed-schema snapshot
+matches the counts digest, audit dates, visible tile quotas and every failure
+mask. Missing, stale or invalid names leave the counts and colours available
+without assigning a guessed name. The named sample is bounded to 20,000 eligible
+and 4,000 excluded squares per dataset type; its JSON download is capped at 32 MiB.
+No observed values, timestamp arrays, private paths or private catalogue pages
+are included. Each failure reason
 has a plain-English explanation, including why missing proof prevents a pass.
 
 The shared `failure_codes.py` is a metadata-only policy helper; this repository
@@ -35,7 +44,7 @@ Unreadable sources or groups without a validated time/value table are counted
 separately; their unknown series counts are never estimated. Duplicate versions
 do not add series, while distinct sources, quote variants and native intervals
 remain separate. The private Kuina report lists each identified series and all
-its checks; this public site contains no series identifiers.
+its checks; the public hover index contains opaque identifiers for matching approved named tiles.
 
 Schemas 1 and 2 remain readable for historical snapshots. Their provisional
 sentiment and overlapping additional-source counts must not be added to the
@@ -106,3 +115,14 @@ pages and separate lazy preview pages. The source audit date, assessment date,
 grey; endpoint dates alone never imply complete coverage. The catalogue generator
 and observation-preview pipeline run under the research project's execution
 rules. An empty viewer is not evidence that the complete catalogue was generated.
+
+`series_names.py` exports the displayed named sample from a pinned existing
+`kuina-inspection-v1` catalogue. It streams saved audit metadata, verifies every
+page hash and all category/failure-mask totals, and copies only the closed public
+display fields. It never opens source observations or changes eligibility. Run it
+through the approved research execution route; the CLI requires a fresh output
+directory and explicit catalogue SHA256. Validate the resulting name index against
+the matching counts before publishing it as `docs/series-names.json`. New audit
+counts require a matching name export; until then the browser disables stale names
+instead of guessing their correspondence. The counts publisher cannot generate
+new names from aggregate counts alone.

@@ -5,7 +5,11 @@ Never commit dataset observations, data-bearing HTML exports, timestamp arrays,
 credentials or private collection targets, paths and agent reports. The user's
 November 2026 task-manager request authorizes the nine volunteer names and a
 whitelisted public task-status snapshot. The private Kuina hub owns authoritative
-claims, collection scopes and delegation records; this repository does not run
+claims, collection scopes and delegation records. The 12 November series-hover
+request additionally authorizes a closed, audit-bound name index containing only
+series hashes, public display names, numeric field names, provider labels, native
+intervals and failure masks. No observations, private paths or source references
+belong in that index. This repository does not run
 collection or scientific audits. Never publish arbitrary task/report text.
 
 Historical snapshots treated 129 derived sentiment signals as provisional.
