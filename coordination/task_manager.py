@@ -4,10 +4,14 @@ import argparse
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
 import hashlib
+import gzip
+import io
 import json
 import os
 from pathlib import Path
 import re
+import shutil
+import stat
 import sys
 import tempfile
 import uuid
@@ -100,8 +104,15 @@ def overlaps(left, right):
 
 def validate_public_snapshot(data):
     """Fail closed before publishing the explicitly authorized aggregate schema."""
-    require(isinstance(data, dict) and set(data) == {'schema_version', 'updated_at', 'profile', 'people', 'tasks'}, 'invalid snapshot fields')
-    require(type(data['schema_version']) is int and data['schema_version'] == 1, 'invalid snapshot version')
+    require(isinstance(data, dict), 'invalid snapshot')
+    version = data.get('schema_version')
+    require(type(version) is int and version in (1, 2), 'invalid snapshot version')
+    require(len(json.dumps(data).encode()) <= 16 * 1024 * 1024, 'public snapshot exceeds 16 MiB')
+    batched = version == 2
+    root_fields = {'schema_version', 'updated_at', 'profile', 'people', 'tasks'}
+    require(set(data) == root_fields | ({'batch_limit'} if batched else set()), 'invalid snapshot fields')
+    if batched:
+        require(type(data['batch_limit']) is int and data['batch_limit'] == 500, 'invalid batch limit')
     require(data['profile'] == PROFILE and all(type(data['profile'][k]) is int for k in PROFILE), 'invalid profile')
 
     def timestamp(value):
@@ -115,15 +126,23 @@ def validate_public_snapshot(data):
     require(isinstance(data['people'], list) and len(data['people']) == len(PEOPLE), 'invalid public roster')
     expected = {p: dict(id=p, name=name, queued=0, active=0, awaiting_verification=0, verified=0, load=0)
                 for p, name in PEOPLE.items()}
-    require(isinstance(data['tasks'], list) and len(data['tasks']) <= 10000, 'invalid public task list')
-    seen = set()
+    if batched:
+        for person in expected.values():
+            person.update(batched=0, remaining_series=0)
+    require(isinstance(data['tasks'], list) and len(data['tasks']) <= (20000 if batched else 10000), 'invalid public task list')
+    rows = {}
+    children = {}
     for task in data['tasks']:
-        require(isinstance(task, dict) and set(task) == {'id', 'category', 'kind', 'status', 'assignee', 'effort', 'affected_series', 'issues', 'created_at', 'updated_at'}, 'invalid public task fields')
+        fields = {'id', 'category', 'kind', 'status', 'assignee', 'effort', 'affected_series', 'issues', 'created_at', 'updated_at'}
+        if batched:
+            fields |= {'lead', 'parent_id', 'batch_number', 'batch_total'}
+        require(isinstance(task, dict) and set(task) == fields, 'invalid public task fields')
         identifier(task['id'])
-        require(task['id'] not in seen, 'duplicate task ID')
-        seen.add(task['id'])
+        require(task['id'] not in rows, 'duplicate task ID')
+        rows[task['id']] = task
         require(task['category'] in IDS and task['kind'] in KINDS and task['assignee'] in PEOPLE, 'invalid public task category/kind/person')
-        require(task['status'] in ('queued', 'active', 'blocked', 'awaiting_verification', 'verified'), 'invalid public task status')
+        statuses = ('queued', 'active', 'blocked', 'awaiting_verification', 'verified') + (('batched',) if batched else ())
+        require(task['status'] in statuses, 'invalid public task status')
         number(task['effort'], 100)
         require(task['effort'] > 0, 'effort must be positive')
         number(task['affected_series'])
@@ -131,16 +150,44 @@ def validate_public_snapshot(data):
         require(len(set(task['issues'])) == len(task['issues']), 'duplicate public reasons')
         timestamp(task['created_at'])
         timestamp(task['updated_at'])
+        if batched:
+            require(task['lead'] in PEOPLE, 'invalid category lead')
+            number(task['batch_number'], 20000)
+            number(task['batch_total'], 20000)
+            if task['parent_id'] is not None:
+                identifier(task['parent_id'])
+                require(task['kind'] == 'triage' and task['status'] != 'batched', 'invalid batch kind/status')
+                require(0 < task['affected_series'] <= 500 and 0 < task['batch_number'] <= task['batch_total'], 'invalid batch range/count')
+                require(task['effort'] == min(5, (task['affected_series'] + 99) // 100), 'invalid batch effort')
+                children.setdefault(task['parent_id'], []).append(task)
+            else:
+                require(task['batch_number'] == 0, 'unexpected batch number')
+                require((task['status'] == 'batched') == (task['batch_total'] > 0), 'invalid parent batch status')
         person = expected[task['assignee']]
         person['active' if task['status'] == 'blocked' else task['status']] += 1
-        if task['status'] != 'verified':
+        if task['status'] not in ('verified', 'batched'):
             person['load'] += task['effort']
+            if batched and task['kind'] == 'triage':
+                person['remaining_series'] += task['affected_series']
+    if batched:
+        for task in rows.values():
+            if task['status'] == 'batched':
+                require(task['id'] in children and task['kind'] == 'triage' and task['lead'] == task['assignee'], 'missing batches or invalid lead')
+        for parent_id, batches in children.items():
+            parent = rows.get(parent_id)
+            require(parent is not None and parent['status'] == 'batched' and parent['parent_id'] is None, 'invalid batch parent')
+            total = parent['batch_total']
+            require(len(batches) == total and {t['batch_number'] for t in batches} == set(range(1, total + 1)), 'inconsistent batch numbering')
+            require(all(t['batch_total'] == total and t['category'] == parent['category'] and t['lead'] == parent['assignee'] for t in batches), 'inconsistent batch ownership/category')
     seen_people = set()
     for person in data['people']:
-        require(isinstance(person, dict) and set(person) == {'id', 'name', 'queued', 'active', 'awaiting_verification', 'verified', 'load'}, 'invalid public person fields')
+        fields = {'id', 'name', 'queued', 'active', 'awaiting_verification', 'verified', 'load'}
+        if batched:
+            fields |= {'batched', 'remaining_series'}
+        require(isinstance(person, dict) and set(person) == fields, 'invalid public person fields')
         require(isinstance(person['id'], str) and person['id'] in PEOPLE and person['id'] not in seen_people, 'invalid public person')
         seen_people.add(person['id'])
-        for key in ('queued', 'active', 'awaiting_verification', 'verified', 'load'):
+        for key in fields - {'id', 'name'}:
             number(person[key])
         require(person == expected[person['id']], 'public person totals/name mismatch')
     return data
@@ -185,15 +232,59 @@ class Hub:
         finally:
             lock.rmdir()
 
-    def task(self, task_id):
-        path = self.root / 'tasks' / (identifier(task_id) + '.json')
+    def batch_plans(self):
+        directory = self.root / 'batch-plans'
+        if not directory.exists():
+            return {}
+        self.protected(directory)
+        require(not list(directory.glob('.*.incoming')), 'interrupted batch staging requires manual reconciliation')
+        plans = {}
+        for path in sorted(directory.iterdir()):
+            require(path.is_dir() and not path.name.startswith('.'), 'unexpected batch plan; reconcile manually')
+            self.protected(path / 'plan.json')
+            plan = read(path / 'plan.json')
+            fields = {'manifest_path', 'manifest_sha256', 'assignment', 'batch_size', 'parent_id',
+                      'parent_sha256', 'child_prefix', 'batch_total', 'activated_at'}
+            require(isinstance(plan, dict) and set(plan) == fields, 'invalid batch plan; reconcile manually')
+            require(plan['assignment'] in ('lead', 'balanced') and type(plan['batch_size']) is int and
+                    1 <= plan['batch_size'] <= 500, 'invalid batch policy; reconcile manually')
+            require(type(plan['batch_total']) is int and 1 <= plan['batch_total'] <= 20000,
+                    'invalid batch total; reconcile manually')
+            require(isinstance(plan['manifest_path'], str) and Path(plan['manifest_path']).is_absolute() and
+                    isinstance(plan['manifest_sha256'], str) and re.fullmatch('[0-9a-f]{64}', plan['manifest_sha256']),
+                    'invalid manifest pin; reconcile manually')
+            require(instant(plan['activated_at']) <= datetime.now(timezone.utc), 'invalid batch activation time')
+            parent = self._read_task(self.root / 'tasks' / (identifier(path.name) + '.json'))
+            require(plan['parent_id'] == parent['id'] and plan['parent_sha256'] == digest(parent), 'batch parent changed; reconcile manually')
+            require(plan['child_prefix'] == 'batch-' + digest(parent)[:24] + '-', 'invalid child prefix; reconcile manually')
+            self.claim_record(parent)
+            plans[parent['id']] = plan
+        return plans
+
+    def _read_task(self, path):
         self.protected(path)
         task = read(path)
-        require(task['id'] == task_id, 'task ID mismatch')
+        require(task['id'] == path.stem, 'task ID mismatch')
         return task
 
+    def task(self, task_id):
+        identifier(task_id)
+        path = self.root / 'tasks' / (task_id + '.json')
+        if path.exists():
+            return self._read_task(path)
+        for parent_id, plan in self.batch_plans().items():
+            if task_id.startswith(plan['child_prefix']):
+                return self._read_task(self.root / 'batch-plans' / parent_id / 'tasks' / (task_id + '.json'))
+        raise ValueError('unknown task ID')
+
     def tasks(self):
-        return [self.task(p.stem) for p in sorted((self.root / 'tasks').glob('*.json'))]
+        plans = self.batch_plans()
+        paths = sorted((self.root / 'tasks').glob('*.json'))
+        for parent_id, plan in plans.items():
+            children = sorted((self.root / 'batch-plans' / parent_id / 'tasks').glob('*.json'))
+            require(len(children) == plan['batch_total'], 'incomplete batch plan; reconcile manually')
+            paths.extend(children)
+        return [self._read_task(path) for path in paths]
 
     def claim_record(self, task):
         path = self.root / 'claims' / task['id']
@@ -207,7 +298,11 @@ class Hub:
         require(instant(owner['claimed_at']) <= datetime.now(timezone.utc), 'invalid claim timestamp')
         return path, owner
 
-    def state(self, task):
+    def state(self, task, plans=None):
+        if task['kind'] == 'triage' and 'batch_spec' not in task:
+            plans = self.batch_plans() if plans is None else plans
+            if task['id'] in plans:
+                return 'batched', plans[task['id']]['activated_at']
         receipt = self.root / 'verified' / (task['id'] + '.json')
         if receipt.exists():
             self.protected(receipt)
@@ -233,7 +328,7 @@ class Hub:
     def loads(self):
         loads = dict.fromkeys(PEOPLE, 0)
         for task in self.tasks():
-            if self.state(task)[0] != 'verified':
+            if self.state(task)[0] not in ('verified', 'batched'):
                 loads[task['assignee']] += task['effort']
         return loads
 
@@ -293,7 +388,7 @@ class Hub:
         lock = path / '.report-lock'
         lock.mkdir()
         try:
-            require(self.state(task)[0] not in ('verified', 'awaiting_verification'), 'task completion is final pending coordinator review')
+            require(self.state(task)[0] not in ('verified', 'awaiting_verification', 'batched'), 'task completion is final pending coordinator review')
             record = {'person': person, 'uid': os.getuid(), 'task_sha256': digest(task), 'at': now(),
                       'status': {'in_progress': 'active', 'blocked': 'blocked', 'completed': 'awaiting_verification'}[status],
                       'note': note}
@@ -379,21 +474,231 @@ class Hub:
             write(self.root / 'verified' / (task_id + '.json'), receipt)
             return {'status': 'verified', 'certifies_data': task['kind'] == 'collection'}
 
+    @staticmethod
+    def catalogue_page(manifest, page):
+        relative = page['path']
+        require(isinstance(relative, str) and relative and '\\' not in relative,
+                'catalogue page path must be relative')
+        parts = relative.split('/')
+        require(not Path(relative).is_absolute() and all(part not in ('', '.', '..') for part in parts),
+                'catalogue page path must stay inside its package')
+        target = Path(manifest).parent.resolve()
+        for index, part in enumerate(parts):
+            target = target / part
+            info = target.lstat()
+            require(not stat.S_ISLNK(info.st_mode), 'symlink catalogue path unsupported')
+            if index < len(parts) - 1:
+                require(stat.S_ISDIR(info.st_mode), 'catalogue ancestor must be a directory')
+            else:
+                require(stat.S_ISREG(info.st_mode), 'catalogue page must be a regular file')
+                require(info.st_size == page['bytes'] and page['bytes'] <= 32 * 1024 * 1024,
+                        'page size mismatch or too large')
+        return target
+
+    @staticmethod
+    def manifest(path):
+        path = Path(path).absolute()
+        require(not path.is_symlink() and path.is_file() and path.stat().st_size <= 16 * 1024 * 1024, 'invalid manifest file')
+        raw = path.read_bytes()
+        data = json.loads(raw)
+        require(data.get('schema') == 'kuina-inspection-v1' and isinstance(data.get('datasets'), list), 'invalid catalogue manifest')
+        requirements = data.get('requirements')
+        require(requirements == {'maxNativeSeconds': 900, 'minHistoryYears': 2} and
+                all(type(value) is int for value in requirements.values()), 'catalogue requirements must match 900 seconds/two years')
+        for key in ('windowStart', 'windowEnd'):
+            value = data.get(key)
+            require(isinstance(value, str) and date.fromisoformat(value).isoformat() == value,
+                    'catalogue window must declare ISO dates')
+        two_year_window({'start': data['windowStart'], 'end': data['windowEnd']})
+        seen_ids, seen_pages = set(), set()
+        for dataset in data['datasets']:
+            require(isinstance(dataset, dict) and isinstance(dataset.get('id'), str) and dataset['id'] not in seen_ids, 'invalid dataset ID')
+            seen_ids.add(dataset['id'])
+            require(dataset.get('type') in IDS and isinstance(dataset.get('pages'), list), 'invalid dataset category/pages')
+            require(type(dataset.get('series')) is int and type(dataset.get('eligible')) is int and 0 <= dataset['eligible'] <= dataset['series'], 'invalid dataset counts')
+            for page in dataset['pages']:
+                require(isinstance(page, dict) and set(page) == {'path', 'bytes', 'sha256', 'rows'}, 'invalid catalogue page fields')
+                require(isinstance(page['path'], str) and page['path'] and page['path'] not in seen_pages, 'duplicate/invalid catalogue page')
+                seen_pages.add(page['path'])
+                require(type(page['bytes']) is int and page['bytes'] > 0 and type(page['rows']) is int and page['rows'] >= 0, 'invalid catalogue page counts')
+                require(isinstance(page['sha256'], str) and re.fullmatch('[0-9a-f]{64}', page['sha256']), 'invalid catalogue hash')
+                Hub.catalogue_page(path, page)
+            require(sum(page['rows'] for page in dataset['pages']) == dataset['series'], 'catalogue row totals mismatch')
+        return path, hashlib.sha256(raw).hexdigest(), data
+
+    def split(self, manifest, assignment='lead', batch_size=500):
+        require(assignment in ('lead', 'balanced'), 'invalid assignment policy')
+        require(type(batch_size) is int and 1 <= batch_size <= 500, 'batch size must be between 1 and 500')
+        manifest, manifest_hash, catalogue = self.manifest(manifest)
+        request = dict(manifest_path=str(manifest), manifest_sha256=manifest_hash,
+                       assignment=assignment, batch_size=batch_size)
+        created, activated, deferred = 0, [], []
+        with self.coordinator():
+            plans = self.batch_plans()
+            for plan in plans.values():
+                require(all(plan[key] == value for key, value in request.items()), 'existing batch policy/manifest differs; manual reconciliation required')
+            tasks = self.tasks()
+            candidates = []
+            for task in tasks:
+                if task['kind'] != 'triage' or 'batch_spec' in task or task['id'] in plans:
+                    continue
+                datasets = [d for d in catalogue['datasets'] if d['type'] == task['category'] and d['eligible'] < d['series']]
+                if not datasets:
+                    continue
+                if self.state(task, plans)[0] != 'queued':
+                    deferred.append(task['id'])
+                    continue
+                slices = [(d['id'], page, start, min(start + batch_size, page['rows']))
+                          for d in datasets for page in d['pages'] for start in range(0, page['rows'], batch_size)]
+                if slices:
+                    if 'audit_utc' in task:
+                        require(isinstance(catalogue.get('auditUtc'), str) and
+                                instant(catalogue['auditUtc']) == instant(task['audit_utc']),
+                                'catalogue audit epoch differs from parent')
+                    candidates.append((task, slices))
+            require(len(tasks) + sum(len(slices) for _, slices in candidates) <= 20000, 'public task cap exceeded')
+            candidate_ids = {task['id'] for task, _ in candidates}
+            loads = dict.fromkeys(PEOPLE, 0)
+            for task in tasks:
+                if task['id'] not in candidate_ids and task['kind'] == 'triage' and self.state(task, plans)[0] not in ('verified', 'batched'):
+                    loads[task['assignee']] += task['affected_series']
+            directory = self.root / 'batch-plans'
+            directory.mkdir(exist_ok=True, mode=0o755)
+            os.chmod(directory, 0o755)
+            self.protected(directory)
+            for candidate_index, (parent, slices) in enumerate(candidates):
+                parent_id = parent['id']
+                incoming = directory / ('.' + parent_id + '.incoming')
+                incoming.mkdir(mode=0o755)
+                os.chmod(incoming, 0o755)
+                staged_tasks = incoming / 'tasks'
+                staged_tasks.mkdir(mode=0o755)
+                os.chmod(staged_tasks, 0o755)
+                prefix = 'batch-' + digest(parent)[:24] + '-'
+                at = now()
+                plan = dict(request, parent_id=parent_id, parent_sha256=digest(parent),
+                            child_prefix=prefix, batch_total=len(slices), activated_at=at)
+                for number, (dataset_id, page, start, stop) in enumerate(slices, 1):
+                    assignee = parent['assignee']
+                    if assignment == 'balanced':
+                        assignee = min(PEOPLE, key=lambda p: loads[p])
+                    count = stop - start
+                    loads[assignee] += count
+                    child = dict(parent, id=prefix + f'{number:06d}', assignee=assignee,
+                                 lead=parent['assignee'], parent_id=parent_id, batch_number=number,
+                                 batch_total=len(slices), affected_series=count, effort=min(5, (count + 99) // 100),
+                                 created_at=at, batch_spec=dict(manifest_path=str(manifest), manifest_sha256=manifest_hash,
+                                                              dataset_id=dataset_id, page=page, start=start, stop=stop))
+                    write(staged_tasks / (child['id'] + '.json'), child)
+                write(incoming / 'plan.json', plan)
+                claim = self.root / 'claims' / parent_id
+                try:
+                    claim.mkdir(mode=0o755)
+                except FileExistsError:
+                    # A worker won the exclusive legacy claim while we staged.
+                    shutil.rmtree(incoming)
+                    deferred.append(parent_id)
+                    # Recompute once after a race so subsequent packing reflects real work.
+                    loads = self.review_loads()
+                    for pending, _ in candidates[candidate_index + 1:]:
+                        loads[pending['assignee']] -= pending['affected_series']
+                    continue
+                os.chmod(claim, 0o755)
+                write(claim / 'owner.json', dict(person=parent['assignee'], uid=os.getuid(),
+                                                task_sha256=digest(parent), claimed_at=at))
+                require(digest(self.task(parent_id)) == digest(parent), 'parent changed during migration; reconcile manually')
+                os.rename(incoming, directory / parent_id)
+                created += len(slices)
+                activated.append(parent_id)
+        return dict(created=created, activated=activated, deferred=deferred)
+
+    def review_loads(self):
+        plans = self.batch_plans()
+        loads = dict.fromkeys(PEOPLE, 0)
+        for task in self.tasks():
+            if task['kind'] == 'triage' and self.state(task, plans)[0] not in ('verified', 'batched'):
+                loads[task['assignee']] += task['affected_series']
+        return loads
+
+    def read_batch(self, task_id):
+        task = self.task(task_id)
+        spec = task.get('batch_spec')
+        require(isinstance(spec, dict), 'task is not a review batch')
+        manifest, sha256, data = self.manifest(spec['manifest_path'])
+        require(sha256 == spec['manifest_sha256'], 'manifest hash mismatch')
+        datasets = [d for d in data['datasets'] if d['id'] == spec['dataset_id']]
+        require(len(datasets) == 1 and datasets[0]['type'] == task['category'] and spec['page'] in datasets[0]['pages'], 'batch selector not in pinned manifest')
+        page = spec['page']
+        start, stop = spec['start'], spec['stop']
+        require(type(start) is int and type(stop) is int and 0 <= start < stop <= page['rows'] and stop - start <= 500, 'invalid batch selector')
+        path = self.catalogue_page(manifest, page)
+        limit = 32 * 1024 * 1024
+        require(not path.is_symlink() and path.stat().st_size == page['bytes'] and page['bytes'] <= limit, 'page size mismatch or too large')
+        raw = path.read_bytes()
+        require(hashlib.sha256(raw).hexdigest() == page['sha256'], 'page hash mismatch')
+        # gzip.read has an explicit decoded limit; never materialize an unbounded page.
+        with gzip.GzipFile(fileobj=io.BytesIO(raw)) as stream:
+            decoded = stream.read(limit + 1)
+        require(len(decoded) <= limit, 'decoded page exceeds 32 MiB')
+        payload = json.loads(decoded)
+        require(payload.get('schema') == 'kuina-series-page-v1' and payload.get('datasetId') == spec['dataset_id'], 'page identity mismatch')
+        rows = payload.get('series')
+        require(isinstance(rows, list) and len(rows) == page['rows'], 'page row count mismatch')
+        selected = rows[start:stop]
+        require(all(isinstance(row, dict) and row.get('decision') in ('ELIGIBLE', 'INELIGIBLE') for row in selected), 'unknown catalogue eligibility decision')
+        records = [row for row in selected if row['decision'] == 'INELIGIBLE']
+        return dict(task_id=task_id, selected=len(selected), skipped_eligible=len(selected) - len(records), records=records)
+
+    def listing(self, person=None, limit=20, offset=0, all_tasks=False):
+        require(type(limit) is int and limit > 0 and type(offset) is int and offset >= 0, 'invalid pagination')
+        plans = self.batch_plans()
+        rows = []
+        priority = {'active': 0, 'blocked': 1, 'awaiting_verification': 2, 'queued': 3, 'verified': 4, 'batched': 5}
+        for task in self.tasks():
+            status, updated = self.state(task, plans)
+            if person and task['assignee'] != person:
+                continue
+            if not all_tasks and status in ('verified', 'batched'):
+                continue
+            rows.append(dict(task, status=status, updated_at=updated, task_sha256=digest(task)))
+        rows.sort(key=lambda row: (priority[row['status']], row['created_at'], row['id']))
+        return rows[offset:] if all_tasks else rows[offset:offset + limit]
+
     def snapshot(self):
+        plans = self.batch_plans()
+        version = 2 if plans else 1
         people = {p: dict(id=p, name=name, queued=0, active=0, awaiting_verification=0, verified=0, load=0)
                   for p, name in PEOPLE.items()}
+        if plans:
+            for person in people.values():
+                person.update(batched=0, remaining_series=0)
+        all_tasks = self.tasks()
+        leads = {task['category']: task['assignee'] for task in all_tasks
+                 if task['kind'] == 'triage' and 'batch_spec' not in task}
         tasks = []
-        for task in self.tasks():
-            status, updated = self.state(task)
+        for task in all_tasks:
+            status, updated = self.state(task, plans)
             row = {key: task[key] for key in ('id', 'category', 'kind', 'assignee', 'effort', 'affected_series', 'created_at')}
             row.update(status=status, updated_at=updated, issues=[i for i in task['issues'] if i in FULL_ISSUES])
+            if plans:
+                lead = task.get('lead', leads.get(task['category'], task['assignee']))
+                if task['kind'] == 'triage' and 'batch_spec' not in task:
+                    lead = task['assignee']
+                row.update(lead=lead,
+                           parent_id=task.get('parent_id'), batch_number=task.get('batch_number', 0),
+                           batch_total=task.get('batch_total', plans.get(task['id'], {}).get('batch_total', 0)))
             tasks.append(row)
             person = people[task['assignee']]
             person['active' if status == 'blocked' else status] += 1
-            if status != 'verified':
+            if status not in ('verified', 'batched'):
                 person['load'] += task['effort']
-        return validate_public_snapshot({'schema_version': 1, 'updated_at': now(), 'profile': PROFILE,
-                                         'people': list(people.values()), 'tasks': tasks})
+                if plans and task['kind'] == 'triage':
+                    person['remaining_series'] += task['affected_series']
+        snapshot = {'schema_version': version, 'updated_at': now(), 'profile': PROFILE,
+                    'people': list(people.values()), 'tasks': tasks}
+        if plans:
+            snapshot['batch_limit'] = 500
+        return validate_public_snapshot(snapshot)
 
 
 def main():
@@ -402,7 +707,17 @@ def main():
     commands = parser.add_subparsers(dest='command', required=True)
     commands.add_parser('init')
     commands.add_parser('seed').add_argument('--summary', required=True, type=Path)
-    commands.add_parser('list').add_argument('--person', choices=PEOPLE)
+    listing = commands.add_parser('list')
+    listing.add_argument('--person', choices=PEOPLE)
+    listing.add_argument('--limit', type=int, default=20)
+    listing.add_argument('--offset', type=int, default=0)
+    listing.add_argument('--all', action='store_true')
+    commands.add_parser('show').add_argument('task')
+    commands.add_parser('read-batch').add_argument('task')
+    split = commands.add_parser('split')
+    split.add_argument('--manifest', required=True, type=Path)
+    split.add_argument('--assignment', required=True, choices=('lead', 'balanced'))
+    split.add_argument('--batch-size', type=int, default=500)
     claim = commands.add_parser('claim')
     claim.add_argument('task')
     claim.add_argument('--person', required=True, choices=PEOPLE)
@@ -427,12 +742,15 @@ def main():
         elif args.command == 'seed':
             result = hub.seed(read(args.summary))
         elif args.command == 'list':
-            result = []
-            for task in hub.tasks():
-                status, updated_at = hub.state(task)
-                result.append(dict(task, status=status, updated_at=updated_at, task_sha256=digest(task)))
-            if args.person:
-                result = [t for t in result if t['assignee'] == args.person]
+            result = hub.listing(args.person, args.limit, args.offset, args.all)
+        elif args.command == 'show':
+            task = hub.task(args.task)
+            status, updated_at = hub.state(task)
+            result = dict(task, status=status, updated_at=updated_at, task_sha256=digest(task))
+        elif args.command == 'read-batch':
+            result = hub.read_batch(args.task)
+        elif args.command == 'split':
+            result = hub.split(args.manifest, args.assignment, args.batch_size)
         elif args.command == 'claim':
             result = hub.claim(args.task, args.person)
         elif args.command == 'report':

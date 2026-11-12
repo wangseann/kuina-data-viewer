@@ -118,3 +118,69 @@ Run the focused checks with:
 ```sh
 python3 -B -m unittest discover -s tests -p test_task_manager.py -v
 ```
+
+## Bounded catalogue review batches
+
+An existing saved `kuina-inspection-v1` manifest supplies dataset `id`, `type`,
+`series`, `eligible`, and page references with exactly `path`, `bytes`, `sha256`,
+`rows`. Only unclaimed triage parents with a nonwholly eligible dataset are split.
+Missing categories (including empty inventory categories) remain original tasks.
+Splitting reads manifest metadata, never observations or catalogue page contents.
+Before staging or reserving any parent, it checks the declared profile is exactly
+900 seconds/two years, the declared ISO window spans at least two calendar years,
+and each parent audit epoch matches the manifest when the parent records one.
+Every referenced page must already be a regular file of the declared size, at
+most 32 MiB, inside the manifest package. Absolute paths, traversal, backslashes
+and symlink page components are rejected. These checks use filesystem metadata
+without reading catalogue records. The externally verified manifest hash remains
+the authority for selecting the intended package and calendar window.
+Each page is partitioned into disjoint `[start, stop)` slices of at most 500 saved
+catalogue records; mixed pages retain known eligible records in these selectors.
+
+```sh
+python3 -B coordination/task_manager.py --hub "$HUB" split --manifest /private/package/manifest.json --assignment balanced --batch-size 500
+python3 -B coordination/task_manager.py --hub "$HUB" list --person juan --limit 20 --offset 0
+python3 -B coordination/task_manager.py --hub "$HUB" list --all
+python3 -B coordination/task_manager.py --hub "$HUB" show TASK
+python3 -B coordination/task_manager.py --hub "$HUB" read-batch TASK
+```
+
+`--assignment lead` assigns every child to its original parent assignee.
+`balanced` greedily selects the person with the fewest outstanding triage leaf
+review records, including remaining nonsplit work; ties follow roster order.
+Both retain the original category owner as `lead`. A child's effort is
+`min(5, ceil(records / 100))`, a planning unit rather than claimed work hours.
+`list` defaults to 20 unfinished leaf tasks, prioritizing active, blocked,
+awaiting verification, then queued work. `--all` includes parents and verified
+tasks and removes the row limit; `--offset` still applies. `show` looks up a
+specific task with its private definition, selectors and receipt hash.
+
+Child IDs are `batch-<original-parent-hash-first-24>-000001` and upward. Their
+private `batch_spec` pins manifest path and SHA256, dataset ID, complete page
+reference and row boundaries. `read-batch` verifies both hashes, page size,
+dataset identity and row counts, with a 32 MiB compressed/decoded page bound.
+It returns `selected`, `skipped_eligible`, and only `INELIGIBLE` catalogue metadata
+records. Its output is private and does not certify eligibility or run an audit.
+
+The protected coordinator stages children and `plan.json` outside live `tasks`
+in `batch-plans/.<parent>.incoming/`. After staging, it exclusively reserves the
+original parent's persistent `claims/<parent>/owner.json` using actual coordinator
+UID, original assignee and original task hash. Only then does atomic rename to
+`batch-plans/<parent>/` activate children. Original definitions and real worker
+claims remain unchanged. A legacy reader sees the reserved parent as active and
+cannot claim it or discover children in root `tasks`. Current readers show it as
+`batched` and exclude its duplicate workload. Existing claims are deferred;
+exclusive directory creation settles claim races. Incomplete staging or a
+reservation without completed activation must be manually reconciled. Never
+remove claims or staging and blindly retry an uncertain migration. Repeating a
+complete split with the same manifest path/hash, size and policy creates zero
+children; changing those pins requires explicit reconciliation.
+
+Snapshots remain schema 1 until an activated batch plan exists. Schema 2 adds
+root `batch_limit: 500`; each task adds `lead`, nullable `parent_id`, `batch_number`
+(0 on parents/nonbatches), and `batch_total` (0 on unbatched tasks; child count on
+parents and children). `batched` is a public parent status. Each person adds
+`batched` and `remaining_series`, the sum of unfinished triage leaf records only.
+The strict validator checks exact fields, roster totals, category/lead continuity,
+parent relationships and complete numbering, with a 20,000-task cap. The public
+snapshot never includes private selectors, hashes, paths or catalogue metadata.

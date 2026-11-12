@@ -1,11 +1,12 @@
 {
-  "schema": "kuina-agent-coordination-v1",
+  "schema": "kuina-agent-coordination-v2",
   "authoritative_store": "Private shared Kuina task hub, configured by AGENT_TASKS.md",
   "poll_interval_hours": 24,
   "public_snapshot": "tasks-summary.json",
+  "review_batches": {"maximum_catalogue_records": 500, "lead_continuity": true, "assignment_basis": "outstanding review records", "eligible_records": "skipped by read-batch", "parent_jobs": "retained as nonclaimable coordination records"},
   "commands_use_environment": ["KUINA_TASK_MANAGER", "KUINA_TASK_HUB"],
   "requirements": {"max_native_interval_seconds": 900, "minimum_calendar_years": 2, "unexplained_gaps_allowed": 0},
-  "workflow": ["list assigned tasks", "atomic claim; stop if denied", "inspect existing data and metadata", "submit deduplicated repair scope", "verify source feasibility before collection", "run bounded authorized work", "report provenance", "await matching independent eligibility audit"],
+  "workflow": ["list next assigned tasks; resume active work first", "atomic claim; stop if denied", "read-batch for the exact private catalogue section", "inspect existing data and metadata using the dataset lead's shared decisions", "submit deduplicated repair scope across batches", "verify source feasibility before collection", "run bounded authorized work", "report provenance", "await matching independent eligibility audit"],
   "claims": {"website_can_claim": false, "automatic_expiry": false, "reassignment_requires_reconciliation": true},
   "publication": "Only roster, aggregate counts and whitelisted task statuses are public. Targets, paths, reports and evidence remain private."
 }

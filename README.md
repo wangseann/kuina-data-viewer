@@ -66,13 +66,27 @@ its CSP blocks network connections. No observations or populated private
 catalogues belong in this repository. Historical HTML payloads can be imported
 as data, without executing the selected HTML or trusting its old pass labels.
 
-`docs/tasks.html` shows balanced assignments and filterable progress. The static
+`docs/tasks.html` shows dataset leads, bounded review batches and filterable progress. The static
 website cannot claim tasks. Agents use the private shared-filesystem CLI described
 in [coordination/README.md](coordination/README.md) and the private hub's
 `AGENT_TASKS.md`. Exclusive persistent claims prevent duplicate work; source and
 window overlap checks combine warnings for the same repair. Completion waits for
 coordinator verification, and collection repairs need a fresh matching eligibility
 audit. No participant's agent is installed or run by this website.
+
+Review batches contain at most 500 saved catalogue records. Original dataset
+leads remain responsible for shared decisions; batches can be distributed by
+outstanding record count across the team. Private selectors pin the source
+manifest, page hash and disjoint row ranges. Already-eligible records in mixed
+pages are skipped when agents read a batch. Source groups with unknown series
+counts remain separate inventory work, visible in the quality counts.
+
+The public board shows 40 jobs at a time, distinguishes lead from assignee, and
+counts review records rather than treating every category as one unit of work.
+Its closed schema accepts at most 20,000 tasks and 16 MiB of status metadata.
+It contains no source selectors or observed values. Earlier queued parent jobs
+are retained as coordination records; persistent reservations prevent older
+clients from claiming them after subdivision. Existing worker claims are kept.
 
 The series inspector preserves known field meanings and shows the outcome of each
 warning review, including what existing information was checked and what remains

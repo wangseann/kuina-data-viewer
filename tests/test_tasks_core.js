@@ -15,3 +15,20 @@ assert.equal(T.matches(task,{person:'juan',category:'stocks',status:'queued'}),t
 assert.equal(T.stale(snapshot.updated_at,Date.parse('2026-11-12T01:00:00Z')),true);
 assert.equal(T.stale(snapshot.updated_at,Date.parse('2026-11-11T01:00:00Z')),false);
 console.log('Task board privacy, profile and filter checks passed');
+
+const parent={...task,id:'triage-parent',status:'batched',affected_series:3,lead:'juan',parent_id:null,batch_number:0,batch_total:2};
+const child1={...task,id:'batch-one',assignee:'emily',affected_series:2,lead:'juan',parent_id:parent.id,batch_number:1,batch_total:2};
+const child2={...child1,id:'batch-two',assignee:'brian',affected_series:1,batch_number:2};
+const batchPeople=people.map(p=>({...p,batched:p.id==='juan'?1:0,queued:['emily','brian'].includes(p.id)?1:0,load:['emily','brian'].includes(p.id)?1:0,remaining_series:p.id==='emily'?2:p.id==='brian'?1:0}));
+const batched={...snapshot,schema_version:2,batch_limit:500,people:batchPeople,tasks:[parent,child1,child2]};
+assert.equal(T.validate(batched).tasks.length,3);
+assert.throws(()=>T.validate({...batched,tasks:[parent,{...child1,affected_series:501},child2]}));
+assert.throws(()=>T.validate({...batched,tasks:[parent,child1,{...child2,batch_number:1}]}));
+assert.throws(()=>T.validate({...batched,people:batchPeople.map(p=>({...p,remaining_series:99}))}));
+assert.equal(T.reviewTasks(batched,{person:'all',category:'all',status:'all'}).length,2);
+assert.equal(T.page(Array.from({length:91},(_,i)=>i),1).rows.length,40);
+assert.deepEqual(T.page([1,2],100).rows,[1,2]);
+const rollup=T.rollups(batched)[0];
+assert.equal(rollup.lead,'juan');assert.equal(rollup.batches,2);assert.equal(rollup.records,3);
+assert.equal(T.remaining(snapshot.people[0],snapshot),42);
+console.log('Bounded batch validation, continuity, workload and pagination checks passed');
