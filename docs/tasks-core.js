@@ -2,7 +2,8 @@
 (function (root) {
   'use strict';
   const TYPES = {stocks:'Stocks / ETFs',crypto:'Crypto',commodities:'Commodities',currencies:'Currencies',derivatives:'Derivatives',economics:'Economics',gdelt:'GDELT / news','prediction-markets':'Prediction markets',sentiment:'Tweets / Sentiments',emotions:'Emotions',trade:'Trade',weather:'Weather / rivers',reddit:'Reddit','other-markets':'Indices / bonds / other'};
-  const PEOPLE = ['juan','emily','brian','amir','seann','taha','saswato','th','jion'];
+  const PEOPLE = ['juan','emily','brian','amir','seann','taha','saswato','th','jion','vitoria','olga'];
+  const LEGACY_PEOPLE = ['juan','emily','brian','amir','seann','taha','saswato','th','jion'];
   const STATUSES = {available:'Available',assigned:'Assigned · ready for agent',active:'In progress',blocked:'Blocked',awaiting_verification:'Work reported · review pending',verified:'Verified complete',batched:'Divided into review batches',queued:'Legacy assignment'};
   const KINDS = {triage:'Inspect and plan',metadata:'Resolve metadata',preflight:'Check source feasibility',collection:'Collect missing data'};
   const REASONS = new Set(('inconsistent_ohlc ohlc_check_missing not_source_observations input_identity_unverified series_type_unknown no_valid_observations no_window_data invalid_values invalid_times conflicting_duplicates source_parse_error aggregation_unverified score_probability_invalid grid_alignment_invalid short_history calendar_unverified coarse_resolution cadence_unknown missing_months price_definition_unverified mixed_price_construction availability_unverified collection_completeness_unverified completeness_unverified hourly_gaps long_gaps context_gaps scrape_completeness causal_processing_unverified numeric_observations_check_missing window_observations_check_missing value_check_missing timestamp_check_missing duplicate_check_missing source_parse_check_missing sentiment_score_check_missing grid_alignment_check_missing history_span_check_missing window_months_check_missing').split(' '));
@@ -26,7 +27,7 @@
     timestamp(data.updated_at);
     keys(data.profile,['max_interval_seconds','min_years','unexplained_gaps_allowed']);
     if (data.profile.max_interval_seconds !== 900 || data.profile.min_years !== 2 || data.profile.unexplained_gaps_allowed !== 0) throw Error('Task board does not use our eligibility requirements');
-    if (!Array.isArray(data.people) || data.people.length !== PEOPLE.length || !Array.isArray(data.tasks) || data.tasks.length > (batched?20000:10000)) throw Error('Invalid task roster or size');
+    if (!Array.isArray(data.people) || ![LEGACY_PEOPLE.length,PEOPLE.length].includes(data.people.length) || !Array.isArray(data.tasks) || data.tasks.length > (batched?20000:10000)) throw Error('Invalid task roster or size');
     const personCounts = manual ? ['assigned','active','awaiting_verification','verified','remaining_series'] : ['queued','active','awaiting_verification','verified','load',...(batched?['batched','remaining_series']:[])];
     const ids = new Set();
     for (const person of data.people) {
@@ -35,6 +36,8 @@
       ids.add(person.id);
       for (const field of personCounts) count(person[field]);
     }
+    const roster = new Set(ids);
+    if (![LEGACY_PEOPLE,PEOPLE].some(people=>people.length === roster.size && people.every(id=>roster.has(id)))) throw Error('Invalid task roster');
     ids.clear();
     for (const task of data.tasks) {
       const extras = manual ? ['parent_id','batch_number','batch_total','assignment_issue'] : ['effort',...(batched?['lead','parent_id','batch_number','batch_total']:[])];
@@ -48,26 +51,26 @@
       if (!Array.isArray(task.issues) || task.issues.some(issue => !REASONS.has(issue)) || new Set(task.issues).size !== task.issues.length) throw Error('Unexpected task issue');
       if (manual) {
         const unassigned = ['available','batched'].includes(task.status);
-        if (unassigned ? task.assignee !== null : !PEOPLE.includes(task.assignee)) throw Error('Invalid task assignment');
+        if (unassigned ? task.assignee !== null : !roster.has(task.assignee)) throw Error('Invalid task assignment');
         if (task.assignment_issue !== null) {
           count(task.assignment_issue);
           if (!task.assignment_issue || unassigned) throw Error('Invalid assignment issue');
         }
       } else {
-        if (!PEOPLE.includes(task.assignee)) throw Error('Unexpected participant');
+        if (!roster.has(task.assignee)) throw Error('Unexpected participant');
         count(task.effort,100);
         if (!task.effort) throw Error('Invalid legacy effort');
       }
     }
-    if (batched) validateBatches(data,manual,personCounts);
+    if (batched) validateBatches(data,manual,personCounts,roster);
     return data;
   }
-  function validateBatches(data,manual,personCounts) {
+  function validateBatches(data,manual,personCounts,roster) {
     const tasks = new Map(data.tasks.map(task=>[task.id,task]));
     const children = new Map();
-    const totals = new Map(PEOPLE.map(id=>[id,Object.fromEntries(personCounts.map(key=>[key,0]))]));
+    const totals = new Map([...roster].map(id=>[id,Object.fromEntries(personCounts.map(key=>[key,0]))]));
     for (const task of data.tasks) {
-      if (!manual && !PEOPLE.includes(task.lead)) throw Error('Unexpected legacy category owner');
+      if (!manual && !roster.has(task.lead)) throw Error('Unexpected legacy category owner');
       count(task.batch_number,20000);
       count(task.batch_total,20000);
       if (task.parent_id !== null) {
