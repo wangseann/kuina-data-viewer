@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-11T09:13:17.617981+00:00",
+  "assessment_utc": "2026-11-13T02:18:15.196707+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -34,7 +34,7 @@
         },
         {
           "id": "completeness_unverified",
-          "count": 124354
+          "count": 123909
         },
         {
           "id": "conflicting_duplicates",
@@ -42,7 +42,7 @@
         },
         {
           "id": "hourly_gaps",
-          "count": 3845
+          "count": 4290
         },
         {
           "id": "inconsistent_ohlc",
@@ -54,7 +54,7 @@
         },
         {
           "id": "long_gaps",
-          "count": 6575
+          "count": 7020
         },
         {
           "id": "missing_months",
