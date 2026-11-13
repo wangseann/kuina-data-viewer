@@ -85,6 +85,21 @@ class M1ViewTests(unittest.TestCase):
         self.assertNotIn('class="tile"', page)
         self.assertNotIn('2026-11-13', page)
 
+    def test_attention_labels_distinguish_audited_but_unverified_details(self):
+        data = snapshot()
+        data['types'][0]['check_failures'] = [dict(id=identifier, count=1) for identifier in
+            ('calendar', 'price_definition', 'completeness', 'history_span', 'window_months', 'timestamp_timezone')]
+        page = render(data)
+        for label in ('Results needing attention', 'Trading hours not established',
+                      'Price side, adjustments or volume units not established',
+                      'Missing periods cannot be verified', 'Less than two years of usable history',
+                      'Months missing from the testing window', 'Timestamp timezone'):
+            self.assertIn(label, page)
+        self.assertIn('Every series listed here was checked.', page)
+        self.assertIn('those checks remain unverified', page)
+        self.assertIn('does not show that prices are wrong', page)
+        self.assertNotIn('Checks that failed or remain unfinished', page)
+
     def test_combined_failures_and_dataset_selection_are_preserved(self):
         data = snapshot()
         data['types'][0]['series'][-1]['mask'] = 9

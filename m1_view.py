@@ -11,20 +11,25 @@ from series_names import safe_text
 TYPES = {'stocks', 'crypto', 'currencies', 'commodities', 'other-markets'}
 VARIABLES = {'open', 'high', 'low', 'close', 'volume'}
 CHECKS = {
-    'source_role': 'Historical source observations',
-    'input_identity': 'Input file identity', 'series_type': 'Numeric field type',
-    'numeric_observations': 'Usable numeric observations',
-    'window_observations': 'Observations in the audit window',
-    'value': 'Valid numeric values', 'timestamp': 'Readable timestamps',
-    'timestamp_timezone': 'Timestamp timezone',
-    'duplicate': 'Conflicting duplicate timestamps', 'source_parse': 'Complete file parsing',
-    'grid_alignment': 'Native timestamp grid', 'history_span': 'Two years of history',
-    'calendar': 'Verified trading schedule', 'native_cadence': 'Native recording interval',
-    'required_cadence': '15-minute or finer interval',
-    'window_months': 'Every audit-window month', 'price_definition': 'Field definition',
-    'ohlc': 'Consistent open / high / low / close',
-    'completeness': 'Verified completeness', 'hourly_coverage': 'Expected hourly coverage',
-    'longest_gap': 'Within-session gaps',
+    'source_role': 'Historical source observations not established',
+    'input_identity': 'Input file identity not verified', 'series_type': 'Numeric field type not established',
+    'numeric_observations': 'Usable numeric observations not established',
+    'window_observations': 'Usable observations in the testing window not established',
+    'value': 'Invalid values or an unverified value check',
+    'timestamp': 'Unreadable timestamps or an unverified timestamp check',
+    'timestamp_timezone': 'Timestamp timezone not established',
+    'duplicate': 'Conflicting duplicate timestamps', 'source_parse': 'Files could not be fully parsed',
+    'grid_alignment': 'Timestamps do not match the native grid',
+    'history_span': 'Less than two years of usable history',
+    'calendar': 'Trading hours not established',
+    'native_cadence': 'Native recording interval does not meet the requirement',
+    'required_cadence': 'Recording interval exceeds 15 minutes or is unknown',
+    'window_months': 'Months missing from the testing window',
+    'price_definition': 'Price side, adjustments or volume units not established',
+    'ohlc': 'Open, high, low or close values are inconsistent',
+    'completeness': 'Missing periods cannot be verified',
+    'hourly_coverage': 'Expected hours have no observations',
+    'longest_gap': 'Within-session gaps exceed 15 minutes',
 }
 
 
@@ -122,9 +127,12 @@ def render(data=None):
             controls.append(f'<input type="radio" name="dataset" id="dataset-{index}"{checked}><label for="dataset-{index}">{title}</label>')
             selection_css += f'#dataset-{index}:checked~.dataset-{index}'+'{display:block}'
             checks = ''.join(f'<tr><th scope="row">{CHECKS[check["id"]]}</th><td>{check["count"]:,}</td></tr>' for check in group['check_failures'])
-            table = '<table><caption>Checks that failed or remain unfinished</caption><thead><tr><th>Check</th><th>Series</th></tr></thead><tbody>'+checks+'</tbody></table>' if checks else '<p>No failed or unfinished checks.</p>'
+            table = '<table><caption>Results needing attention</caption><thead><tr><th>Result</th><th>Series</th></tr></thead><tbody>'+checks+'</tbody></table>' if checks else '<p>No results need attention.</p>'
             sections.append(f'<section class="dataset dataset-{index}"><h2>{title}</h2><p>{group["instrument_count"]:,} instruments · {group["series_count"]:,} numeric series · {group["eligible_count"]:,} eligible · {group["failed_count"]:,} excluded</p><div class="tiles">'+''.join(tile(record) for record in group['series'])+'</div>'+table+'</section>')
-        content = '<p>Native m1 audit: <strong>'+html.escape(data['audit_utc'])+'</strong>. This is the Dukascopy m1 audit date; the full stored-source audit retains its separate date.</p><p>Select a dataset type:</p>'+''.join(controls)+''.join(sections)
+        explanation = ('<p>Every series listed here was checked. Where saved files do not identify trading hours, '
+                       'bid versus ask prices, adjustments or volume units, those checks remain unverified. '
+                       'This alone does not show that prices are wrong.</p>')
+        content = '<p>Native m1 audit: <strong>'+html.escape(data['audit_utc'])+'</strong>. This is the Dukascopy m1 audit date; the full stored-source audit retains its separate date.</p>'+explanation+'<p>Select a dataset type:</p>'+''.join(controls)+''.join(sections)
     legend = '<span class="legend" style="background:#25826b"></span> Eligible · '+ ' · '.join(f'<span class="legend" style="background:{colour}"></span> {label}' for label, colour in FAILURE_COLOURS.values())
     return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"><title>Kuina · Dukascopy m1 audit</title><style>
 body{font:16px system-ui,sans-serif;background:#f4f7f9;color:#1b3040;margin:0}main{max-width:1200px;margin:auto;padding:30px 20px}p{line-height:1.6;color:#536878}a{color:#17658b}h1{font-size:32px}section{background:white;border:1px solid #dce4eb;border-radius:12px;padding:22px;margin:20px 0}.dataset{display:none}.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(32px,1fr));gap:6px;margin:22px 0}.tile{display:block;aspect-ratio:1;border-radius:3px}.tile:focus{outline:3px solid #102f49;outline-offset:2px}.legend{display:inline-block;width:14px;height:14px;vertical-align:middle}label{display:inline-block;padding:10px 12px;margin:6px 12px 6px 0;border-radius:8px;background:white;cursor:pointer}input:checked+label{background:#dcebf3;color:#174c6a}table{border-collapse:collapse;width:100%;text-align:left}caption{text-align:left;font-weight:600;margin:20px 0 10px}th,td{padding:12px;border-bottom:1px solid #dce4eb}td{text-align:right}@media(max-width:600px){main{padding:20px 12px}section{padding:14px}.tiles{grid-template-columns:repeat(auto-fill,minmax(28px,1fr))}}
