@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-16T07:17:33.334836+00:00",
+  "updated_at": "2026-11-16T07:29:12.340210+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -9495,8 +9495,8 @@
       "kind": "triage",
       "affected_series": 445,
       "created_at": "2026-11-12T00:49:49.085642+00:00",
-      "status": "active",
-      "updated_at": "2026-11-16T07:11:02.092898+00:00",
+      "status": "blocked",
+      "updated_at": "2026-11-16T07:28:05.426520+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -9619,8 +9619,8 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:49:49.085642+00:00",
-      "status": "active",
-      "updated_at": "2026-11-16T07:11:02.423581+00:00",
+      "status": "blocked",
+      "updated_at": "2026-11-16T07:28:05.631666+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
