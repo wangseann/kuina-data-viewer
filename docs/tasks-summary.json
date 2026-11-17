@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-17T05:18:51.727028+00:00",
+  "updated_at": "2026-11-17T08:27:50.511665+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -9496,7 +9496,7 @@
       "affected_series": 445,
       "created_at": "2026-11-12T00:49:49.085642+00:00",
       "status": "active",
-      "updated_at": "2026-11-17T05:17:50.792596+00:00",
+      "updated_at": "2026-11-17T08:21:13.051864+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
