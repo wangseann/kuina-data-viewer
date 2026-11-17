@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-13T02:18:15.196707+00:00",
+  "assessment_utc": "2026-11-17T05:15:34.144704+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -268,7 +268,7 @@
         },
         {
           "id": "price_definition_unverified",
-          "count": 45212
+          "count": 45147
         },
         {
           "id": "series_type_unknown",
