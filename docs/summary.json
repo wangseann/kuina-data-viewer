@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-18T10:31:14.820939+00:00",
+  "assessment_utc": "2026-11-18T10:57:10.690676+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -121,8 +121,8 @@
       "confirmed_series": 72,
       "confirmed_units": 8,
       "excluded_series": 1089,
-      "excluded_measured": 1082,
-      "excluded_missing_evidence": 7,
+      "excluded_measured": 1087,
+      "excluded_missing_evidence": 2,
       "source_failures": 0,
       "issues": [
         {
@@ -135,7 +135,7 @@
         },
         {
           "id": "calendar_unverified",
-          "count": 319
+          "count": 314
         },
         {
           "id": "coarse_resolution",
@@ -143,11 +143,11 @@
         },
         {
           "id": "completeness_unverified",
-          "count": 711
+          "count": 706
         },
         {
           "id": "hourly_gaps",
-          "count": 378
+          "count": 383
         },
         {
           "id": "invalid_values",
@@ -155,7 +155,7 @@
         },
         {
           "id": "long_gaps",
-          "count": 378
+          "count": 383
         },
         {
           "id": "missing_months",
@@ -189,11 +189,11 @@
         },
         {
           "mask": 8,
-          "count": 7
+          "count": 2
         },
         {
           "mask": 9,
-          "count": 483
+          "count": 488
         },
         {
           "mask": 10,
@@ -991,13 +991,13 @@
       "confirmed_series": 0,
       "confirmed_units": 0,
       "excluded_series": 445,
-      "excluded_measured": 365,
-      "excluded_missing_evidence": 80,
+      "excluded_measured": 370,
+      "excluded_missing_evidence": 75,
       "source_failures": 0,
       "issues": [
         {
           "id": "calendar_unverified",
-          "count": 425
+          "count": 420
         },
         {
           "id": "coarse_resolution",
@@ -1005,15 +1005,15 @@
         },
         {
           "id": "completeness_unverified",
-          "count": 425
+          "count": 420
         },
         {
           "id": "hourly_gaps",
-          "count": 20
+          "count": 25
         },
         {
           "id": "long_gaps",
-          "count": 20
+          "count": 25
         },
         {
           "id": "missing_months",
@@ -1035,11 +1035,11 @@
         },
         {
           "mask": 8,
-          "count": 80
+          "count": 75
         },
         {
           "mask": 9,
-          "count": 9
+          "count": 14
         },
         {
           "mask": 10,
