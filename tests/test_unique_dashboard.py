@@ -27,7 +27,7 @@ class UniqueDashboardTests(unittest.TestCase):
             self.assertIn('900 seconds',html)
             self.assertIn('two years',html)
             self.assertIn('No unexplained gaps',html)
-            self.assertIn('Saved eligible fields',html)
+            self.assertIn('Subjects with eligible data',html)
             self.assertIn('does not make a whole target eligible',html)
             self.assertIn('tasks.html',html)
         self.assertEqual((summary,tasks),before)
