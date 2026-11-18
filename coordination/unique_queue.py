@@ -74,6 +74,38 @@ def file_bytes(path, maximum, owner=None):
         os.close(descriptor)
 
 
+def pinned_batch_bytes(path, pin, owner=None):
+    """Read a batch with an exact content pin from its validated manifest.
+
+    ctime alone can change as NFS attributes refresh. It cannot authorize new
+    payloads: every returned byte must match the manifest hash and byte count.
+    Live coordination records continue to use strict file_bytes instead.
+    """
+    closed(pin, ('path', 'bytes', 'sha256'))
+    require(type(pin['bytes']) is int and 0 < pin['bytes'] <= MAX_BATCH_BYTES and
+            isinstance(pin['sha256'], str) and SHA.fullmatch(pin['sha256']), 'invalid immutable batch pin')
+    path = safe_path(path)
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    try:
+        before = os.fstat(descriptor)
+        require(stat.S_ISREG(before.st_mode) and not before.st_mode & 0o022 and
+                (owner is None or before.st_uid == owner), 'immutable batch ownership/mode/type invalid')
+        require(before.st_size == pin['bytes'], 'batch file hash/size mismatch')
+        with os.fdopen(descriptor, 'rb', closefd=False) as stream:
+            raw = stream.read(pin['bytes'] + 1)
+            after = os.fstat(descriptor)
+        final = path.lstat()
+        def signature(info):
+            return (info.st_dev, info.st_ino, info.st_mode, info.st_uid,
+                    info.st_size, info.st_mtime_ns)
+        require(signature(before) == signature(after) == signature(final), 'immutable batch changed during read')
+        require(len(raw) == pin['bytes'] and hashlib.sha256(raw).hexdigest() == pin['sha256'],
+                'batch file hash/size mismatch')
+        return raw
+    finally:
+        os.close(descriptor)
+
+
 def parse(raw):
     def unique_keys(pairs):
         result = {}
@@ -221,7 +253,7 @@ class UniqueQueue:
         targets, series, pins = set(), set(), {}
         # Validate globally before creating any queue state; read again while copying.
         for row in rows:
-            data = batch_data(file_bytes(source.parent/row['file']['path'], MAX_BATCH_BYTES), row)
+            data = batch_data(pinned_batch_bytes(source.parent/row['file']['path'], row['file'], os.getuid()), row)
             for target in data['targets']:
                 require(target['target_id'] not in targets, 'duplicate canonical target across batches')
                 targets.add(target['target_id'])
@@ -237,7 +269,7 @@ class UniqueQueue:
         package.mkdir(mode=0o755)
         os.chmod(package, 0o755)
         for row in rows:
-            body = file_bytes(source.parent/row['file']['path'], MAX_BATCH_BYTES)
+            body = pinned_batch_bytes(source.parent/row['file']['path'], row['file'], os.getuid())
             batch_data(body, row)
             destination = package/row['file']['path']
             destination.parent.mkdir(parents=True, exist_ok=True, mode=0o755)
@@ -292,7 +324,7 @@ class UniqueQueue:
 
     def read(self, batch_id):
         row, _, owner = self.package_row(batch_id)
-        return batch_data(file_bytes(self.root/'package'/row['file']['path'], MAX_BATCH_BYTES, owner), row)
+        return batch_data(pinned_batch_bytes(self.root/'package'/row['file']['path'], row['file'], owner), row)
 
     def shared(self, name):
         _, owner = self.configuration()
@@ -383,8 +415,13 @@ class UniqueQueue:
         definitions = _SnapshotLegacyDefinitions(self.legacy)
         views = [self._show_row(row, config, metadata_owner, definitions) for row in rows]
         definitions.verify()
-        require(all(file_stamp(path) == before for path, before in batch_stamps.items()),
-                'installed batch metadata changed during snapshot')
+        for row in rows:
+            path = self.root/'package'/row['file']['path']
+            before, after = batch_stamps[path], file_stamp(path)
+            require(before[:-1] == after[:-1], 'installed batch metadata changed during snapshot')
+            if before[-1] != after[-1]:
+                # One extra content verification only when ctime changed.
+                pinned_batch_bytes(path, row['file'], metadata_owner)
         require(self.configuration() == (config, metadata_owner), 'queue configuration changed during snapshot')
         require(file_bytes(manifest, MAX_MANIFEST_BYTES, metadata_owner) == raw,
                 'installed manifest changed during snapshot')
@@ -394,7 +431,7 @@ class UniqueQueue:
     def _show_row(self, row, config, metadata_owner, definitions=None):
         """Internal row view for a validated manifest, with fresh live records."""
         self.require_idle()
-        data = batch_data(file_bytes(self.root/'package'/row['file']['path'], MAX_BATCH_BYTES, metadata_owner), row)
+        data = batch_data(pinned_batch_bytes(self.root/'package'/row['file']['path'], row['file'], metadata_owner), row)
         status, owner = self.state(row['id'], row['file']['sha256'])
         reservation = self.reservation(row)
         current = reservation['current'] if reservation else None

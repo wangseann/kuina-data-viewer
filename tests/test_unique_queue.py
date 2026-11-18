@@ -625,3 +625,117 @@ class MetadataDescriptorTests(unittest.TestCase):
         with self.assertRaises(ValueError):file_bytes(self.path,1024,os.getuid())
         link=self.path.with_suffix('.link');link.symlink_to(self.path)
         with self.assertRaises(ValueError):file_bytes(link,1024)
+
+
+class PinnedBatchDescriptorTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.path=Path(self.temp.name).resolve()/'batch.json'
+        self.body=b'{"pinned": "exact immutable payload"}'
+        self.path.write_bytes(self.body);self.path.chmod(0o444)
+        self.pin=dict(path='batch.json',bytes=len(self.body),sha256=hashlib.sha256(self.body).hexdigest())
+
+    def read(self):
+        from coordination.unique_queue import pinned_batch_bytes
+        return pinned_batch_bytes(self.path,self.pin,os.getuid())
+
+    def during_read(self,action,after=False):
+        original=os.fdopen
+        class Reader:
+            def __init__(self,stream):self.stream=stream
+            def __enter__(self):return self
+            def __exit__(self,*args):return self.stream.__exit__(*args)
+            def read(self,count):
+                if not after:action()
+                raw=self.stream.read(count)
+                if after:action()
+                return raw
+        return patch('coordination.unique_queue.os.fdopen',side_effect=lambda *a,**k:Reader(original(*a,**k)))
+
+    def chmod_only(self):
+        self.path.chmod(0o400);self.path.chmod(0o444)
+
+    def test_pinned_real_ctime_only_chmod_accepts_exact_payload(self):
+        before=self.path.stat()
+        with self.during_read(self.chmod_only):self.assertEqual(self.read(),self.body)
+        self.assertNotEqual(before.st_ctime_ns,self.path.stat().st_ctime_ns)
+        self.assertEqual(before.st_mtime_ns,self.path.stat().st_mtime_ns)
+
+    def test_live_reader_still_rejects_real_ctime_only_chmod(self):
+        with self.during_read(self.chmod_only):
+            with self.assertRaises(ValueError):file_bytes(self.path,1024,os.getuid())
+
+    def test_wrong_hash_and_same_length_restored_mtime_content_rejected(self):
+        self.pin['sha256']='0'*64
+        with self.assertRaises(ValueError):self.read()
+        self.pin['sha256']=hashlib.sha256(self.body).hexdigest()
+        before=self.path.stat()
+        def mutate():
+            self.path.chmod(0o644);self.path.write_bytes(b'x'*len(self.body));self.path.chmod(0o444)
+            os.utime(self.path,ns=(before.st_atime_ns,before.st_mtime_ns))
+        with self.during_read(mutate):
+            with self.assertRaises(ValueError):self.read()
+
+    def test_mode_or_expected_owner_rejected(self):
+        from coordination.unique_queue import pinned_batch_bytes
+        with self.assertRaises(ValueError):pinned_batch_bytes(self.path,self.pin,os.getuid()+1)
+        with self.during_read(lambda:self.path.chmod(0o666)):
+            with self.assertRaises(ValueError):self.read()
+
+    def test_same_bytes_path_swap_and_symlink_swap_rejected(self):
+        for symlink in (False,True):
+            with self.subTest(symlink=symlink):
+                if self.path.is_symlink():self.path.unlink()
+                if self.path.exists():self.path.chmod(0o644)
+                self.path.write_bytes(self.body);self.path.chmod(0o444)
+                def swap():
+                    other=self.path.with_suffix('.other');other.write_bytes(self.body);other.chmod(0o444)
+                    self.path.unlink()
+                    if symlink:self.path.symlink_to(other)
+                    else:other.replace(self.path)
+                with self.during_read(swap,after=True):
+                    with self.assertRaises(ValueError):self.read()
+
+    def test_size_cap_short_read_and_fd_uid_change_rejected(self):
+        from coordination.unique_queue import pinned_batch_bytes,MAX_BATCH_BYTES
+        from types import SimpleNamespace
+        for size in (len(self.body)-1,MAX_BATCH_BYTES+1):
+            with self.assertRaises(ValueError):pinned_batch_bytes(self.path,dict(self.pin,bytes=size),os.getuid())
+        import io
+        with patch('coordination.unique_queue.os.fdopen',return_value=io.BytesIO(self.body[:-1])):
+            with self.assertRaises(ValueError):self.read()
+        real=os.fstat;calls=[]
+        def changed(fd):
+            info=real(fd);calls.append(fd)
+            if len(calls)==2:
+                data={name:getattr(info,name)for name in dir(info)if name.startswith('st_')};data['st_uid']+=1
+                return SimpleNamespace(**data)
+            return info
+        with patch('coordination.unique_queue.os.fstat',side_effect=changed):
+            with self.assertRaises(ValueError):self.read()
+
+
+class PinnedSnapshotTests(unittest.TestCase):
+    def setUp(self):
+        self.fixture=UniqueQueueTests();self.fixture.setUp();self.addCleanup(self.fixture.doCleanups)
+
+    def scan_with_change(self,changed_bytes):
+        import coordination.unique_queue as module
+        queue=self.fixture.install();row=self.fixture.manifest['batches'][0]
+        path=queue.root/'package'/row['file']['path'];before=path.stat();original=queue._show_row;calls=[]
+        def view(*args,**kwargs):
+            result=original(*args,**kwargs);calls.append(result)
+            if len(calls)==2:
+                path.chmod(0o644)
+                if changed_bytes:path.write_bytes(b'x'*before.st_size)
+                path.chmod(0o444);os.utime(path,ns=(before.st_atime_ns,before.st_mtime_ns))
+            return result
+        with patch.object(queue,'_show_row',side_effect=view),patch.object(module,'pinned_batch_bytes',wraps=module.pinned_batch_bytes)as reads:
+            if changed_bytes:
+                with self.assertRaises(ValueError):queue.snapshot()
+            else:
+                self.assertEqual(len(queue.snapshot()),2)
+                self.assertEqual(reads.call_count,3)  # Two batch reads, one ctime-triggered revalidation.
+
+    def test_snapshot_ctime_only_revalidates_exact_hash_once(self):self.scan_with_change(False)
+    def test_snapshot_same_size_content_changed_restored_mtime_rejected(self):self.scan_with_change(True)
