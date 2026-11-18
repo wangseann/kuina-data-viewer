@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-17T05:15:34.144704+00:00",
+  "assessment_utc": "2026-11-18T01:00:46.579803+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -211,11 +211,11 @@
     },
     {
       "id": "commodities",
-      "confirmed_series": 0,
-      "confirmed_units": 0,
-      "excluded_series": 1070353,
+      "confirmed_series": 10,
+      "confirmed_units": 2,
+      "excluded_series": 1070343,
       "excluded_measured": 1069707,
-      "excluded_missing_evidence": 646,
+      "excluded_missing_evidence": 636,
       "source_failures": 32,
       "issues": [
         {
@@ -228,7 +228,7 @@
         },
         {
           "id": "calendar_unverified",
-          "count": 142802
+          "count": 142792
         },
         {
           "id": "coarse_resolution",
@@ -236,7 +236,7 @@
         },
         {
           "id": "completeness_unverified",
-          "count": 142802
+          "count": 142792
         },
         {
           "id": "conflicting_duplicates",
@@ -282,7 +282,7 @@
       "failure_masks": [
         {
           "mask": 8,
-          "count": 675
+          "count": 665
         },
         {
           "mask": 9,
