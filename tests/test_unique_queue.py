@@ -434,3 +434,117 @@ class UniqueQueueTests(unittest.TestCase):
         self.assertEqual(queue.legacy_tasks(data)['old-task'],self.task)
         write(self.hub.root/'tasks/old-task.json',dict(self.task,affected_series=6))
         with self.assertRaisesRegex(ValueError,'legacy task hash mismatch'):queue.legacy_tasks(data)
+
+
+class SnapshotDefinitionPerformanceTests(unittest.TestCase):
+    setUp = UniqueQueueTests.setUp
+    add_batch = UniqueQueueTests.add_batch
+    install = UniqueQueueTests.install
+    def test_snapshot_reuses_each_immutable_definition_across_batches(self):
+        queue=self.install()
+        with patch.object(self.hub,'_read_task',wraps=self.hub._read_task)as reader:
+            views=queue.snapshot()
+        self.assertEqual(len(views),2)
+        self.assertEqual(reader.call_count,1,'One definition read across the entire snapshot, not once per batch')
+        self.hub.claim('old-task','juan')
+        self.assertTrue(all(row['status']=='blocked'for row in queue.snapshot()))
+        self.hub.report('old-task','juan','in_progress','Legacy work remains current')
+        self.assertTrue(all(row['legacy_blockers'][0]['state']=='active'for row in queue.snapshot()))
+
+    def test_snapshot_definition_tamper_during_scan_fails_closed(self):
+        queue=self.install();original=queue._show_row
+        def changed(row,*args):
+            result=original(row,*args)
+            if row['id']=='new-a':write(self.hub.root/'tasks/old-task.json',dict(self.task,affected_series=6))
+            return result
+        with patch.object(queue,'_show_row',side_effect=changed):
+            with self.assertRaisesRegex(ValueError,'legacy|definition|metadata|changed'):queue.snapshot()
+
+    def planned_queue(self):
+        self.hub=Hub(self.base/'planned-legacy');self.hub.init()
+        at='2026-01-01T00:00:00+00:00';leaves=[]
+        directory=self.hub.root/'batch-plans';directory.mkdir()
+        for number in range(13):
+            parent=dict(self.task,id='parent-'+str(number),affected_series=1000)
+            write(self.hub.root/'tasks'/(parent['id']+'.json'),parent)
+            claim=self.hub.root/'claims'/parent['id'];claim.mkdir()
+            write(claim/'owner.json',dict(uid=os.getuid(),person='juan',task_sha256=digest(parent),claimed_at=at))
+            root=directory/parent['id'];root.mkdir();(root/'tasks').mkdir()
+            prefix='batch-'+digest(parent)[:24]+'-'
+            write(root/'plan.json',dict(manifest_path=str(self.base/'unused-synthetic-manifest.json'),manifest_sha256='a'*64,
+                assignment='lead',batch_size=500,parent_id=parent['id'],parent_sha256=digest(parent),child_prefix=prefix,batch_total=2,activated_at=at))
+            for child in range(2):
+                task=dict(parent,id=prefix+str(child+1).zfill(6),affected_series=500,batch_spec={})
+                write(root/'tasks'/(task['id']+'.json'),task);leaves.append(task)
+        self.hub.enable_self_service()
+        source=self.base/'planned-input';source.mkdir();manifest=dict(schema='kuina-unique-queue-v1',batches=[])
+        for number in range(3):
+            batch='unique-synthetic-'+str(number)
+            targets=[dict(target_id='target-%d-%d'%(number,i),series_ids=['series-%d-%d'%(number,i)],
+                legacy_tasks=[dict(id=leaves[i%20]['id'],task_sha256=digest(leaves[i%20]))])for i in range(100)]
+            raw=json.dumps(dict(schema='kuina-unique-batch-v1',id=batch,targets=targets)).encode()
+            (source/(batch+'.json')).write_bytes(raw)
+            manifest['batches'].append(dict(id=batch,category='stocks',target_count=100,series_count=100,
+                file=dict(path=batch+'.json',bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())))
+        (source/'manifest.json').write_text(json.dumps(manifest))
+        queue=UniqueQueue(self.base/'planned-queue',self.hub);queue.install(source/'manifest.json')
+        return queue,leaves
+
+    def test_one_plan_index_and_distinct_definition_reads_but_fresh_live_states(self):
+        import coordination.task_manager as implementation
+        import coordination.unique_queue as queue_implementation
+        queue,leaves=self.planned_queue();original_read=implementation.read;counts={'plan':0,'leaf':0}
+        def measured(path):
+            if path.name=='plan.json':counts['plan']+=1
+            elif path.parent.name=='tasks' and 'batch-plans' in path.parts:counts['leaf']+=1
+            return original_read(path)
+        with patch.object(implementation,'read',side_effect=measured),patch.object(self.hub,'batch_plans',wraps=self.hub.batch_plans)as plans,\
+             patch.object(self.hub,'state',wraps=self.hub.state)as states,patch.object(queue_implementation,'digest',wraps=digest)as hashes:
+            views=queue.snapshot()
+        self.assertEqual(len(views),3);self.assertEqual(plans.call_count,1)
+        self.assertEqual(counts,{'plan':13,'leaf':20})
+        self.assertEqual(states.call_count,60,'Live state is checked per row, not cached')
+        self.assertEqual(hashes.call_count,20,'Immutable task digests are computed once per definition')
+        self.hub.assign(leaves[0]['id'],'juan',42,'volunteer')
+        with patch.object(self.hub,'batch_plans',wraps=self.hub.batch_plans)as plans:
+            views=queue.snapshot()
+        self.assertEqual(plans.call_count,1,'Blocked-assignee lookup must reuse only the immutable plan index')
+        self.assertTrue(all(row['status']=='blocked'for row in views))
+        self.assertTrue(all(row['legacy_blockers'][0]['assignee']=='juan'for row in views))
+
+    def test_snapshot_plan_index_and_parent_owner_mutation_fail_closed(self):
+        for changed in ('plan','parent-owner','incoming'):
+            with self.subTest(changed=changed):
+                # Every case uses a separate protected synthetic package.
+                with tempfile.TemporaryDirectory()as temporary:
+                    old_base=self.base;self.base=Path(temporary).resolve()
+                    try:queue,_=self.planned_queue()
+                    finally:self.base=old_base
+                    original=queue._show_row
+                    def mutate(row,*args):
+                        result=original(row,*args)
+                        if row['id']=='unique-synthetic-0':
+                            if changed=='incoming':(self.hub.root/'batch-plans/.unexpected.incoming').mkdir()
+                            else:
+                                path=(self.hub.root/'batch-plans/parent-0/plan.json' if changed=='plan'
+                                      else self.hub.root/'claims/parent-0/owner.json')
+                                data=read(path);write(path,data)
+                        return result
+                    with patch.object(queue,'_show_row',side_effect=mutate),self.assertRaisesRegex(ValueError,'legacy|index|metadata|changed'):
+                        queue.snapshot()
+
+    def test_live_report_and_unknown_fence_stay_fresh_inside_snapshot(self):
+        queue=self.install();self.hub.claim('old-task','juan');original=queue._show_row
+        def report_after_first(row,*args):
+            result=original(row,*args)
+            if row['id']=='new-a':self.hub.report('old-task','juan','blocked','Current legacy issue')
+            return result
+        with patch.object(queue,'_show_row',side_effect=report_after_first):views=queue.snapshot()
+        self.assertEqual(views[0]['legacy_blockers'][0]['state'],'active')
+        self.assertEqual(views[1]['legacy_blockers'][0]['state'],'blocked')
+        def fence_after_first(row,*args):
+            result=original(row,*args)
+            if row['id']=='new-a':(self.hub.root/'task-locks/old-task').mkdir()
+            return result
+        with patch.object(queue,'_show_row',side_effect=fence_after_first),self.assertRaisesRegex(ValueError,'unknown.*fence|lock'):
+            queue.snapshot()

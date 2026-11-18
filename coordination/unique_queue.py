@@ -138,6 +138,59 @@ def batch_data(raw, row):
     return data
 
 
+class _SnapshotLegacyDefinitions:
+    """One read-only scan's immutable definitions, never live worker state.
+
+    The existing Hub validates the plan index and original parent reservations.
+    Protected definitions/index paths are stamped before loading and rechecked
+    at completion. Each command gets a new resolver; claim/assign paths do not
+    use it and retain their fresh checks under the existing mutex.
+    """
+    def __init__(self, legacy):
+        self.legacy = legacy
+        self.stamps = {}
+        self.tasks = {}
+        self.watch(legacy.root/'tasks')
+        directory = self.watch(legacy.root/'batch-plans')
+        if directory.exists():
+            for folder in directory.iterdir():
+                require(folder.is_dir() and not folder.name.startswith('.'),
+                        'unexpected batch plan; reconcile manually')
+                parent_id = identifier(folder.name)
+                for path in (folder, folder/'plan.json', folder/'tasks',
+                             legacy.root/'tasks'/(parent_id+'.json'),
+                             legacy.root/'claims'/parent_id,
+                             legacy.root/'claims'/parent_id/'owner.json'):
+                    self.watch(path)
+        self.plans = legacy.batch_plans()
+        self.verify()
+
+    def watch(self, path):
+        path = safe_path(path)
+        if path not in self.stamps:
+            self.stamps[path] = file_stamp(path) if path.exists() else None
+        return path
+
+    def verify(self):
+        for path, expected in self.stamps.items():
+            actual = file_stamp(path) if safe_path(path).exists() else None
+            require(actual == expected, 'legacy definition/index metadata changed during snapshot')
+
+    def resolve(self, task_id):
+        identifier(task_id)
+        if task_id not in self.tasks:
+            path = self.watch(self.legacy.root/'tasks'/(task_id+'.json'))
+            if not path.exists():
+                matches = [parent for parent, plan in self.plans.items()
+                           if task_id.startswith(plan['child_prefix'])]
+                require(len(matches) == 1, 'unknown or ambiguous legacy task ID')
+                path = self.watch(self.legacy.root/'batch-plans'/matches[0]/'tasks'/(task_id+'.json'))
+            task = self.legacy._read_task(path)
+            require(file_stamp(path) == self.stamps[path], 'legacy definition changed during read')
+            self.tasks[task_id] = task, digest(task)
+        return self.tasks[task_id]
+
+
 class UniqueQueue:
     def __init__(self, root, legacy_hub):
         self.root = safe_path(root)
@@ -302,8 +355,8 @@ class UniqueQueue:
     def snapshot(self):
         """Read one immutable package manifest per scan, never cache worker state.
 
-        The second manifest/config verification closes the operation. This is
-        advisory availability; mutations always take their own fresh claim and
+        The second manifest/config and legacy-definition stamp checks close
+        the operation. This is advisory availability; mutations always take their own fresh claim and
         legacy checks under the mutex.
         """
         self.require_idle()
@@ -314,7 +367,9 @@ class UniqueQueue:
         rows = manifest_rows(parse(raw))
         batch_stamps = {self.root/'package'/row['file']['path']:
                         file_stamp(self.root/'package'/row['file']['path']) for row in rows}
-        views = [self._show_row(row, config, metadata_owner) for row in rows]
+        definitions = _SnapshotLegacyDefinitions(self.legacy)
+        views = [self._show_row(row, config, metadata_owner, definitions) for row in rows]
+        definitions.verify()
         require(all(file_stamp(path) == before for path, before in batch_stamps.items()),
                 'installed batch metadata changed during snapshot')
         require(self.configuration() == (config, metadata_owner), 'queue configuration changed during snapshot')
@@ -323,24 +378,25 @@ class UniqueQueue:
         self.require_idle()
         return views
 
-    def _show_row(self, row, config, metadata_owner):
+    def _show_row(self, row, config, metadata_owner, definitions=None):
         """Internal row view for a validated manifest, with fresh live records."""
         self.require_idle()
         data = batch_data(file_bytes(self.root/'package'/row['file']['path'], MAX_BATCH_BYTES, metadata_owner), row)
         status, owner = self.state(row['id'], row['file']['sha256'])
         reservation = self.reservation(row)
         current = reservation['current'] if reservation else None
-        tasks = self.legacy_tasks(data)
+        tasks = self.legacy_tasks(data, definitions)
+        plans = None if definitions is None else definitions.plans
         blockers = []
         for task_id in sorted(tasks):
             task = tasks[task_id]
             fenced = self.valid_fence(task, config)
             require(owner is None and current is None or fenced,
                     'claimed or reserved unique batch missing legacy fence; reconcile manually')
-            legacy_state, _ = self.legacy.state(task)
+            legacy_state, _ = self.legacy.state(task, plans)
             if legacy_state != 'available':
                 blockers.append(dict(task_id=task_id, state=legacy_state,
-                                     assignee=self.legacy.effective_assignee(task)))
+                                     assignee=self.legacy.effective_assignee(task, plans)))
         require(owner is None or not blockers, 'claimed unique batch conflicts with legacy work; reconcile manually')
         if owner is None and blockers:
             status = 'blocked'
@@ -354,14 +410,18 @@ class UniqueQueue:
                     assignment_issue=current['issue'] if current else None,
                     batch_sha256=row['file']['sha256'], legacy_blockers=blockers)
 
-    def legacy_tasks(self, data):
-        tasks = {}
+    def legacy_tasks(self, data, definitions=None):
+        tasks, hashes = {}, {}
         for target in data['targets']:
             for pin in target['legacy_tasks']:
-                if pin['id'] not in tasks:
-                    tasks[pin['id']] = self.legacy.task(pin['id'])
-                task = tasks[pin['id']]
-                require(digest(task) == pin['task_sha256'], 'legacy task hash mismatch')
+                task_id = pin['id']
+                if task_id not in tasks:
+                    if definitions is None:
+                        tasks[task_id] = self.legacy.task(task_id)
+                    else:
+                        tasks[task_id], hashes[task_id] = definitions.resolve(task_id)
+                actual_hash = digest(tasks[task_id]) if definitions is None else hashes[task_id]
+                require(actual_hash == pin['task_sha256'], 'legacy task hash mismatch')
         return tasks
 
     def check_legacy(self, tasks):

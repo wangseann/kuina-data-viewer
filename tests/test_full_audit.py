@@ -10,6 +10,13 @@ def full_snapshot():
     return dict(schema=3,audit_utc='2026-11-09T15:00:00Z',types=rows)
 
 class FullAuditTests(unittest.TestCase):
+    def test_full_dashboard_navigation_has_new_batches_and_legacy_assignments(self):
+        page=render(full_snapshot())
+        self.assertIn('<a href="unique.html">Repair batches</a>',page)
+        self.assertIn('<a href="tasks.html">Legacy assignments</a>',page)
+        self.assertIn('<a href="explorer.html">Inspect series</a>',page)
+        self.assertIn('<a href="m1.html">Dukascopy m1 audit</a>',page)
+
     def test_all_excluded_series_are_red_including_missing_evidence(self):
         data=full_snapshot();validate(data);page=render(data)
         self.assertEqual(page.count('class="square failed-square"'),5)

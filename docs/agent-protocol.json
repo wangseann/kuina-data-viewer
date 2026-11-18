@@ -1,14 +1,15 @@
 {
-  "schema": "kuina-agent-coordination-v3",
+  "schema": "kuina-agent-coordination-v4",
   "authoritative_store": "Private shared Kuina task hub, configured by AGENT_TASKS.md",
   "poll_interval_hours": 24,
-  "public_snapshot": "tasks-summary.json",
-  "public_snapshot_schema": 3,
+  "public_snapshot": "unique-tasks.json",
+  "public_snapshot_schema": "kuina-unique-public-tasks-v1",
   "review_batches": {
-    "maximum_catalogue_records": 500,
+    "maximum_repair_subjects": 100,
     "assignment_basis": "participant chooses available work",
-    "eligible_records": "skipped by read-batch",
-    "parent_jobs": "retained as unassigned nonclaimable coordination records"
+    "all_original_fields_and_variants_retained": true,
+    "original_records": "A subject can retain many original numeric fields, sources, intervals and representations; 100 subjects is not a 100-record limit.",
+    "eligible_records": "Only wholly saved-eligible subjects are omitted from new active work. Unique read-batch retains all original series IDs for included subjects; an eligible child does not certify siblings. Legacy read-batch keeps its existing eligible-record filtering."
   },
   "commands_use_environment": [
     "KUINA_TASK_MANAGER",
@@ -47,17 +48,17 @@
     "release_generation": "positive assignment_issue must match the current reservation origin"
   },
   "workflow": [
-    "choose your identity and an available batch on the website",
+    "resume existing active or blocked work first; list your work with --include-legacy",
+    "after coordinator activation, choose your identity and an available repair-subject batch on unique.html for new work",
     "submit the prepared GitHub issue and wait for broker confirmation",
-    "list your assigned tasks; resume active work first",
-    "claim using your own Native agent process and stop if denied",
-    "read-batch for the exact private catalogue section",
+    "claim using your own Native agent process and stop if denied; the website never starts a worker",
+    "read-batch for exact repair subjects and all original series IDs, or the unchanged legacy catalogue section",
+    "perform bounded private context lookup for current child checks, fields and source variants",
     "inspect existing data and metadata and reuse shared source findings",
-    "submit deduplicated repair scope across batches",
-    "verify source feasibility before collection",
-    "run bounded authorized work",
-    "report provenance",
-    "await matching independent eligibility audit"
+    "submit deduplicated source repair scope through existing v3 admission before collection",
+    "verify source feasibility and the unchanged requirements before collection",
+    "run bounded authorized work and report provenance on the same claimed task",
+    "await a matching independent eligibility audit; completing a subject batch does not certify all its fields"
   ],
   "claims": {
     "website_can_request_assignment": true,
@@ -113,5 +114,66 @@
       "name": "Olga"
     }
   ],
-  "snapshot_roster_compatibility": "Readers accept only the complete historical nine-person roster or the complete eleven-person roster. Every assigned participant and legacy category lead must be present in that snapshot. New snapshots include all eleven participants."
+  "snapshot_roster_compatibility": "Legacy readers accept only the complete historical nine-person roster or the complete eleven-person roster, with every assigned participant and legacy category lead present. Unique snapshots and new legacy snapshots include all eleven participants.",
+  "default_queue": "unique",
+  "queues": {
+    "unique": {
+      "page": "unique.html",
+      "snapshot": "unique-tasks.json",
+      "snapshot_schema": "kuina-unique-public-tasks-v1",
+      "summary": "unique-summary.json",
+      "requires_coordinator_activation": true,
+      "new_work_default": "After verified coordinator activation; before activation the private wrapper preserves its legacy behavior.",
+      "identity": "Repair work subjects with unresolved identities retained separately; not a certified world-unique instrument total."
+    },
+    "legacy": {
+      "page": "tasks.html",
+      "snapshot": "tasks-summary.json",
+      "snapshot_schema": 3,
+      "maximum_catalogue_records": 500,
+      "existing_claims_and_reports_preserved": true,
+      "purpose": "Resume existing assignments and reports; do not start a duplicate claim when a unique batch overlaps legacy work.",
+      "parent_jobs": "retained as unassigned nonclaimable coordination records"
+    }
+  },
+  "commands": {
+    "list_work": [
+      "list",
+      "--person",
+      "PERSON_ID",
+      "--include-legacy",
+      "--all"
+    ],
+    "available_work": [
+      "list",
+      "--available"
+    ],
+    "show": [
+      "show",
+      "TASK_ID"
+    ],
+    "claim": [
+      "claim",
+      "TASK_ID",
+      "--person",
+      "PERSON_ID"
+    ],
+    "read_batch": [
+      "read-batch",
+      "TASK_ID"
+    ],
+    "report": [
+      "report",
+      "TASK_ID",
+      "--person",
+      "PERSON_ID",
+      "--status",
+      "in_progress",
+      "--note",
+      "PRIVATE_NOTE"
+    ]
+  },
+  "command_interface": "Arguments follow the configured private wrapper and shared-hub options. unique- task IDs route to the activated additive queue; other IDs retain legacy claim/read/report behavior.",
+  "private_context_lookup": "After a successful own worker claim, read-batch returns target_id and every original series_ids member. Use those exact IDs for bounded read-only lookup in the coordinator-published private context. Inspect current child checks, source variants and original field decisions; do not scan every subject or publish context metadata.",
+  "source_admission": "The wrapper handles assignment, worker claims and reports. Existing v3 source-scope propose/admit/verify remains a separate private interface described in AGENT_TASKS.md. A subject assignment does not authorize collection or make data eligible."
 }

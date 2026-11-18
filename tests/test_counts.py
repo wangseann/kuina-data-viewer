@@ -12,6 +12,15 @@ def snapshot():
 
 
 class CountsTests(unittest.TestCase):
+    def test_main_navigation_links_repair_batches_and_preserves_legacy_tasks(self):
+        from copy import deepcopy
+        data=snapshot();before=deepcopy(data);page=render(data)
+        self.assertIn('<nav aria-label="Main navigation">',page)
+        self.assertIn('<a href="unique.html">Repair batches</a>',page)
+        self.assertIn('<a href="tasks.html">Legacy assignments</a>',page)
+        self.assertEqual(data,before)
+        self.assertEqual(totals(data),(6337,129))
+
     def test_confirmed_and_provisional_are_separate(self):
         data=validate(snapshot())
         self.assertEqual(totals(data),(6337,129))
