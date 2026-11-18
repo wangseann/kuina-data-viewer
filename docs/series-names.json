@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-18T10:57:10.690676+00:00",
+  "assessment_utc": "2026-11-18T21:50:13.621968+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "afb7ad035db7141391301f95cf0791aa2200c8ea1b8c6a73793c4eb0fdbbace3",
-  "counts_sha256": "9b8a3359d8bae1ff0ffe27774c28ffa93aa081ec2fe24d6593800c8b639a6eb9",
+  "catalogue_sha256": "7d2f5a9ee01f36c94cd74ad9b3c5d3c914c227298694df331f6944960dffe01a",
+  "counts_sha256": "82a9127837186aa7f9d6f730b60752e29c730467d58ec2c9cc422f11a873924f",
   "schema": 1,
   "types": [
     {
@@ -62174,6 +62174,14 @@
           "variable": "volume"
         },
         {
+          "id": "0fe0854091f3414fe016518db9584ddc5838ebc887919da7ac5759a41d9e3db7",
+          "label": "USDC/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "1868aedae251478e01c08d07490820c665bca4702dba3838e97597025af84cc9",
           "label": "XRPUSDT",
           "mask": 0,
@@ -62574,6 +62582,14 @@
           "variable": "taker_buy_quote"
         },
         {
+          "id": "d6d46f21b18e33b6e96a92672ad36201e3071a13aa9139504657d2e12b1773f6",
+          "label": "USDC/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "da16381f7f94a30e034b2c996a0a304714d898f07dc2ea4099133569d687bc7f",
           "label": "SUIUSDT",
           "mask": 0,
@@ -62800,10 +62816,10 @@
         {
           "id": "173b0aed482ad1d68a88658985cde5245bb359e4c954a9f89190cdf8d0ecca7d",
           "label": "RENDER/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "183d7abf3c7d6d8b3b8d91ab8e02a0d890dcb6dc69d1f7d74bc7078a5d47c8a1",
@@ -62888,18 +62904,18 @@
         {
           "id": "27cd6480b1ec4b33785d3a8a131ff7abb4758710fc71fd3b51c48959add263e2",
           "label": "PAXG/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "29d1d88a76f1ad4583a224c88624e8be2800dc68251b2163c93b765d502e3b50",
           "label": "PEPE/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "2a1ac6689749c5bcec60fe9d8f56bc3e55b8c3777f020e69dcc0dc64b26684bf",
@@ -63008,10 +63024,10 @@
         {
           "id": "3ee9a18904b767f8c7dde9396007c345dc7016306e5b3ddcc3276c3445415c9c",
           "label": "FIL/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "3fb08e39d8e76b47c52d21be04a583cd3af653cee1297573ecfaeab28fbf7ea4",
@@ -63024,10 +63040,10 @@
         {
           "id": "3ff49529a90c7cac5b26f4c79644e80387a67c1a257ca81745b9aafa6820acb4",
           "label": "BONK/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "4072527847f750bbf9dad98dd0d28b98aff9c0c99b25d9055f709ca91db5c1f3",
@@ -63240,10 +63256,10 @@
         {
           "id": "811f274a4c01c782a75a8c9de49bec11c343f869674f5f6cc2a5101c62e53d00",
           "label": "WIF/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "820f62e5f35ce76c5c8c4116beda280de54c2dac9f8a8e2cdd469943215d5ddd",
@@ -63280,10 +63296,10 @@
         {
           "id": "852e658448e4b9614ec611a609a7d9cb2fcb477b18db70b60a1bb6c7c0b7ea73",
           "label": "LDO/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "85ea5d5945ef73cd31ce7c94a461b8dda613ce343baff938d8c87823e76f79e7",
@@ -63296,10 +63312,10 @@
         {
           "id": "8ae9b6d7e6583e802dcb22f065eeae628cbc1557684e76090ef47b96eb6a6bf4",
           "label": "ADA/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "8b4bfa657b3246a28a30f61907607394bd6d90294ba1d4aee138dd2ce1bbb317",
@@ -63368,10 +63384,10 @@
         {
           "id": "a0ba5ed18e20cb16eafdc579a8b15609cc19e1c03cd0e2754a3b6d448b793700",
           "label": "ARB/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "a0ea9545f0aa05a9c45a3dcd19d4f730a9b5781d4dfba718bbe402557f459f92",
@@ -63384,10 +63400,10 @@
         {
           "id": "a18e8cc82e0d094edbeb317ffd4f26990cd15b05fd21dde8697afd5460f97b51",
           "label": "ONDO/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "a555121f47a7deae9114976cbbc0289609c522c2ef9729ccc5b457c52cfec7c1",
@@ -63472,10 +63488,10 @@
         {
           "id": "bd201c06e76c0430f8b8862baa60627bb898977a6e26c90f5cd19afb640daf31",
           "label": "SKY/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "bee32a93a706af63308e51f2d765c092847bd76a3004c5e9f56a954d4640b870",
@@ -63504,10 +63520,10 @@
         {
           "id": "c376020b24476983b50168ae10c5f1cfb315d2afbd33d2b6a503e87eb0838248",
           "label": "POL/USD",
-          "mask": 1,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 1
         },
         {
           "id": "c4b605585ba8b09f4d0500f024546dd2043435379193f26d5865a48a25de6743",
@@ -63592,14 +63608,6 @@
         {
           "id": "d4a2e94d24af3130e94be9296122e19952c11a663d04902ba9273e9335ba8c70",
           "label": "BTC/USD",
-          "mask": 1,
-          "native_seconds": 900,
-          "source": "Alpaca",
-          "variable": "trade_count"
-        },
-        {
-          "id": "d6d46f21b18e33b6e96a92672ad36201e3071a13aa9139504657d2e12b1773f6",
-          "label": "USDC/USD",
           "mask": 1,
           "native_seconds": 900,
           "source": "Alpaca",
@@ -63872,10 +63880,10 @@
         {
           "id": "09fb2de8bb1e7cc7c88663cafe678f5d00c2a7846bb52ed8f21a04933ec10e2d",
           "label": "SKY/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "0a9281f5c3681f9c57d3b0513896a257c518f75420cca7d18c23cf930b2699ab",
@@ -63904,10 +63912,10 @@
         {
           "id": "0b1faa0f6718d593266c91d06a07354e3a33d2635eb8e4a7c02d6d1d892457ee",
           "label": "RENDER/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "0f88bc390782017f26ed736a200ef72a24130fec441611f047c946756165f866",
@@ -63918,20 +63926,12 @@
           "variable": "high"
         },
         {
-          "id": "0fe0854091f3414fe016518db9584ddc5838ebc887919da7ac5759a41d9e3db7",
-          "label": "USDC/USD",
-          "mask": 9,
-          "native_seconds": 900,
-          "source": "Alpaca",
-          "variable": "volume"
-        },
-        {
           "id": "110ec9a6247bcabdb56a9c34deb2bd541295224e1b304d6a556553b2b101394a",
           "label": "LDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "11d6732e3fc822ace84b7b402a5453320135c4ed3f51090719b955f31fee1281",
@@ -64024,10 +64024,10 @@
         {
           "id": "17306bd5f96bf1ac076c2f9e7c8fbb27d0e45adf1ceb8440d9f99567c713f373",
           "label": "POL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "1785275965b8d7bf7c343e8b297529d03a5f8e15c964cfb657dd84b24173d1cd",
@@ -64136,18 +64136,18 @@
         {
           "id": "1d9ad43d714c2695104c606121bcd742f48a3b8d737c31f78ec53f99b32b2414",
           "label": "PAXG/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "1dad001c503e0fbd2cc898d93f32f8012450ccf76d2e980d6e25018b006f81fe",
           "label": "BONK/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "1e277c77c71ddeabb525bd7b36f116eb9ea688eb7dcad8a213fcec83ae220b37",
@@ -64176,10 +64176,10 @@
         {
           "id": "1e732437d451fe28de87eba2f129abaf1dc2c71f814a81ce717f06243fbecb1f",
           "label": "RENDER/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "1ecda009e33c3a70c4c23a8b93f904a1b6d19b03155aaa7523c7939bc6701256",
@@ -64240,10 +64240,10 @@
         {
           "id": "2196547269d02d35aef3fd26f79eaa99b2cc52ee7abeccca8303fa7b9c241fe0",
           "label": "USDC/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "21e423d8167b158c7c47f4a99fe657e58cb8a64c3cf331c8357e0bdb4217ebe9",
@@ -64272,10 +64272,10 @@
         {
           "id": "23fc720cc5057e3238f2ea20f4693bd775397dc9bc9214d8f1a8a0784d7bb336",
           "label": "POL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "23fce2bf68388881ea6de1aaa898fa631417d5118fe1f605aeb58e1102099354",
@@ -64288,10 +64288,10 @@
         {
           "id": "242e1915b35d00f2bc8483349f55e47696437198dd4be463855216e78d4e5d96",
           "label": "ADA/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "245bf77870bf7c12473d737bce360ba638a96d9191373ef2786f32550bde2d2f",
@@ -64368,10 +64368,10 @@
         {
           "id": "2a77e149fcc90d20bd78a80e8719f3ff4a20cc345a2c3adc65835dc93b85e6a9",
           "label": "PEPE/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2ab4b3f1b80799110fca81c9424cbd748b14052be895c8d2a6ab6204b604321f",
@@ -64384,10 +64384,10 @@
         {
           "id": "2aeb6b08268c89b78978043b56d873469f1262e5163c52faea50fc661f08be2b",
           "label": "FIL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2b16b7f7f7e3f856d9412909c3df59f5dac963fb7223dd9934038fddb7931304",
@@ -64440,26 +64440,26 @@
         {
           "id": "2cb611773dba5e8a50c68b711a7330b4be3fc563c302e88f858c6ea55376fd6f",
           "label": "RENDER/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2e584a9bad94dab9ab9ac7d0f405dce02d07073e8c8d51ffc2ef99b5bec7782b",
           "label": "USDC/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2edf0bf1ac5478ebf50d40d630c1b9f681ff76d9ff9f2651831f090ecf704dc9",
           "label": "WIF/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2f09140d8fc11369801f725a0e5b03c9ded9910fa5e03fd43c0b8439682dfef3",
@@ -64472,10 +64472,10 @@
         {
           "id": "2f2d9d83cd9a32ff6d7ca2bbdc64fa233f74b14268abe86fbe186356f823452f",
           "label": "PAXG/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2f358a1660757ad5a3af0c5ac1e19f4c473512f12d245b4bd5ad25ffc17f9b9c",
@@ -64488,10 +64488,10 @@
         {
           "id": "2fc9dc9c902e818efeb68fb641a462b78b6592cc267c2a2ce90cf4abf14cb5ad",
           "label": "RENDER/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "2ff47ab4c8aa682415698b509ad9574e0395609f824c0eb032f0e491795d4af0",
@@ -64560,10 +64560,10 @@
         {
           "id": "36128954a8d1666d83d388d09f4dc69f57f2bf59eaed0dca32c5ea939b0841f7",
           "label": "PAXG/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "3797f7674c74df2931deaeb1e0e240d6df19d501446b2097ae7e981f05367dbd",
@@ -64624,10 +64624,10 @@
         {
           "id": "3f8349f40f132966dd798e9b7077aea9e87d463541d83e64c496dcc71456223d",
           "label": "ARB/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "4024b6e98e74ac599f1fc192bfb89ec0ec879ffeffc30b52776e9369a3581f4c",
@@ -64656,10 +64656,10 @@
         {
           "id": "41430bac4844bfe90c345d8900a59a439606f1b6c4105a68e5d94681c34bfa69",
           "label": "BONK/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "415c5c0ceae0dc7b6833fa79901e8c8ba1252c64b2d89ebbb113e9591632d553",
@@ -64672,10 +64672,10 @@
         {
           "id": "41ddb9fcbca23bd52c0fe749fcb00d4a0bc26356adf7451b8f3711d035a9b63f",
           "label": "ONDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "4236bdea00c3e4a758f8f47a406bd5216d90a9c71a527a34d90a415bf303ef7f",
@@ -64840,10 +64840,10 @@
         {
           "id": "54c0e5eb221e3d5c851552458f3c869f935dc3b23e84a9b7c87a852a1ff58ac7",
           "label": "ONDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "54d1bb1151a2094a8a01c29b8bee81306f2a76ce4470aa467088137cb016bf0a",
@@ -64888,10 +64888,10 @@
         {
           "id": "56bd3f5c48a62406ad9ba1f88f152f19f46f7003cd7c579dfbe196910c3f8b3c",
           "label": "SKY/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "571e6a7172cf9d95f0f30613cadac01c9669672e185b287b1d91227af1eeeeae",
@@ -64976,18 +64976,18 @@
         {
           "id": "5d4b4da384086351c9cb88c7c899c075f0d3faf7ab3c2d64a9bb2f459dc19f0b",
           "label": "ARB/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "5d9f1f290ff0c676b0ecd9ae910674b17c645b2a1983de7bb57679b25cc47748",
           "label": "BONK/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "5e35d8f0da078bff8a7570a9b18edd53ec99fcfb1b48ca0eb63b1e6918319bdc",
@@ -65024,10 +65024,10 @@
         {
           "id": "5efbab932a354ec848c31142ac2555d2ca7a0f4a99e5d112951a4e289d600083",
           "label": "FIL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "5f5c396bc6c37389e3c670cebfcb5057d3cbe985db003845eb3c95cedfbff603",
@@ -65048,10 +65048,10 @@
         {
           "id": "607edf16880d4b1e1951b4b2976eab6e4e52fd8093433ccdc050b1cad92c1d0c",
           "label": "ARB/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "609ffedaae0c32474c09e891e0626c08249ea85d33378049238256ef1713f60a",
@@ -65064,10 +65064,10 @@
         {
           "id": "60a27b00ba5d2bcf7d55f527cd63e5f02b8681dfb18b622d96e6592fbe4442f8",
           "label": "ONDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "6162835d9f82d9b7781ffc66cd376646c57537c032e21a82c9732e2f5c22a482",
@@ -65112,10 +65112,10 @@
         {
           "id": "65a0848cce5b5c048efcb26f4e709fb1bbee64fc83a5d1af21bbcfa4c6e3cfcd",
           "label": "POL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "667cd88cdb1da83e49442e740432c04bcbe0f02a440204e66f8170ab911069c1",
@@ -65184,10 +65184,10 @@
         {
           "id": "69442193881ccd0632180db249dce9fb166f7efb38d4b2269ad1deacca0c8897",
           "label": "WIF/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "696c8a9fd6e7db846f2947c1b5b2469708bc4f17fd9f3fc10b2a1a55c4c2d323",
@@ -65264,10 +65264,10 @@
         {
           "id": "6c4f7857238e66c77e3fafd3ec666f5658b3a481ec4b0cc92e03288365b3974e",
           "label": "POL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "6d80d326f1931dcd02e4f01eaca69212b5d2ce3688ec95e62c01094b42cde3a8",
@@ -65304,10 +65304,10 @@
         {
           "id": "7046ec2223ea4553e143cba146d1b99f6b3f2996ddd1f3e190e4ed82e34bde18",
           "label": "ARB/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "70df7a757348b66b6e58f99c5160eb22d8a79549a015b524b7e6a3d9fe8ef679",
@@ -65384,10 +65384,10 @@
         {
           "id": "743fa2990c6af623e1087ee884a91d0fc2a6c105475cdf295cccb02b929d0bfc",
           "label": "SKY/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "748cda58157c3baedef877707ab7be01605dd04f8d0ff5da9ad7333cbf90f2ea",
@@ -65416,10 +65416,10 @@
         {
           "id": "754e060d79134b55d96c0c735946fe27627a782fa66949b0938d6353138aa248",
           "label": "WIF/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "7616995e6ce1d220c3eb0d24f94c224a0280e68d1bc8e887d9f61a9fb9c38e85",
@@ -65440,10 +65440,10 @@
         {
           "id": "776300c1cd4aeac401c433429ffeb985fbfb0fe67203b72cddf38e07a54e2b7e",
           "label": "ARB/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "77fa9515f61e7e17edf74be1e85ccfb892799a9ba7c67972ba2a40537862bff7",
@@ -65520,10 +65520,10 @@
         {
           "id": "7d5ac05c3cee4468f2f253a721eb77c81ef26643540f2260751c0ee8ed2f2206",
           "label": "USDC/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "7db2791ee87e965420b18a14630a1fc4ae1d3303f75a2893cf5a923606d06a26",
@@ -65560,10 +65560,10 @@
         {
           "id": "7fe4460dbd9d7216ea66be05448c69338dedb8bac21c37dbc7397380741f73fe",
           "label": "LDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "7ffad0e48c8edccd1f86dcfc68de412f7097be91c9621d7bce6b2c6f2955a88c",
@@ -65616,10 +65616,10 @@
         {
           "id": "86e5a4fff4ec7baa9ff11ad8c8fe39adccada6a483e93a4f96fb14026f361643",
           "label": "ONDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "86f3064628346b0dddc2c277014cab13b5235b03562b35bb287fc4e6df406922",
@@ -65720,18 +65720,18 @@
         {
           "id": "8c160642a831f8db3eccb2424aa5ed24a8ccc986c59febe95ed669cc60ec2857",
           "label": "FIL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "8c31c992665c14aea0a194ab75bbde2af86bf99f0aff5e98bf47dd83ea1c51f5",
           "label": "SKY/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "8c67c1eb31c53b0a780265fbfa92ff5134e833460f4bf108f39e790e2e6d7911",
@@ -65776,18 +65776,18 @@
         {
           "id": "8e0ee09064bd7b3fbfeeda038e37d1cb11e1afc4ff0dd094a8db7390ea1af6de",
           "label": "FIL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "8e241e03dfa9b4bdedb866d9f2edcd3f8c92e8aa961007e23d641649bc3a773f",
           "label": "WIF/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "8f4771c54571227e58c6a576d793bb8a8454cc4b219ec0d6f728831e9409291d",
@@ -65816,10 +65816,10 @@
         {
           "id": "90ba393d0638832a527fda64cd84869db2d5f2e8f148cf0cc597191c6d052310",
           "label": "ONDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "90d7113d5b91788b7f8e6ec195bfb26514153aa1566a0d62e69012e47eae3e4f",
@@ -65864,10 +65864,10 @@
         {
           "id": "93dba32e044e7e1bdfc45c1246a109b30496b718621089dacafb4124b05c3c20",
           "label": "LDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "9452d6e04f853696d4c05beedb58021df68b350cf79aea16924c894fb7ba4ada",
@@ -65888,18 +65888,18 @@
         {
           "id": "96417394df3920dae816a51478bbdbb0bae82b0de40f16a51a6829180d8a31a9",
           "label": "WIF/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "966481c40bcdf0a337aee92a3c33358481c06b574317a8063ed0de7a884fef64",
           "label": "LDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "96711a91dc683bbb4494208cfe515df4d6bab9dd972394715d65a8f5a3070be0",
@@ -65912,10 +65912,10 @@
         {
           "id": "96c57c315a9f5946a46cb5377cb8e68074799bced16b6ad98fd6d4dae4ddf600",
           "label": "PAXG/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "96feeedf459c4bc8d7d823a9b232929683b3e19e960b9f1e9182bb6c87fb29d4",
@@ -65936,10 +65936,10 @@
         {
           "id": "9753b69a0ae9e7e464c6b318911bbf98156ba6c6fb70fc9693d568dd0b26b4e8",
           "label": "LDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "9884df8241cbe828aaf2cfb25a7dfa348a2ac4adc9620f390f0c5c13aff04e08",
@@ -66008,10 +66008,10 @@
         {
           "id": "9c693a5e818dfecb2cf9cc2f52a79f38655f55a649e7104f79bad35f21eb2e6c",
           "label": "PEPE/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "9cc6cd98a4e3f9ec84f0481895c9b54aaeec49dd1aa835ea785078feaee317ab",
@@ -66024,10 +66024,10 @@
         {
           "id": "9d04d42153f5c43eeb7dad26d03aab81b916ab9cd1cc18ee860e44c65bfeb103",
           "label": "PEPE/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "9e11681aaeae1afeb79a7b042ddd74656cd053a4501806fee17296fceb2163a3",
@@ -66096,10 +66096,10 @@
         {
           "id": "a23ee2dfe031e5d45cf3d64e79d4b2c716f08b5f9a2b027934a9a9e7ef35701e",
           "label": "ADA/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "a2b37da379ea66bf4f186282e9cfb0621aa5f11db73661be1e3debbe985ac2f0",
@@ -66120,10 +66120,10 @@
         {
           "id": "a322926107433248b5c83c807089d978349e51b0607615e7594efdcfaac85a86",
           "label": "PEPE/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "a3adda631c1ee7b30647fdeb5dafcf1e9c1832c128b856ebec5acce175612c87",
@@ -66136,10 +66136,10 @@
         {
           "id": "a405f714c0f3e97c6e6051738699495b1c76afc0e5be545d3472fe341ff1e4bb",
           "label": "FIL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "a4cb5e97210d068d018995c63b34c4c45eab1ab395b0e4a17b7a077e99bfdd52",
@@ -66168,10 +66168,10 @@
         {
           "id": "a785861141f5b63c73e2d6e044693d3c3d00aaec528fd6079595b248b225b6fa",
           "label": "WIF/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "a884240ac8905efd7a9bfeb59476b1db1988cd3c99d5f0e9041d95d91491755c",
@@ -66288,10 +66288,10 @@
         {
           "id": "aeab7d9de5e0b9c7b004c6f1c5a2c4de7113ce1d628df3cf3f78010d4547578c",
           "label": "SKY/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "aeb361a68d1fe8b6de83e9ddb5df51e94521e9cd474fdede680d0790b4609559",
@@ -66424,10 +66424,10 @@
         {
           "id": "b6bed7239101233292a93403279a904d48b14b4951df937e6f98661f89b2c6a4",
           "label": "RENDER/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "b6f7e448ed4bb9d01cd5dcd27f8a846055bd2257e10047aefb2b3ee3b5a00508",
@@ -66440,10 +66440,10 @@
         {
           "id": "b783dc3e5b8dda5a733d474781d73e864e73d6f979f67a4814b565700c4842a5",
           "label": "BONK/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "b7890b2bb9623a93346fc09ed5ac0baf439d38afd24ba66c9de8bea18ed3307e",
@@ -66488,10 +66488,10 @@
         {
           "id": "baa589974190bf23cdb37eb5f2cdcbd98b2e5890f6b5e7769c3f18359e39c71f",
           "label": "FIL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "bab0fd011873bc2c0627940a63c3fc58b0baa94199592bab4cd467ebce4165ab",
@@ -66552,10 +66552,10 @@
         {
           "id": "c0ef8da5899f7bf6f0b02d780442883e28097cc97a95b4dda9e77d13f98cdfdf",
           "label": "ADA/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "c1b3bf97a7af2d249fd33320f5e0582b8d18005eaa720f9668a6017539e7ae18",
@@ -66632,10 +66632,10 @@
         {
           "id": "c403a4c5c28763c19108e449ec5ab770ea358f4cb7d29a8fad12053b6d7797af",
           "label": "USDC/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "c4362731a09f8decaaf48e68a8cf6bccc7311e79c3ba250ef91bfbcde39ee694",
@@ -66792,10 +66792,10 @@
         {
           "id": "cd7a2197d7a38fbafc2f1e1c1615f4adb165bcad364035e323358fdce4066ce9",
           "label": "USDC/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "cd98758f35b7a09748838809d2d9ad350dca83269789ef1ff552a941285ef259",
@@ -66808,10 +66808,10 @@
         {
           "id": "ce77fb4690a5aa992da0a56cc1df6789fb028d4928a0f91a57faa9ab84ef6b27",
           "label": "SKY/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "cf1fea9b14a4b41aae6acc2a63198f3a6e37e747848c31ee1fbddab112b594d5",
@@ -66864,10 +66864,10 @@
         {
           "id": "d25edcca7628cef566ac706a8fa1c1d6ff86b943d9ff14948c4bf47469fbe74c",
           "label": "ARB/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "d366782ce4be6a7f608c2e706c511c6db7ac23ab6b88a8172f8f09e7ae2cadee",
@@ -66904,10 +66904,10 @@
         {
           "id": "d45c823da70d1fed80730a66b05ee1c0e6d2c3e5860b7d48f502f6027963a535",
           "label": "POL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "d4e4d2b19799aa5e1081790c3278c00cc42133c54ea0a8411e90e07ecfd143ce",
@@ -66952,10 +66952,10 @@
         {
           "id": "d7252387193ab4141dc1789b6d57a83134e72cc0359c7e12c4980b9b6e09752c",
           "label": "BONK/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "d7807c80831a10a58eccbfff4da05defd13f229d0ed450aa800a01d13c1e9454",
@@ -67104,10 +67104,10 @@
         {
           "id": "dfe41340a8a4052fa9e774d1a539103af29a03ba59fe6fd124f54057c1c7eee8",
           "label": "PAXG/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "e08e4c6664bb8e6fb05513fea1632b7a6e850bea99f6ebb96bcc3894f1b8e2de",
@@ -67120,10 +67120,10 @@
         {
           "id": "e1ede6ea54c1ac5db90d435fd2a71ec490f86f53abf2d9ce4262a25ddf49e5b5",
           "label": "ADA/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "e20c320886166e5d6741ede79fb46a69c6d231e9a6b270a720521748680aa2dd",
@@ -67296,10 +67296,10 @@
         {
           "id": "ed6ffcbf885ab4e3e342f7e7b0a0de109a9eaf5dc65142c182d440f15059a6b1",
           "label": "BONK/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "ed985f33314c000343432308c56c1902c802a8db34ec7101dc15548757f6522c",
@@ -67424,10 +67424,10 @@
         {
           "id": "f50d3c943169f11b409e18cd720b83844318638072e9338d97fe39986435c7fa",
           "label": "ADA/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f5273e3434236553a77afbe1918b027be2a9097cb81cbbf1bf6ba5e8137f6072",
@@ -67448,10 +67448,10 @@
         {
           "id": "f6005fb0b4d50945c3d93d9e6effa4eaeb13daae127a8c34c431a858f36a417b",
           "label": "LDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f616c7106e43c8aa0c825fb594be482d3690f83ef2d12063f3731d6bf7ed9c1f",
@@ -67464,18 +67464,18 @@
         {
           "id": "f69cd59a60ccf24af88768e2cfd1c2f043f2b92090c06a805715028ab6bd0002",
           "label": "POL/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f6bb6d7183d887374022669c9731ab7c2a13d004f24df535f449873bfb5b7d80",
           "label": "ONDO/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f70752f74f60b49cb1b1dfd8aa7124342e3187ec2f1ebd339ab5f9759d9decdb",
@@ -67496,10 +67496,10 @@
         {
           "id": "f82b5201e53d867ebd4b0e9fe950d13fe58123b437f2339309400f5d31ccc82a",
           "label": "PEPE/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f8d3a386b3e1b777ad4ad7ee854e9145c67632489f2f52e02da5295c9021eae5",
@@ -67512,18 +67512,18 @@
         {
           "id": "f9292ad9ed3d0a0955e74daee910cff9957c3b5aab81c563a17f006b89f0c6f7",
           "label": "RENDER/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f93c0163824fc52856f8429d993a27439795149f5dd47f99b6ee323ea5342895",
           "label": "PAXG/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "f94be82c77e701d6e8381e41f29abef0cda093a48893dc1bf0d17dea909dcc85",
@@ -67552,10 +67552,10 @@
         {
           "id": "fa79e03515a8e8f209507eff8e82af19fe8121b16d459664a80c648499b5188d",
           "label": "PEPE/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "faaf1a16c3a2cc3090e954922fec11f5d3f3fe8ecb91b3930b086c51982cb0d4",
@@ -67568,10 +67568,10 @@
         {
           "id": "fb02daeead3b9981d4288747a90e6484b2a19b2cc4459816a98e1e9b8f7ae52a",
           "label": "ADA/USD",
-          "mask": 9,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 9
         },
         {
           "id": "fb3252eacb52e601560b064132a72bb2b3a1d6db9c8244933e76c0f30759e915",
@@ -70184,10 +70184,10 @@
         {
           "id": "16f93b33a9533d02f52d034d2096f873aa6edff31150509843c58c052ef81084",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "199b6fca788c04aa063058a8d8bc6d2947ad29dfed3786b2b64e24eb74498c42",
@@ -70208,10 +70208,10 @@
         {
           "id": "1b192cb29a6e3ce82f7632c61e5538e317da7eecd636c784f65b9a0820a29670",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "1d880d9b8cde7652916595dd0cb188f09e228974c6447b96965811dab2ff1378",
@@ -70288,10 +70288,10 @@
         {
           "id": "28c0f73b84a37127b7473f47080c105fd46574bc842688297ab7a14f50c39540",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "2a652b986095c3d89c134402e598765672affbcaf0793acc83de928989600d72",
@@ -70328,10 +70328,10 @@
         {
           "id": "301b67f6ee7d51d139ebaad047e76018f4d76e24a52155ab0ada5efa8d7ab77d",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "31ba911efa366f829dfef016e5234a0929beeeba7c2c1b9c20c9e037e842e029",
@@ -70344,10 +70344,10 @@
         {
           "id": "3603fc220bc02dfa915b4489c9def9cbf0f78a4692e2545744870c56dbe6d106",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "36b9b7013cf013323ff1d4ad149a4453b930d15189b02caa1124916ac4854421",
@@ -70400,10 +70400,10 @@
         {
           "id": "41022375a7a9a8098dee56fac6eac206247bc2d7a9eba3108ffd023a2e738236",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "41811039170a4a1c6a8ef2e074a4ec6540e5d765f214e7ba82edcff7b4f5de6a",
@@ -70440,18 +70440,18 @@
         {
           "id": "440057375056bfebedea6c8c8c113e66dc238120a92766831f79d7175f957a16",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "4432990a7bf76ec03fea67afaaf67a74c37468c2996dea63c166ac96f09bbdb5",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "4900ccaf3dafbe7182fd1756526bdf24a268a7ab3e4a32ea5be6ee4c87e47bec",
@@ -70472,10 +70472,10 @@
         {
           "id": "4da2134f1ef2d87f62eaae63bf577acf8afd8c16916297491b02726fd814a4c1",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "4e3d2f2c178de7fb817ee134854c88f6228a6d79996df952eefa197f43fbb863",
@@ -70504,18 +70504,18 @@
         {
           "id": "5091e14951e912a688858ae414fe37365a45da7a747ee7fe89ae6b69ae3da3fd",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "528094186aeb736fa076586dcc9ddb7f3ba69d827887c094e51403d85c5a4082",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "54255f895352170d8aff3fb53972b378fbf233b9b3bbdcd28f471f7560468267",
@@ -70624,10 +70624,10 @@
         {
           "id": "6a3d6139c0d8eb299a274f2913bb928c6d4a2dd318d174accd950c39e222175a",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "6b1d656bfc57dc728e484e5e4d1d81f6a5de853ec16bb34e817e94a9725a06d5",
@@ -70656,18 +70656,18 @@
         {
           "id": "6e987f204651d7a306265525f44cebe797c0b7d1fbba015191dcba3eb5fb1572",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "6f496d62c6dc67496cbee51548d880c6e0b355d2d261043ef8c59eb5a3de357a",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "702a8b289851bef892f6d4d885fcbc6528ca6b1a965b29946a7cc0ca37c99373",
@@ -70712,10 +70712,10 @@
         {
           "id": "767b512fea54d6ae2818fb5a29d3124b56522bff6280f18d5ba01b4061d4a67d",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "777e3ac6a4923c4b6998ca752f77869f586c9c3b42e501e69a1134fa80db30ac",
@@ -70736,10 +70736,10 @@
         {
           "id": "7a7ca303a1987c938a5e20390ec2eaae462025c1631d05ff43381aef870cc669",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "7c82146939c48476476836b8f5d569a80b49b59fc322a1d7fd105adb948a8026",
@@ -70792,10 +70792,10 @@
         {
           "id": "89357c07bee61c079fe7709ed8759841132229a05fb5f53b32beeebeefc18bb0",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "low",
           "source": "Alpaca",
-          "variable": "low"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "8965858d1b7618f26e6dcadd3b0be2fbcb48f6bdb2ad9d0869ef7464854c4abf",
@@ -70880,10 +70880,10 @@
         {
           "id": "9cd9d9a82fa2f08254fe3e0d17e8737ba83c9854d170687d6ee29e24d9c9ee23",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "9d2a81a49668816e251200a9f315d2a4fa4a5c56caf2113cc1c53031a69804eb",
@@ -70896,10 +70896,10 @@
         {
           "id": "9f0a831244fc6ae82148438f2ffc5ea8d2b1f5583aade29843cec79be10be51a",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "volume",
           "source": "Alpaca",
-          "variable": "volume"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "a067a7e682e811f717605b7ef580d5f28bae8c47f63457dacfafdcd70bb05a46",
@@ -70920,18 +70920,18 @@
         {
           "id": "a3745876ddb8de3949423588b5d4f7565b7147460d95945491906ac0348c92b7",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "a6de63b9eef3c02dd542de01c49471887a36cd0ccd7f670906b5f6d9ac642585",
           "label": "USDT/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "a840949d2efa48ca6b927bb3cef27fbecbb3755697b6cade718bcf677880b704",
@@ -70952,10 +70952,10 @@
         {
           "id": "ad032462a38020e515695995d22feb1b87f7447b1bc148c28ccdfe605e33fb67",
           "label": "USDG/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "ad63762fd6980bb1dab1152ab61f0b7c8973cf583f6add019ab526bc2da7e247",
@@ -71096,10 +71096,10 @@
         {
           "id": "cc1ec7326ad6fcf3c8af3936a49ad979ba18abfcda6edc7804d0dc5aedaef4fb",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "ceb704d0457ac578154d8ee3a8297961b4c0ca43b8942385fa07b7317b0728d3",
@@ -71120,10 +71120,10 @@
         {
           "id": "d298f386a5f376ba2fe90560c5eefb47476dff16e05089be9afdaafd21bc9dfa",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "high",
           "source": "Alpaca",
-          "variable": "high"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "d44b6c05f82f15926c03e433f23ae8900060b34b6f0cedb1cb875031c3afeb75",
@@ -71144,18 +71144,18 @@
         {
           "id": "d6e609a783f481acda24f02ea35789fa6248a00f41d8b60bafa1e45a11a4f9a8",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "vwap",
           "source": "Alpaca",
-          "variable": "vwap"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "d86c23caa5b9d53a3b3118597f7c1bac74f6fd10e5044bb45046465df8f010cc",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "trade_count",
           "source": "Alpaca",
-          "variable": "trade_count"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "d8dc3f5619c72711db41d3afdc46dfab205393e963050dc953196c629e4b94c6",
@@ -71192,10 +71192,10 @@
         {
           "id": "e14f8cd75ccc20574b51e02fd6f0a09526fa3eabe032dfaf10200c52d51d2916",
           "label": "HYPE/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "open",
           "source": "Alpaca",
-          "variable": "open"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "e338f132aa5cd3f0d22cdde2e14fca01958c2060512ee6c67f41b9fa43eaa5f3",
@@ -71248,10 +71248,10 @@
         {
           "id": "ecf0f07a67263f226755161abea2854246de0255230dbcfa2463daeb3f384c6b",
           "label": "TRUMP/USD",
-          "mask": 13,
-          "native_seconds": 900,
+          "variable": "close",
           "source": "Alpaca",
-          "variable": "close"
+          "native_seconds": 900,
+          "mask": 13
         },
         {
           "id": "ed31a065e23d13cc1ca5473fb4eb35a5c0651e72a15e77c296131f5db8a2e4f3",
