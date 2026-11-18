@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-18T09:27:54.228485+00:00",
+  "assessment_utc": "2026-11-18T10:25:29.104962+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "446c369c23de22070f65a77075a5760bb8f2f2333c9bb62321800196c26fef12",
-  "counts_sha256": "21343350217ecb5f3ba923d309801a9fb6464ac2ff5880da6e6e3c946039a23e",
+  "catalogue_sha256": "9bc958ca9965c32379dbd921c0f11ebff28fc6306676534f3b6bb3451ca8fd64",
+  "counts_sha256": "645be8e2005cbb31ead1cafb4e177e07ca644cb2b51859ebf0e9d81671d37a1a",
   "schema": 1,
   "types": [
     {
@@ -63366,14 +63366,6 @@
           "mask": 8
         },
         {
-          "id": "0abc630795e0e2b52b964a4c6417f7494e73d98ee7b6c6285cf132e3943bc55f",
-          "label": "ETH/USD",
-          "variable": "volume",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "10ee7fbf62594d8500c8135c7baf2699ae0f5711dc1ddde7888976751a52a696",
           "label": "XLM/EUR",
           "variable": "close",
@@ -63385,14 +63377,6 @@
           "id": "12dfe880b8affabf5cc34d715ad32b266c57b1cf0cdfb1f64f2ed490ec78b36d",
           "label": "LTC/EUR",
           "variable": "volume",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "130d03fb2a9734e23f05eb12df55364c9029955323f5240456bea1419bbec8f9",
-          "label": "BTC/USD",
-          "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
           "mask": 8
@@ -63510,14 +63494,6 @@
           "variable": "value"
         },
         {
-          "id": "2b7b668faa98f4cefe41e805e0446c1a48e71da6a2269b0da8ad04d4d4feabaa",
-          "label": "BTC/EUR",
-          "variable": "close",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "2f236746a38b0a110ffc33e33586d412dd8753fc2d57c57c950df6504ece7c81",
           "label": "CMP/USD",
           "variable": "low",
@@ -63553,14 +63529,6 @@
           "id": "365d6dbf98742a39e8bde498a65081e6c4745f2011734ffbc4eabf78e4603cfc",
           "label": "CMP/USD",
           "variable": "open",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "3797f7674c74df2931deaeb1e0e240d6df19d501446b2097ae7e981f05367dbd",
-          "label": "BTC/EUR",
-          "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
           "mask": 8
@@ -63614,14 +63582,6 @@
           "mask": 8
         },
         {
-          "id": "4508f5b4cfa01c492d72637471ba234d08940dc69aa3216617b60276ced4e59c",
-          "label": "BTC/EUR",
-          "variable": "volume",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "4b8326d3ea4bedf7cbd4525abb313a4dce639d6158918647b05661a845e7c06a",
           "label": "LTC/USD",
           "variable": "high",
@@ -63641,22 +63601,6 @@
           "id": "4ea5bc48a68cfbd06d482d61302074aec59b3d63f904e3ea22e66d5f5f1a38e2",
           "label": "YFI/USD",
           "variable": "open",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "50ca9427fd3cf9f96a5252bf173cc449552ef92a10e4e32079a4f17a2c8e1be6",
-          "label": "ETH/USD",
-          "variable": "close",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "54b5f0bba8bde6d8b51d96173bde1f0d47bc00cf24c240d84495cf8b1cdb15b1",
-          "label": "BTC/CHF",
-          "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
           "mask": 8
@@ -63705,14 +63649,6 @@
           "id": "61dc1c812cf544e8e96f7476f40b5908aa34b9637b304eb4d500a82849eb3323",
           "label": "LTC/EUR",
           "variable": "high",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "67b293959614f47d9fb6ee06b61d9457356316d28d85179669b1de9e58e21cee",
-          "label": "BTC/USD",
-          "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
           "mask": 8
@@ -63782,14 +63718,6 @@
           "mask": 8
         },
         {
-          "id": "8634b8d6f35e457d1a6cc85cf55f3ed891ddfecf64446661a430285e1cb0ede5",
-          "label": "BTC/USD",
-          "variable": "high",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "887f43ab0c8df244529b668bf1b04a92f8c1e831b4d100df2ce8d25fff7e202d",
           "label": "CMP/USD",
           "variable": "volume",
@@ -63814,14 +63742,6 @@
           "mask": 8
         },
         {
-          "id": "8f4771c54571227e58c6a576d793bb8a8454cc4b219ec0d6f728831e9409291d",
-          "label": "BTC/EUR",
-          "variable": "low",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "90d7113d5b91788b7f8e6ec195bfb26514153aa1566a0d62e69012e47eae3e4f",
           "label": "BTC/GBP",
           "variable": "close",
@@ -63841,22 +63761,6 @@
           "id": "9686bced8d827b981f5652d48d27f3b5d6345e0e6d759ef9f98f86fd68c53a78",
           "label": "LNK/USD",
           "variable": "high",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "9885eec2c9741d8a271736444bda3f760bbacbdd04f58e4249f0f25238260185",
-          "label": "ETH/USD",
-          "variable": "low",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "98eb8633faa29b3421ba77fcd38ec03f4e7bede125faba54487a8cca8e884315",
-          "label": "BTC/CHF",
-          "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
           "mask": 8
@@ -63942,14 +63846,6 @@
           "mask": 8
         },
         {
-          "id": "b0a12e0e1a01f12d61cdc0661d1bd6f7a2fab5f712c29be9be943d9950c334bb",
-          "label": "BTC/CHF",
-          "variable": "close",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "b39f5116dbba13a9fd7dc59287e345a73781d189431f794551d5d8b7aa970945",
           "label": "ETH/GBP",
           "variable": "high",
@@ -63982,22 +63878,6 @@
           "mask": 8
         },
         {
-          "id": "ba6b113e672ba04ea192b65749eb54661db8b6b5e3e447c09a87730a69c182bf",
-          "label": "ETH/USD",
-          "variable": "open",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "c20b9afd34ed9e49c4a6cccada48c593fd316d9d14c0d1600ad8e1d4e7bb5593",
-          "label": "ETH/USD",
-          "variable": "high",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "c21e4c6829fe1efe9901a7f9ba929695064e0b26a131d41045b97b12bfd439cb",
           "label": "LTC/CHF",
           "variable": "high",
@@ -64025,14 +63905,6 @@
           "id": "c4b605585ba8b09f4d0500f024546dd2043435379193f26d5865a48a25de6743",
           "label": "XLM/GBP",
           "variable": "close",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "c6823ee286c0b9c10ff47585953ab5468c911d95b091d84771ebb1f90d3372e0",
-          "label": "BTC/CHF",
-          "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
           "mask": 8
@@ -64110,14 +63982,6 @@
           "mask": 8
         },
         {
-          "id": "dcf46cca1321fd5f5d62bd8bd9ca43088707c197078804a572d890fd9d840ca1",
-          "label": "BTC/USD",
-          "variable": "close",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "dee9b51fd5f7741ba60afa211bd7e8ce3559bb63d13f394b80a0853ab1dc1930",
           "label": "LNK/USD",
           "variable": "open",
@@ -64128,14 +63992,6 @@
         {
           "id": "e4e2c8211a857314ca0e06d8ef97676b14d90ffc15ea359cc281ada22fbf22f3",
           "label": "XLM/EUR",
-          "variable": "low",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "e516d96d893bf0b0a4ed019982e7b7182d771cd7f39d67c5927a951638649c1c",
-          "label": "BTC/CHF",
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
@@ -64182,14 +64038,6 @@
           "mask": 8
         },
         {
-          "id": "eec7349045ffbf488cc6c6ab165981b0206404cdde54cbba96f2452e4ba5d36a",
-          "label": "BTC/USD",
-          "variable": "volume",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
           "id": "f1e625897c0c228777abe4e2394ecf872990f08335a6661d21475a0f1c84fb94",
           "label": "YFI/USD",
           "variable": "close",
@@ -64200,14 +64048,6 @@
         {
           "id": "f30a88747ede0f87a788cbc94fe1513de964c761809a2fe65e1df3e6cf02df57",
           "label": "UNI/USD",
-          "variable": "open",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
-          "mask": 8
-        },
-        {
-          "id": "f5273e3434236553a77afbe1918b027be2a9097cb81cbbf1bf6ba5e8137f6072",
-          "label": "BTC/EUR",
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
@@ -64382,6 +64222,14 @@
           "variable": "high"
         },
         {
+          "id": "0abc630795e0e2b52b964a4c6417f7494e73d98ee7b6c6285cf132e3943bc55f",
+          "label": "ETH/USD",
+          "variable": "volume",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "0ad8d0a11d95e75e4b218518008fd65594b1b84ce802524118357cad3b9e1522",
           "label": "UNI/USDC",
           "mask": 9,
@@ -64428,6 +64276,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "high"
+        },
+        {
+          "id": "130d03fb2a9734e23f05eb12df55364c9029955323f5240456bea1419bbec8f9",
+          "label": "BTC/USD",
+          "variable": "low",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "13e53c904a32beea4bcff9b592d6b264b8c41c4b7f41061a10b4f1dea01bd202",
@@ -64838,6 +64694,14 @@
           "variable": "volume"
         },
         {
+          "id": "2b7b668faa98f4cefe41e805e0446c1a48e71da6a2269b0da8ad04d4d4feabaa",
+          "label": "BTC/EUR",
+          "variable": "close",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "2bdfa249d23e3d51461dfba4d27407cc2ed4081c772ef2c7a6dc8a836ddd2d26",
           "label": "AVAX/USD",
           "mask": 9,
@@ -64982,6 +64846,14 @@
           "variable": "vwap"
         },
         {
+          "id": "3797f7674c74df2931deaeb1e0e240d6df19d501446b2097ae7e981f05367dbd",
+          "label": "BTC/EUR",
+          "variable": "high",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "383fdbe64ed0317e95d91ef367ec6ead2ba6a813a25befb337bd9e2e70223bac",
           "label": "BTC/USD",
           "mask": 9,
@@ -65102,6 +64974,14 @@
           "variable": "low"
         },
         {
+          "id": "4508f5b4cfa01c492d72637471ba234d08940dc69aa3216617b60276ced4e59c",
+          "label": "BTC/EUR",
+          "variable": "volume",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "45ef331b166806109e8cb4958a1bc107a1dd650757c3a8ffdd371b7422d43e89",
           "label": "DOGE/USDT",
           "mask": 9,
@@ -65174,6 +65054,14 @@
           "variable": "vwap"
         },
         {
+          "id": "50ca9427fd3cf9f96a5252bf173cc449552ef92a10e4e32079a4f17a2c8e1be6",
+          "label": "ETH/USD",
+          "variable": "close",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "512285da1ee34ab83b5f6bf56e8980b79b740cc43abed35a0d3059b9430e5d5f",
           "label": "XTZ/USD",
           "mask": 9,
@@ -65188,6 +65076,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "close"
+        },
+        {
+          "id": "54b5f0bba8bde6d8b51d96173bde1f0d47bc00cf24c240d84495cf8b1cdb15b1",
+          "label": "BTC/CHF",
+          "variable": "high",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "54c0e5eb221e3d5c851552458f3c869f935dc3b23e84a9b7c87a852a1ff58ac7",
@@ -65500,6 +65396,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "close"
+        },
+        {
+          "id": "67b293959614f47d9fb6ee06b61d9457356316d28d85179669b1de9e58e21cee",
+          "label": "BTC/USD",
+          "variable": "open",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "690ae18a3aa6932b04834bcb3d9527263176a619af3ea1d794482df062573628",
@@ -65894,6 +65798,14 @@
           "variable": "high"
         },
         {
+          "id": "8634b8d6f35e457d1a6cc85cf55f3ed891ddfecf64446661a430285e1cb0ede5",
+          "label": "BTC/USD",
+          "variable": "high",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "869ee4f87be3efb42199e87903867e967513cbb10ecfdcfac1255d3538170c5c",
           "label": "YFI/USDT",
           "mask": 9,
@@ -66054,6 +65966,14 @@
           "variable": "vwap"
         },
         {
+          "id": "8f4771c54571227e58c6a576d793bb8a8454cc4b219ec0d6f728831e9409291d",
+          "label": "BTC/EUR",
+          "variable": "low",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "8f5eaec9856099ad0aa7653c0876ed95be3c21d366430b4173d8b5e32c47fe9b",
           "label": "BCH/BTC",
           "mask": 9,
@@ -66198,12 +66118,28 @@
           "variable": "close"
         },
         {
+          "id": "9885eec2c9741d8a271736444bda3f760bbacbdd04f58e4249f0f25238260185",
+          "label": "ETH/USD",
+          "variable": "low",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "98998a1516b63917f3a556809882638a683018c5467c1825bb941ebbe4e3a074",
           "label": "BCH/USDT",
           "mask": 9,
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "low"
+        },
+        {
+          "id": "98eb8633faa29b3421ba77fcd38ec03f4e7bede125faba54487a8cca8e884315",
+          "label": "BTC/CHF",
+          "variable": "open",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "99667e659768cba73a8dd10d4fd94c86a8408f2da4786d69a9bc378943c5dcd5",
@@ -66526,6 +66462,14 @@
           "variable": "close"
         },
         {
+          "id": "b0a12e0e1a01f12d61cdc0661d1bd6f7a2fab5f712c29be9be943d9950c334bb",
+          "label": "BTC/CHF",
+          "variable": "close",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "b16f092eb2bc4383f4ca96fd51bca5d8b305aff2f563287ba7007c4763a7f978",
           "label": "DOGE/USDT",
           "mask": 9,
@@ -66638,6 +66582,14 @@
           "variable": "trade_count"
         },
         {
+          "id": "ba6b113e672ba04ea192b65749eb54661db8b6b5e3e447c09a87730a69c182bf",
+          "label": "ETH/USD",
+          "variable": "open",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "baa589974190bf23cdb37eb5f2cdcbd98b2e5890f6b5e7769c3f18359e39c71f",
           "label": "FIL/USD",
           "mask": 9,
@@ -66724,6 +66676,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "high"
+        },
+        {
+          "id": "c20b9afd34ed9e49c4a6cccada48c593fd316d9d14c0d1600ad8e1d4e7bb5593",
+          "label": "ETH/USD",
+          "variable": "high",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "c20dd90fd90f6764621046f68f3e0a281c6d83876042fb9417b53105362b73e1",
@@ -66828,6 +66788,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "high"
+        },
+        {
+          "id": "c6823ee286c0b9c10ff47585953ab5468c911d95b091d84771ebb1f90d3372e0",
+          "label": "BTC/CHF",
+          "variable": "volume",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "c69d616365d4ad92ed6c29ccac80999d4e95656c3d97a9aeffc0f7f96265b6b5",
@@ -67134,6 +67102,14 @@
           "variable": "vwap"
         },
         {
+          "id": "dcf46cca1321fd5f5d62bd8bd9ca43088707c197078804a572d890fd9d840ca1",
+          "label": "BTC/USD",
+          "variable": "close",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "dd23dedf8fcd3d3eda7226c3e6d17ec0b3fb1cedb9b2ad0983a91de0b02c6f12",
           "label": "CRV/USD",
           "mask": 9,
@@ -67236,6 +67212,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "close"
+        },
+        {
+          "id": "e516d96d893bf0b0a4ed019982e7b7182d771cd7f39d67c5927a951638649c1c",
+          "label": "BTC/CHF",
+          "variable": "low",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "e6c8c0c01deb695f86b0cf3a2f7d35a50777da41e7358a7bb14e569f429595cd",
@@ -67382,6 +67366,14 @@
           "variable": "high"
         },
         {
+          "id": "eec7349045ffbf488cc6c6ab165981b0206404cdde54cbba96f2452e4ba5d36a",
+          "label": "BTC/USD",
+          "variable": "volume",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
+        },
+        {
           "id": "efa12356d08e46093c6e77cbe857585b2ddd3f97e38612f898927421eb56c97f",
           "label": "AVAX/USDT",
           "mask": 9,
@@ -67444,6 +67436,14 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "high"
+        },
+        {
+          "id": "f5273e3434236553a77afbe1918b027be2a9097cb81cbbf1bf6ba5e8137f6072",
+          "label": "BTC/EUR",
+          "variable": "open",
+          "source": "Dukascopy bank CSV",
+          "native_seconds": 60,
+          "mask": 9
         },
         {
           "id": "f55fd5dea366358a036eb40bc1ba21b331f67de45f575c77109ee48396d8d4a1",
