@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-18T21:50:13.621968+00:00",
+  "assessment_utc": "2026-11-18T23:42:05.895152+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "7d2f5a9ee01f36c94cd74ad9b3c5d3c914c227298694df331f6944960dffe01a",
-  "counts_sha256": "82a9127837186aa7f9d6f730b60752e29c730467d58ec2c9cc422f11a873924f",
+  "catalogue_sha256": "11d5c6ea94ae31d7ad4aaf5d63a5c1097f4d616dfa9be278e736966e72a758c5",
+  "counts_sha256": "b5db18c81c913f8ee072bb8c41097d8fde8225d7a53cc8e7afcd8a981d697008",
   "schema": 1,
   "types": [
     {
@@ -62374,6 +62374,14 @@
           "variable": "high"
         },
         {
+          "id": "8ae9b6d7e6583e802dcb22f065eeae628cbc1557684e76090ef47b96eb6a6bf4",
+          "label": "ADA/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "8ce03c6420cddaea92310a13f763783ff30402459f6772052bba10344b892d2f",
           "label": "ETHUSDT",
           "mask": 0,
@@ -62724,6 +62732,14 @@
           "native_seconds": 60,
           "source": "Binance",
           "variable": "trades"
+        },
+        {
+          "id": "fb02daeead3b9981d4288747a90e6484b2a19b2cc4459816a98e1e9b8f7ae52a",
+          "label": "ADA/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
         },
         {
           "id": "fb9f9ee02a889db545df08b1e8db3f9b044d8a7beeb64cd7c8e79f66c5f03706",
@@ -63307,14 +63323,6 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 1
-        },
-        {
-          "id": "8ae9b6d7e6583e802dcb22f065eeae628cbc1557684e76090ef47b96eb6a6bf4",
-          "label": "ADA/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
           "mask": 1
         },
         {
@@ -67564,14 +67572,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "vwap"
-        },
-        {
-          "id": "fb02daeead3b9981d4288747a90e6484b2a19b2cc4459816a98e1e9b8f7ae52a",
-          "label": "ADA/USD",
-          "variable": "volume",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
         },
         {
           "id": "fb3252eacb52e601560b064132a72bb2b3a1d6db9c8244933e76c0f30759e915",
