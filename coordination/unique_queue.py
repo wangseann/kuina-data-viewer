@@ -358,9 +358,10 @@ class UniqueQueue:
         tasks = {}
         for target in data['targets']:
             for pin in target['legacy_tasks']:
-                task = self.legacy.task(pin['id'])
+                if pin['id'] not in tasks:
+                    tasks[pin['id']] = self.legacy.task(pin['id'])
+                task = tasks[pin['id']]
                 require(digest(task) == pin['task_sha256'], 'legacy task hash mismatch')
-                tasks[pin['id']] = task
         return tasks
 
     def check_legacy(self, tasks):

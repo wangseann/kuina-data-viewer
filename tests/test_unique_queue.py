@@ -412,3 +412,25 @@ class UniqueQueueTests(unittest.TestCase):
             return result
         with patch.object(queue,'_show_row',side_effect=changed):
             with self.assertRaisesRegex(ValueError,'batch|changed'):queue.snapshot()
+
+    def test_legacy_task_definition_reads_once_per_id_but_checks_every_target_pin(self):
+        queue=self.install();data=queue.read('new-a');template=data['targets'][0]
+        data['targets']=[dict(copy.deepcopy(template),target_id='target-'+str(number),
+                             series_ids=['series-'+str(number)]) for number in range(100)]
+        definition=self.hub.root/'tasks/old-task.json';before=definition.read_bytes()
+        with patch.object(self.hub,'task',wraps=self.hub.task) as reader:
+            tasks=queue.legacy_tasks(data)
+            self.assertEqual(set(tasks),{'old-task'})
+            self.assertEqual(tasks['old-task'],self.task)
+            self.assertEqual(reader.call_count,1,'One immutable definition read per distinct ID, not per target')
+        data['targets'][-1]['legacy_tasks'][0]['task_sha256']='0'*64
+        with patch.object(self.hub,'task',wraps=self.hub.task) as reader:
+            with self.assertRaisesRegex(ValueError,'legacy task hash mismatch'):queue.legacy_tasks(data)
+            self.assertEqual(reader.call_count,1,'Conflicting later pins must fail against the same loaded definition')
+        self.assertEqual(definition.read_bytes(),before)
+
+    def test_legacy_task_definition_cache_does_not_survive_a_call(self):
+        queue=self.install();data=queue.read('new-a')
+        self.assertEqual(queue.legacy_tasks(data)['old-task'],self.task)
+        write(self.hub.root/'tasks/old-task.json',dict(self.task,affected_series=6))
+        with self.assertRaisesRegex(ValueError,'legacy task hash mismatch'):queue.legacy_tasks(data)
