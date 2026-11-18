@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-18T23:42:05.895152+00:00",
+  "assessment_utc": "2026-11-18T23:49:36.547566+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "11d5c6ea94ae31d7ad4aaf5d63a5c1097f4d616dfa9be278e736966e72a758c5",
-  "counts_sha256": "b5db18c81c913f8ee072bb8c41097d8fde8225d7a53cc8e7afcd8a981d697008",
+  "catalogue_sha256": "87f3707451e440c28cb9e3b020f81eb12bfc23eba27def7d1fbef69c441c3d87",
+  "counts_sha256": "62ad7e946305db80a3f421a9ec1fa1e1b0c800670daf2be65e56c800b57af5b5",
   "schema": 1,
   "types": [
     {
@@ -62214,6 +62214,14 @@
           "variable": "taker_buy_base"
         },
         {
+          "id": "29d1d88a76f1ad4583a224c88624e8be2800dc68251b2163c93b765d502e3b50",
+          "label": "PEPE/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "2a08eac593b03a36e7573aa968ddb4c54aefed73780de3f9cdbbb81534ada419",
           "label": "ETHUSDT",
           "mask": 0,
@@ -62920,14 +62928,6 @@
         {
           "id": "27cd6480b1ec4b33785d3a8a131ff7abb4758710fc71fd3b51c48959add263e2",
           "label": "PAXG/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 1
-        },
-        {
-          "id": "29d1d88a76f1ad4583a224c88624e8be2800dc68251b2163c93b765d502e3b50",
-          "label": "PEPE/USD",
           "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
