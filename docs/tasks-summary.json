@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-18T05:09:54.702697+00:00",
+  "updated_at": "2026-11-18T05:41:23.500429+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -47,10 +47,10 @@
       "id": "seann",
       "name": "Seann",
       "assigned": 0,
-      "active": 3,
+      "active": 4,
       "awaiting_verification": 0,
       "verified": 0,
-      "remaining_series": 1390
+      "remaining_series": 1890
     },
     {
       "id": "taha",
@@ -79681,9 +79681,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T05:29:03.057888+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
