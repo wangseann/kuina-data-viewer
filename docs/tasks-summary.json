@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-18T10:40:45.718197+00:00",
+  "updated_at": "2026-11-18T11:12:23.842048+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -47,10 +47,10 @@
       "id": "seann",
       "name": "Seann",
       "assigned": 0,
-      "active": 24,
+      "active": 30,
       "awaiting_verification": 0,
       "verified": 0,
-      "remaining_series": 11430
+      "remaining_series": 14430
     },
     {
       "id": "taha",
@@ -76172,9 +76172,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T10:59:48.708840+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -76346,9 +76346,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T10:59:48.834302+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -78289,9 +78289,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T10:59:48.925162+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -80638,9 +80638,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T10:59:49.099612+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -80696,9 +80696,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T10:59:49.197406+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
@@ -80725,9 +80725,9 @@
       "kind": "triage",
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
-      "status": "available",
-      "updated_at": "2026-11-12T00:50:14.440951+00:00",
-      "assignee": null,
+      "status": "active",
+      "updated_at": "2026-11-18T10:59:49.280686+00:00",
+      "assignee": "seann",
       "issues": [
         "availability_unverified",
         "cadence_unknown",
