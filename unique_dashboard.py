@@ -84,6 +84,8 @@ def validate(summary,tasks):
 
 CORE_SCRIPT = r"""const KuinaUnique = (() => {
   const PEOPLE = new Set(['juan','emily','brian','amir','seann','taha','saswato','th','jion','vitoria','olga']);
+  const CATEGORIES = new Set(['stocks','crypto','commodities','currencies','derivatives','economics','gdelt','prediction-markets','sentiment','emotions','trade','weather','reddit','other-markets']);
+  const FINANCIAL = new Set(['stocks','crypto','commodities','currencies','derivatives','other-markets']);
   function claimable(batch) {
     return batch.status==='available' && batch.assignee===null && batch.assignment_issue===null && Array.isArray(batch.blocker_codes) && batch.blocker_codes.length===0;
   }
@@ -94,10 +96,33 @@ CORE_SCRIPT = r"""const KuinaUnique = (() => {
     url.searchParams.set('body','<!-- kuina-request-v1\n'+JSON.stringify({version:1,action:'assign',task_id:batch.id,person})+'\n-->');
     return url.href;
   }
-  function matches(batch,filters) {
-    return ['category','status','person'].every(key=>filters[key]==='all'||batch[key==='person'?'assignee':key]===filters[key]);
+  function workerCommand(batch,person) {
+    if (!batch || typeof batch!=='object' || Array.isArray(batch) || !PEOPLE.has(person) || batch.assignee!==person) return null;
+    if (typeof batch.id!=='string' || batch.id.length<1 || batch.id.length>96 || /[^A-Za-z0-9_-]/.test(batch.id)) return null;
+    const confirmed=Number.isSafeInteger(batch.assignment_issue) && batch.assignment_issue>0;
+    const prefix='python3 -B "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" ';
+    if (batch.status==='assigned' && confirmed) return prefix+"claim '"+batch.id+"' --person '"+person+"'";
+    if (['active','blocked','awaiting_verification'].includes(batch.status) && (batch.assignment_issue===null || confirmed)) return prefix+"show '"+batch.id+"'";
+    return null;
   }
-  return {claimable,requestURL,matches};
+  function reviewKind(batch) {
+    if (!batch || typeof batch!=='object' || Array.isArray(batch) || !CATEGORIES.has(batch.category)) return 'unknown';
+    if (typeof batch.id!=='string' || batch.id.length>96 || /[^A-Za-z0-9_-]/.test(batch.id)) return 'unknown';
+    const prefix='unique-'+batch.category+'-';
+    if (!batch.id.startsWith(prefix)) return 'unknown';
+    const match=/^(prices|series|fao|psd|cftc|comtrade|equities|fx|wide|identity|mixed-prices|ports|geo|accounts|cross-source)-(review|statistical|identity)-[0-9a-f]{16}-[0-9]{6}$/.exec(batch.id.slice(prefix.length));
+    if (!match) return 'unknown';
+    const [,mode,planning]=match;
+    if (planning==='statistical') return 'statistical';
+    if (planning==='identity') return 'identity';
+    if (['prices','equities','fx','mixed-prices'].includes(mode) || (mode==='cross-source' && FINANCIAL.has(batch.category))) return 'market';
+    return 'context';
+  }
+  function matches(batch,filters) {
+    return ['category','status','person'].every(key=>filters[key]==='all'||batch[key==='person'?'assignee':key]===filters[key]) &&
+      (filters.kind===undefined || filters.kind==='all' || reviewKind(batch)===filters.kind);
+  }
+  return {claimable,requestURL,workerCommand,reviewKind,matches};
 })();"""
 
 SCRIPT = r"""
@@ -119,7 +144,7 @@ SCRIPT = r"""
     el('counts').append(row);
   }
   function render() {
-    const filters={category:el('category').value,status:el('status').value,person:el('person').value};
+    const filters={category:el('category').value,status:el('status').value,person:el('person').value,kind:el('review-kind').value};
     const batches=data.tasks.batches.filter(b=>KuinaUnique.matches(b,filters));
     const pages=Math.max(1,Math.ceil(batches.length/pageSize));page=Math.min(page,pages-1);
     el('queue').replaceChildren();el('visible-count').textContent=format(batches.length)+' matching batches';
@@ -130,7 +155,16 @@ SCRIPT = r"""
       const person=node('td',batch.assignee?names.get(batch.assignee):'Unassigned');
       if(batch.assignment_issue){const link=node('a','Issue #'+batch.assignment_issue);link.href='https://github.com/wangseann/kuina-data-viewer/issues/'+batch.assignment_issue;link.target='_blank';link.rel='noopener noreferrer';person.append(node('br'),link);}
       const action=node('td');
-      if(pending.has(batch.id))action.append(node('span','Request opened · pending sync'));
+      const command=KuinaUnique.workerCommand(batch,el('identity').value);
+      if(command){
+        const button=node('button','Agent command');button.type='button';
+        const help=node('small'),pre=node('pre'),code=node('code');pre.hidden=true;pre.append(code);
+        button.addEventListener('click',()=>{
+          code.textContent=command;pre.hidden=false;
+          help.textContent=batch.status==='assigned'?'Use your agent’s configured private environment. If the claim fails, stop before starting work.':'Inspect the current private state before continuing. This command does not create another worker claim.';
+        });action.append(button,help,pre);
+      }
+      else if(pending.has(batch.id))action.append(node('span','Request opened · pending sync'));
       else if(KuinaUnique.claimable(batch)&&el('identity').value){
         const link=node('a','Claim via GitHub');link.href=KuinaUnique.requestURL(batch,el('identity').value);link.target='_blank';link.rel='noopener noreferrer';
         link.addEventListener('click',()=>{pending.add(batch.id);el('request-note').textContent='GitHub opened for '+batch.id+'. Submit the prepared issue there. Pending until the confirmed snapshot is refreshed; opening a request does not assign or start work.';render();});action.append(link);
@@ -140,14 +174,14 @@ SCRIPT = r"""
     }
     if(!batches.length){const row=node('tr'),cell=node('td','No batches match these filters.');cell.colSpan=7;row.append(cell);el('queue').append(row);}
   }
-  for(const id of ['category','status','person','identity'])el(id).addEventListener('change',()=>{page=0;render();});
+  for(const id of ['category','review-kind','status','person','identity'])el(id).addEventListener('change',()=>{page=0;render();});
   el('previous').addEventListener('click',()=>{page--;render();});el('next').addEventListener('click',()=>{page++;render();});
   el('refresh').addEventListener('click',()=>location.reload());
   render();
 })();
 """
 
-STYLE = """:root{font:15px system-ui,sans-serif;color:#193247;background:#f3f6f8}*{box-sizing:border-box}body{margin:0}main{max-width:1450px;margin:auto;padding:28px 22px}a{color:#17658b}h1{font-size:34px;letter-spacing:-1px;margin:16px 0}h2{font-size:21px}p{line-height:1.6;color:#496171}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px}.panel{background:#fff;border:1px solid #d9e2e9;border-radius:12px;padding:20px;margin:22px 0}.heading,.controls,.pager{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.heading{justify-content:space-between}.controls{align-items:end;margin:18px 0}label{display:grid;gap:6px;font-size:13px;font-weight:600}select,button{font:inherit;padding:9px 12px;border:1px solid #afbdc8;border-radius:6px;background:#fff;color:#193247}button{cursor:pointer;background:#edf4f7}button:disabled{opacity:.5;cursor:default}.small,small{font-size:12px;color:#536b7b}small{display:block;margin-top:4px}.requirements{padding:12px;background:#e4f1fa;border-radius:6px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:11px;text-align:left;border-bottom:1px solid #dce4eb}thead th{vertical-align:bottom}tbody tr:hover{background:#eef5f8}.pager{margin:12px 0}code{overflow-wrap:anywhere;font-size:12px}@media(max-width:650px){main{padding:20px 12px}h1{font-size:28px}.panel{padding:14px}select{max-width:100%}.controls label{flex:1 1 140px}th,td{padding:9px}}"""
+STYLE = """:root{font:15px system-ui,sans-serif;color:#193247;background:#f3f6f8}*{box-sizing:border-box}body{margin:0}main{max-width:1450px;margin:auto;padding:28px 22px}a{color:#17658b}h1{font-size:34px;letter-spacing:-1px;margin:16px 0}h2{font-size:21px}p{line-height:1.6;color:#496171}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:2px}.panel{background:#fff;border:1px solid #d9e2e9;border-radius:12px;padding:20px;margin:22px 0}.heading,.controls,.pager{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.heading{justify-content:space-between}.controls{align-items:end;margin:18px 0}label{display:grid;gap:6px;font-size:13px;font-weight:600}select,button{font:inherit;padding:9px 12px;border:1px solid #afbdc8;border-radius:6px;background:#fff;color:#193247}button{cursor:pointer;background:#edf4f7}button:disabled{opacity:.5;cursor:default}.small,small{font-size:12px;color:#536b7b}small{display:block;margin-top:4px}.requirements{padding:12px;background:#e4f1fa;border-radius:6px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:11px;text-align:left;border-bottom:1px solid #dce4eb}thead th{vertical-align:bottom}tbody tr:hover{background:#eef5f8}.pager{margin:12px 0}code{overflow-wrap:anywhere;font-size:12px}pre{white-space:pre-wrap}@media(max-width:650px){main{padding:20px 12px}h1{font-size:28px}.panel{padding:14px}select{max-width:100%}.controls label{flex:1 1 140px}th,td{padding:9px}}"""
 
 
 def build(summary,tasks,output_dir):
@@ -175,7 +209,8 @@ def build(summary,tasks,output_dir):
 <section class="panel"><div class="heading"><h2>Choose repair work</h2><button id="refresh" type="button">Refresh confirmed snapshot</button></div>
 <p>All eleven participants choose their own work. Select your name and open a claim for an available, unblocked batch. Submit the prepared GitHub issue. The live queue checks existing reservations; confirmation appears on the issue and in a refreshed snapshot. Requests do not start an agent.</p>
 <p>“Available” means unassigned. A batch named <code>statistical</code> contains reports whose native recording interval is too coarse; downloading the same report again cannot make it eligible. Inspect the private repair brief before choosing a batch.</p>
-<div class="controls"><label>I am<select id="identity"><option value="">Choose your name</option></select></label><label>Category<select id="category"><option value="all">All categories</option></select></label><label>Status<select id="status"><option value="all">All statuses</option></select></label><label>Assignee<select id="person"><option value="all">Everyone</option></select></label></div>
+<div class="controls"><label>I am<select id="identity"><option value="">Choose your name</option></select></label><label>Category<select id="category"><option value="all">All categories</option></select></label><label>Review kind<select id="review-kind"><option value="all">All</option><option value="market">Market prices</option><option value="statistical">Coarse statistical reports</option><option value="identity">Identity review</option><option value="context">Other context</option><option value="unknown">Unclassified</option></select></label><label>Status<select id="status"><option value="all">All statuses</option></select></label><label>Assignee<select id="person"><option value="all">Everyone</option></select></label></div>
+<p class="small">Review kind describes the assignment’s subject. Eligibility comes from a separate scientific audit.</p>
 <p id="request-note" role="status" aria-live="polite">Selecting your name does not reserve work. A request stays pending until the confirmed snapshot changes.</p>
 <div class="heading"><span id="visible-count"></span><div class="pager"><button id="previous" type="button">← Previous</button><span id="page"></span><button id="next" type="button">Next →</button></div></div>
 <div class="scroll"><table><thead><tr><th>Batch / category</th><th>Work targets</th><th>Numeric series</th><th>Status</th><th>Assignee</th><th>Blockers</th><th>Action</th></tr></thead><tbody id="queue"></tbody></table></div>
