@@ -25,6 +25,13 @@ class M1ViewTests(unittest.TestCase):
         self.assertIs(validate(data), data)
         self.assertEqual(data, previous)
 
+    def test_missing_15minute_bins_have_an_explicit_failure_label(self):
+        data = snapshot()
+        data['types'][0]['check_failures'] = [dict(id='required_15minute_bin_coverage', count=1)]
+        data['types'][0]['series'][-1]['mask'] = 1
+        self.assertIs(validate(data), data)
+        self.assertIn('Expected 15-minute periods have no recorded observation', render(data))
+
     def test_private_payload_rejected_at_every_level(self):
         for target in ('root', 'type', 'series', 'check', 'requirements'):
             data = snapshot()

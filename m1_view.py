@@ -30,6 +30,7 @@ CHECKS = {
     'completeness': 'Missing periods cannot be verified',
     'hourly_coverage': 'Expected hours have no observations',
     'longest_gap': 'Within-session gaps exceed 15 minutes',
+    'required_15minute_bin_coverage': 'Expected 15-minute periods have no recorded observation',
 }
 
 
