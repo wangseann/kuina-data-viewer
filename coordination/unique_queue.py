@@ -236,6 +236,78 @@ class _SnapshotLegacyDefinitions:
         return self.tasks[task_id]
 
 
+class _SnapshotLiveEpoch:
+    """Validated live legacy views for one scan, rejected on any epoch drift."""
+    def __init__(self, queue, plans):
+        self.queue = queue
+        self.legacy = queue.legacy
+        self.plans = plans
+        self.stamps = {}
+        self.tasks = {}
+        root = self.legacy.root
+        for name in ('claims', 'work-claims', 'task-locks'):
+            self.legacy.shared_directory(name)
+        for name in ('assignments', 'verified'):
+            self.legacy.protected(root/name)
+        parents = [root, *(root/name for name in ('claims', 'work-claims', 'assignments', 'verified', 'task-locks')),
+                   queue.root, *(queue.root/name for name in ('claims', 'assignments', 'locks'))]
+        self.parents = {self.watch(path) for path in parents}
+        for name in ('self-service.json', '.self-service-migration-lock', '.coordinator-lock'):
+            self.parents.add(self.watch(root/name))
+
+    def watch(self, path):
+        path = safe_path(path)
+        if path not in self.stamps:
+            self.stamps[path] = file_stamp(path) if path.exists() else None
+        return path
+
+    def verify(self, paths=None):
+        # Child files first and parent directories last catch atomic journal and
+        # reservation replacements, including transient creates/removes.
+        selected = self.stamps if paths is None else paths
+        for path in sorted(selected, key=lambda value: len(value.parts), reverse=True):
+            actual = file_stamp(path) if safe_path(path).exists() else None
+            require(actual == self.stamps[path],
+                    'legacy live claim/report/reservation/fence/lock epoch changed during snapshot')
+
+    def journal(self, directory):
+        paths = {self.watch(directory)}
+        if directory.exists():
+            for path in directory.iterdir():
+                paths.add(self.watch(path))
+        return paths
+
+    def inspect(self, task, config):
+        task_id = task['id']
+        if task_id not in self.tasks:
+            root = self.legacy.root
+            paths = set(self.parents)
+            for name in ('claims', 'work-claims', 'task-locks'):
+                paths.update(self.journal(root/name/task_id))
+            for name in ('assignments', 'verified'):
+                paths.add(self.watch(root/name/(task_id+'.json')))
+            self.verify(paths)
+            fenced = self.queue.valid_fence(task, config)
+            status, _ = self.legacy.state(task, self.plans)
+            assignee = self.legacy.effective_assignee(task, self.plans) if status != 'available' else None
+            self.verify(paths)
+            self.tasks[task_id] = fenced, status, assignee
+        return self.tasks[task_id]
+
+    def unique_paths(self, row):
+        # Missing children are covered by the watched parent directory epoch;
+        # existing journals additionally need leaf guards for in-place edits.
+        paths = set()
+        claim = self.queue.root/'claims'/row['id']
+        if claim.exists():
+            paths.update(self.journal(claim))
+        assignment = self.queue.root/'assignments'/(row['id']+'.json')
+        if assignment.exists():
+            paths.add(self.watch(assignment))
+        self.verify(paths)
+        return paths
+
+
 class UniqueQueue:
     def __init__(self, root, legacy_hub):
         self.root = safe_path(root)
@@ -398,7 +470,7 @@ class UniqueQueue:
                 'queue operation pending or interrupted; reconcile before using availability')
 
     def snapshot(self):
-        """Read one immutable package manifest per scan, never cache worker state.
+        """Read one package manifest and one guarded live epoch per scan.
 
         The second manifest/config and legacy-definition stamp checks close
         the operation. This is advisory availability; mutations always take their own fresh claim and
@@ -413,8 +485,9 @@ class UniqueQueue:
         batch_stamps = {self.root/'package'/row['file']['path']:
                         file_stamp(self.root/'package'/row['file']['path']) for row in rows}
         definitions = _SnapshotLegacyDefinitions(self.legacy)
+        live = _SnapshotLiveEpoch(self, definitions.plans)
+        definitions.live = live
         views = [self._show_row(row, config, metadata_owner, definitions) for row in rows]
-        definitions.verify()
         for row in rows:
             path = self.root/'package'/row['file']['path']
             before, after = batch_stamps[path], file_stamp(path)
@@ -426,12 +499,17 @@ class UniqueQueue:
         require(file_bytes(manifest, MAX_MANIFEST_BYTES, metadata_owner) == raw,
                 'installed manifest changed during snapshot')
         self.require_idle()
+        definitions.verify()
+        live.verify()
+        self.require_idle()
         return views
 
     def _show_row(self, row, config, metadata_owner, definitions=None):
         """Internal row view for a validated manifest, with fresh live records."""
         self.require_idle()
         data = batch_data(pinned_batch_bytes(self.root/'package'/row['file']['path'], row['file'], metadata_owner), row)
+        live = getattr(definitions, 'live', None)
+        unique_paths = live.unique_paths(row) if live is not None else None
         status, owner = self.state(row['id'], row['file']['sha256'])
         reservation = self.reservation(row)
         current = reservation['current'] if reservation else None
@@ -440,13 +518,17 @@ class UniqueQueue:
         blockers = []
         for task_id in sorted(tasks):
             task = tasks[task_id]
-            fenced = self.valid_fence(task, config)
+            if live is None:
+                fenced = self.valid_fence(task, config)
+            else:
+                fenced, legacy_state, legacy_assignee = live.inspect(task, config)
             require(owner is None and current is None or fenced,
                     'claimed or reserved unique batch missing legacy fence; reconcile manually')
-            legacy_state, _ = self.legacy.state(task, plans)
+            if live is None:
+                legacy_state, _ = self.legacy.state(task, plans)
+                legacy_assignee = self.legacy.effective_assignee(task, plans) if legacy_state != 'available' else None
             if legacy_state != 'available':
-                blockers.append(dict(task_id=task_id, state=legacy_state,
-                                     assignee=self.legacy.effective_assignee(task, plans)))
+                blockers.append(dict(task_id=task_id, state=legacy_state, assignee=legacy_assignee))
         require(owner is None or not blockers, 'claimed unique batch conflicts with legacy work; reconcile manually')
         if owner is None and blockers:
             status = 'blocked'
@@ -456,6 +538,8 @@ class UniqueQueue:
             assignee = owner['person']
         if owner is None and current and not blockers:
             status = 'assigned'
+        if live is not None:
+            live.verify(unique_paths)
         return dict(row, status=status, assignee=assignee,
                     assignment_issue=current['issue'] if current else None,
                     batch_sha256=row['file']['sha256'], legacy_blockers=blockers)

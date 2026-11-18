@@ -460,7 +460,7 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
         with patch.object(queue,'_show_row',side_effect=changed):
             with self.assertRaisesRegex(ValueError,'legacy|definition|metadata|changed'):queue.snapshot()
 
-    def planned_queue(self):
+    def planned_queue(self,batch_count=3):
         self.hub=Hub(self.base/'planned-legacy');self.hub.init()
         at='2026-01-01T00:00:00+00:00';leaves=[]
         directory=self.hub.root/'batch-plans';directory.mkdir()
@@ -478,7 +478,7 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
                 write(root/'tasks'/(task['id']+'.json'),task);leaves.append(task)
         self.hub.enable_self_service()
         source=self.base/'planned-input';source.mkdir();manifest=dict(schema='kuina-unique-queue-v1',batches=[])
-        for number in range(3):
+        for number in range(batch_count):
             batch='unique-synthetic-'+str(number)
             targets=[dict(target_id='target-%d-%d'%(number,i),series_ids=['series-%d-%d'%(number,i)],
                 legacy_tasks=[dict(id=leaves[i%20]['id'],task_sha256=digest(leaves[i%20]))])for i in range(100)]
@@ -490,7 +490,7 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
         queue=UniqueQueue(self.base/'planned-queue',self.hub);queue.install(source/'manifest.json')
         return queue,leaves
 
-    def test_one_plan_index_and_distinct_definition_reads_but_fresh_live_states(self):
+    def test_one_plan_index_and_distinct_definition_and_epoch_state_reads(self):
         import coordination.task_manager as implementation
         import coordination.unique_queue as queue_implementation
         queue,leaves=self.planned_queue();original_read=implementation.read;counts={'plan':0,'leaf':0}
@@ -503,7 +503,7 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
             views=queue.snapshot()
         self.assertEqual(len(views),3);self.assertEqual(plans.call_count,1)
         self.assertEqual(counts,{'plan':13,'leaf':20})
-        self.assertEqual(states.call_count,60,'Live state is checked per row, not cached')
+        self.assertEqual(states.call_count,20,'Read-only epoch resolves each distinct task once')
         self.assertEqual(hashes.call_count,20,'Immutable task digests are computed once per definition')
         self.hub.assign(leaves[0]['id'],'juan',42,'volunteer')
         with patch.object(self.hub,'batch_plans',wraps=self.hub.batch_plans)as plans:
@@ -511,6 +511,19 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
         self.assertEqual(plans.call_count,1,'Blocked-assignee lookup must reuse only the immutable plan index')
         self.assertTrue(all(row['status']=='blocked'for row in views))
         self.assertTrue(all(row['legacy_blockers'][0]['assignee']=='juan'for row in views))
+
+    def test_many_batches_resolve_live_state_and_fence_once_per_distinct_task(self):
+        queue,_=self.planned_queue(batch_count=30)
+        with patch.object(self.hub,'state',wraps=self.hub.state)as states, \
+             patch.object(queue,'valid_fence',wraps=queue.valid_fence)as fences:
+            views=queue.snapshot()
+        self.assertEqual(len(views),30)
+        self.assertTrue(all(row['status']=='available'for row in views))
+        self.assertEqual(states.call_count,20)
+        self.assertEqual(fences.call_count,20)
+        with patch.object(self.hub,'state',wraps=self.hub.state)as fresh:
+            queue.snapshot()
+        self.assertEqual(fresh.call_count,20,'A new command must not reuse a prior live epoch')
 
     def test_snapshot_plan_index_and_parent_owner_mutation_fail_closed(self):
         for changed in ('plan','parent-owner','incoming'):
@@ -539,9 +552,9 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
             result=original(row,*args)
             if row['id']=='new-a':self.hub.report('old-task','juan','blocked','Current legacy issue')
             return result
-        with patch.object(queue,'_show_row',side_effect=report_after_first):views=queue.snapshot()
-        self.assertEqual(views[0]['legacy_blockers'][0]['state'],'active')
-        self.assertEqual(views[1]['legacy_blockers'][0]['state'],'blocked')
+        with patch.object(queue,'_show_row',side_effect=report_after_first),self.assertRaisesRegex(ValueError,'epoch|changed'):
+            queue.snapshot()
+        self.assertTrue(all(row['legacy_blockers'][0]['state']=='blocked'for row in queue.snapshot()))
         def fence_after_first(row,*args):
             result=original(row,*args)
             if row['id']=='new-a':(self.hub.root/'task-locks/old-task').mkdir()
@@ -739,3 +752,79 @@ class PinnedSnapshotTests(unittest.TestCase):
 
     def test_snapshot_ctime_only_revalidates_exact_hash_once(self):self.scan_with_change(False)
     def test_snapshot_same_size_content_changed_restored_mtime_rejected(self):self.scan_with_change(True)
+
+
+class SnapshotLiveEpochTests(unittest.TestCase):
+    def setUp(self):
+        self.fixture=UniqueQueueTests();self.fixture.setUp();self.addCleanup(self.fixture.doCleanups)
+        self.queue=self.fixture.install();self.hub=self.fixture.hub;self.task=self.fixture.task
+
+    def midscan(self,action):
+        original=self.queue._show_row
+        def mutate(row,*args):
+            result=original(row,*args)
+            if row['id']=='new-a':action()
+            return result
+        with patch.object(self.queue,'_show_row',side_effect=mutate),self.assertRaisesRegex(ValueError,'epoch|changed|symlink|invalid shared directory'):
+            self.queue.snapshot()
+
+    def test_new_legacy_claim_fails_epoch_and_next_snapshot_is_fresh(self):
+        self.midscan(lambda:self.hub.claim('old-task','juan'))
+        self.assertTrue(all(row['legacy_blockers'][0]['state']=='active'for row in self.queue.snapshot()))
+        with self.assertRaisesRegex(ValueError,'actual work'):self.queue.claim('new-b','emily')
+
+    def test_new_legacy_reservation_fails_epoch_and_next_snapshot_is_fresh(self):
+        self.midscan(lambda:self.hub.assign('old-task','juan',42,'volunteer'))
+        self.assertTrue(all(row['legacy_blockers'][0]['assignee']=='juan'for row in self.queue.snapshot()))
+        with self.assertRaisesRegex(ValueError,'assignment'):self.queue.claim('new-b','emily')
+
+    def test_valid_fence_appearing_midscan_fails_epoch(self):
+        config,_=self.queue.configuration()
+        self.midscan(lambda:self.queue.fence(self.task,config))
+        self.assertTrue(all(row['status']=='available'for row in self.queue.snapshot()))
+
+    def test_sentinel_owner_replacement_fails_epoch(self):
+        path=self.hub.root/'claims/old-task/owner.json'
+        self.midscan(lambda:write(path,read(path)))
+        self.assertTrue(all(row['status']=='available'for row in self.queue.snapshot()))
+
+    def test_verified_receipt_appearing_midscan_fails_epoch(self):
+        path=self.hub.root/'verified/old-task.json'
+        self.midscan(lambda:write(path,dict(task_sha256=digest(self.task),verified_at='2026-01-01T00:00:00+00:00')))
+        self.assertTrue(all(row['legacy_blockers'][0]['state']=='verified'for row in self.queue.snapshot()))
+
+    def test_existing_report_same_size_restored_mtime_edit_fails_epoch(self):
+        self.hub.claim('old-task','juan');self.hub.report('old-task','juan','blocked','first note')
+        path=next((self.hub.root/'work-claims/old-task').glob('report-*.json'));before=path.stat()
+        def mutate():
+            raw=path.read_bytes();changed=raw.replace(b'first note',b'other note');self.assertEqual(len(raw),len(changed))
+            path.write_bytes(changed);os.utime(path,ns=(before.st_atime_ns,before.st_mtime_ns))
+        self.midscan(mutate)
+
+    def test_live_parent_mode_and_new_symlink_fail_epoch(self):
+        path=self.hub.root/'task-locks'
+        self.midscan(lambda:path.chmod(0o777));path.chmod(0o1777)
+        target=self.fixture.base/'outside';target.mkdir()
+        self.midscan(lambda:(self.hub.root/'work-claims/old-task').symlink_to(target))
+
+    def test_unique_claim_and_journal_changes_fail_epoch(self):
+        self.midscan(lambda:self.queue.claim('new-a','juan'))
+        self.assertEqual(self.queue.snapshot()[0]['status'],'active')
+        self.midscan(lambda:self.queue.report('new-a','juan','blocked','new current report'))
+        self.assertEqual(self.queue.snapshot()[0]['status'],'blocked')
+
+    def test_state_change_inside_first_validator_does_not_seed_cache(self):
+        original=self.hub.state;changed=[]
+        def state(*args,**kwargs):
+            result=original(*args,**kwargs)
+            if not changed:changed.append(True);self.hub.claim('old-task','juan')
+            return result
+        with patch.object(self.hub,'state',side_effect=state),self.assertRaisesRegex(ValueError,'epoch|changed'):
+            self.queue.snapshot()
+
+    def test_live_parent_inode_swap_fails_epoch(self):
+        path=self.hub.root/'work-claims'
+        def replace():
+            path.rename(path.with_name('old-work-claims'))
+            path.mkdir();path.chmod(0o1777)
+        self.midscan(replace)
