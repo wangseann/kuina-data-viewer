@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "updated_at": "2026-11-18T11:12:23.842048+00:00",
+  "updated_at": "2026-11-18T12:17:07.156382+00:00",
   "profile": {
     "max_interval_seconds": 900,
     "min_years": 2,
@@ -76144,7 +76144,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T06:56:07.552949+00:00",
+      "updated_at": "2026-11-18T12:15:47.982166+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -76173,7 +76173,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T10:59:48.708840+00:00",
+      "updated_at": "2026-11-18T12:15:48.063462+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -76318,7 +76318,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T06:56:07.641084+00:00",
+      "updated_at": "2026-11-18T12:15:48.153959+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -76347,7 +76347,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T10:59:48.834302+00:00",
+      "updated_at": "2026-11-18T12:15:48.238299+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -78290,7 +78290,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T10:59:48.925162+00:00",
+      "updated_at": "2026-11-18T12:15:48.396876+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -79015,7 +79015,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T06:56:07.718165+00:00",
+      "updated_at": "2026-11-18T12:15:48.489888+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -79682,7 +79682,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T05:29:03.057888+00:00",
+      "updated_at": "2026-11-18T12:15:48.574689+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -80639,7 +80639,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T10:59:49.099612+00:00",
+      "updated_at": "2026-11-18T12:15:48.706014+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -80697,7 +80697,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T10:59:49.197406+00:00",
+      "updated_at": "2026-11-18T12:15:48.809866+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
@@ -80726,7 +80726,7 @@
       "affected_series": 500,
       "created_at": "2026-11-12T00:50:14.440951+00:00",
       "status": "active",
-      "updated_at": "2026-11-18T10:59:49.280686+00:00",
+      "updated_at": "2026-11-18T12:15:48.911028+00:00",
       "assignee": "seann",
       "issues": [
         "availability_unverified",
