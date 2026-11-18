@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-18T01:00:46.579803+00:00",
+  "assessment_utc": "2026-11-18T03:44:30.800983+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -214,8 +214,8 @@
       "confirmed_series": 10,
       "confirmed_units": 2,
       "excluded_series": 1070343,
-      "excluded_measured": 1069707,
-      "excluded_missing_evidence": 636,
+      "excluded_measured": 1069762,
+      "excluded_missing_evidence": 581,
       "source_failures": 32,
       "issues": [
         {
@@ -228,7 +228,7 @@
         },
         {
           "id": "calendar_unverified",
-          "count": 142792
+          "count": 142737
         },
         {
           "id": "coarse_resolution",
@@ -236,7 +236,7 @@
         },
         {
           "id": "completeness_unverified",
-          "count": 142792
+          "count": 142737
         },
         {
           "id": "conflicting_duplicates",
@@ -247,12 +247,20 @@
           "count": 927551
         },
         {
+          "id": "hourly_gaps",
+          "count": 55
+        },
+        {
           "id": "invalid_times",
           "count": 4
         },
         {
           "id": "invalid_values",
           "count": 12
+        },
+        {
+          "id": "long_gaps",
+          "count": 55
         },
         {
           "id": "missing_months",
@@ -281,8 +289,12 @@
       ],
       "failure_masks": [
         {
+          "mask": 1,
+          "count": 55
+        },
+        {
           "mask": 8,
-          "count": 665
+          "count": 610
         },
         {
           "mask": 9,

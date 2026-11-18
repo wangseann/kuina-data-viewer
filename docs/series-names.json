@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-18T01:00:46.579803+00:00",
+  "assessment_utc": "2026-11-18T03:44:30.800983+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "4d6053523903af04bf50b1774876b91fa76733c3a1782824b6b2a57894e25495",
-  "counts_sha256": "9469f097d0b3dfd7c485e4171b2029ab6b69fab3e76a61c955c967d2e3045835",
+  "catalogue_sha256": "bab50dd98dfafe728dd0069407c939ab522115e5a405850404e7fa38e2cf4ed2",
+  "counts_sha256": "4b5684ab1aa182b2ea15e71c8aa5215fcd36e0335073d9625a0ffc497514dce8",
   "schema": 1,
   "types": [
     {
@@ -71515,27 +71515,35 @@
           "mask": 0
         },
         {
-          "id": "0cd744699515db7738d8b34442845963fa256b0679b3922c039aaf6f4fc92e4d",
+          "id": "0639ab1fd322ea50afefc4a8124adf4fae0b3b79b2e5b8e01e3dd7f12d004937",
           "label": "COCOA.CMD/USD",
-          "variable": "high",
+          "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
+          "mask": 1
+        },
+        {
+          "id": "18aaefba797a54ad9a029f32a7d04d2e46261725c61a555ff99e96f63520db6e",
+          "label": "CORN_CONDITION",
+          "variable": "Value",
+          "source": "Usda Nass",
+          "native_seconds": null,
           "mask": 8
         },
         {
-          "id": "8aa56955662c15e0d4d8b435a16b9332321a2e82172ae7dd37474be825e82aef",
-          "label": "COCOA.CMD/USD",
-          "variable": "open",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
+          "id": "5e50a19bd6c7b8e1afda7199c7560a30a834259b513ab11e68381985125e71ed",
+          "label": "CORN_PROGRESS",
+          "variable": "Value",
+          "source": "Usda Nass",
+          "native_seconds": null,
           "mask": 8
         },
         {
-          "id": "ed4dafd07800973096ca4cea0e2ea97c3a9a368094d9c9593510d82b482ae0bb",
-          "label": "COCOA.CMD/USD",
-          "variable": "low",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 60,
+          "id": "f458566a169fa3bf7947ee955e69c79b91129d416ec2c558afde04217ff43b21",
+          "label": "COTTON_CONDITION",
+          "variable": "Value",
+          "source": "Usda Nass",
+          "native_seconds": null,
           "mask": 8
         },
         {
@@ -102293,14 +102301,6 @@
         {
           "id": "ffdbef66bf999e3c2177c6d058897f1596239e8217dcd9f7ef56c8a638838ae3",
           "label": "FoodBalanceSheets_E_All_Data__Normalized_ \u00b7 Area=Jamaica, Item=Pulses, Other and products, Element=Residuals, Unit=1000 t",
-          "mask": 11,
-          "native_seconds": 31536000,
-          "source": "Faostat",
-          "variable": "Value"
-        },
-        {
-          "id": "ffde2e91786ac6ec13bda3db7c024cf9e4c3a99c06ccc9808c66ec61a48d2b1d",
-          "label": "FoodBalanceSheets_E_All_Data__Normalized_ \u00b7 Area=Tonga, Item=Milk - Excluding Butter, Element=Production, Unit=1000 t",
           "mask": 11,
           "native_seconds": 31536000,
           "source": "Faostat",

@@ -16,11 +16,15 @@
       "failed_count": 55,
       "check_failures": [
         {
-          "id": "calendar",
+          "id": "hourly_coverage",
           "count": 55
         },
         {
-          "id": "completeness",
+          "id": "longest_gap",
+          "count": 55
+        },
+        {
+          "id": "required_15minute_bin_coverage",
           "count": 55
         }
       ],
@@ -71,7 +75,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0cd744699515db7738d8b34442845963fa256b0679b3922c039aaf6f4fc92e4d",
@@ -79,7 +83,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "ed4dafd07800973096ca4cea0e2ea97c3a9a368094d9c9593510d82b482ae0bb",
@@ -87,7 +91,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "a1c17514b944ea52bacefc4b7d7c1a6d584ad269eb2172994fd0aaf7da4226f8",
@@ -95,7 +99,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0639ab1fd322ea50afefc4a8124adf4fae0b3b79b2e5b8e01e3dd7f12d004937",
@@ -103,7 +107,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "8cf7da817bae9511e6cbf66314f08f016b1c6afbf64ca03a154bccc3d5e7f362",
@@ -111,7 +115,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "a18d679b47e6124ef998fb9a389fdb307b2e78943b5e5783db685b4bcd0ec3d2",
@@ -119,7 +123,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "b699b4562536cb15e53add06ecff25d55b758b9dca0eefcef9f1fa54eedc685a",
@@ -127,7 +131,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "2cc00ce7ff17fb0ae3fde27dab416cef41a4f10b4d3ba71ceed37b7c7a7b9c2c",
@@ -135,7 +139,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "6c8898fbe2274c939c5e7d596447323501394fc02d0715c08e3b47916e88989d",
@@ -143,7 +147,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0ee2f6bfe30632691ec13b8fe7ba696d08eab51358561ed5265d056e2b49d756",
@@ -151,7 +155,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "3b40959059bcec4b939663238cc7071c5dad2752c7359b4930bf35eee5cf9ceb",
@@ -159,7 +163,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "c350dd9be0167e06f8c88cefb4f34b9a678b6dd1a01d8eb38c3a457a44ea102d",
@@ -167,7 +171,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "c5877f4fae220fcc3ee7fe67c521692f4fab9ca348cdb09765ab407cbad40c93",
@@ -175,7 +179,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "9ee6ce9aeb0bd304e90bffe3a29d0a2a6ba702d5b590dd060478241b763e8735",
@@ -183,7 +187,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "4d7bf4a7817cb65c7fddb4b6eec78b587a0f0809914cd58662aef41313941cd4",
@@ -191,7 +195,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "5d5c469e7520583f0b80556e1aa1ee32c20dad8a72504f93f5b123a480ddb036",
@@ -199,7 +203,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "d13c40599d183990f59003955ca559b437e6bee5bfe2a5fa3509915cef20ecd7",
@@ -207,7 +211,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "c1230ec775d7bd399db049c5b35317763815a8b39805697b7ed540591d1cf33d",
@@ -215,7 +219,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "fb5fd71f6e880154c1fbb7c7e8fca316c7bb273db1a008cfa13bb49ed97f3a65",
@@ -223,7 +227,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "e001d74e2044e8815baa4908071642e5d23d7e66b287bfea2ea778191af8619e",
@@ -231,7 +235,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "6f5c419ad1c0c68a730a6625fa9a5600a23bb19adaef1e839d93f1fc61109088",
@@ -239,7 +243,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "c801ce275927874150ae82a7d3db8841f2b8c28fe48102d8359c73ccf0963b16",
@@ -247,7 +251,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "1ff47b20454b7f8b8a602eb70f89bbfd2bd53c69509993a33e178e76f0c1a64d",
@@ -255,7 +259,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "61c16e0b7c5ecfd3a9c2474e6d328050cc009ed188ae710b373e13231d3d1286",
@@ -263,7 +267,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "4f3dcb7670f227466348fe638aabca97cb232928a39bea902132b5e09840b673",
@@ -271,7 +275,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "1168fdb03012a9d80b61f8763a13786271b1efb7f432ad33f28ec5a17bd4491f",
@@ -279,7 +283,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "3e23bf64fca123dc027bcb08b047f120a0aba17040fbdc147a3a659775dee9a4",
@@ -287,7 +291,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "532a4e987cd8994c9dff5cee92692066c2d8fa951f226c334e7a6fb95e050377",
@@ -295,7 +299,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "b0c6d5051cb3cdfa2c249dcb2656660f4be218fdef2962eebac864f8edbdff48",
@@ -303,7 +307,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "2bd2ab20329d48ad083f78f5c38887873eab3a0d86be16f14644e2e1aedaf255",
@@ -351,7 +355,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "17c0eb2c88774033f7374ca06456e0e58dd73ce44e0b4ba601a5803dde567ac1",
@@ -359,7 +363,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0f1f3fbb23fb336b93c3990bbf89069d35543b2eba30ffbfe3193a527e384bc5",
@@ -367,7 +371,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "28a246d577f95b9e5f1bc5c662e2c0ab49e92109ecebb8870b66ae9d7f9770e8",
@@ -375,7 +379,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "b5276b7d7835813d28080fcd0e992e15b6e3a15c46849cfa4bf56204ce89ceac",
@@ -383,7 +387,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "11e655d36bfba35c649f73fbdb5c48e91a5477bcdce90dfb870902503bfd3515",
@@ -391,7 +395,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "bdfcb88d87d76ebbf51c9709e043b7673217ab2ccd839f6ba36f9d272799a5c5",
@@ -399,7 +403,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "99a8964e05d7ccb20c53ae178ca088f6193308b696f2ea9a1a9e4f0eab4ed0de",
@@ -407,7 +411,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "f581356fa3d1caa4ea4eda760cfac5f3d12b776c90c4fb6cee4655c9ea675e9d",
@@ -415,7 +419,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "2c50773b4cdb09bab75775175060d99289c4d701515bcc0dd2affc998d493cf7",
@@ -423,7 +427,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "314759a19bcf413e1623330efcd45f628dfa7e51dc64927a8a8816d226f200c3",
@@ -431,7 +435,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0b55e02c1d866e480a1e9fab56e4ce922fd95bf3029b487bf97fde1a9d04ce54",
@@ -439,7 +443,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "929d867999074c93b7c64a89dee1d2c54191a161b034004685e42d9bf725584d",
@@ -447,7 +451,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "bb990ceb5ee9b1a47b02c88437794d03b89a4c332783ff95df74a62d43aca4d6",
@@ -455,7 +459,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0b661bb3a698144155296b9d6ad76b573e16277a248e45b01001ab96380e4993",
@@ -463,7 +467,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "0bf725405c1f388ee6b1eae5dc5fe6982ccf6d0a0bda7be27da504b0c30dc34f",
@@ -471,7 +475,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "2a0929345d2f21250a3f72a89970985e45811011c84859c47347e909b5f9a629",
@@ -479,7 +483,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "3374c4f52185365e873904625180b93a553ee74d2ce3f80930992412279cac22",
@@ -487,7 +491,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "4fab7df75768a88940edc4cb991996a528763d7b56cdd06ceedd9204ff677e9a",
@@ -495,7 +499,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "fbaadcc12c9c0dcd752a21dba6344955d8e16d923405c449a296df6ca2dfbeb7",
@@ -503,7 +507,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "fca3f58c91c29b301df4b3336d9268f425152c5e998fc792f20842571bc7dc9c",
@@ -511,7 +515,7 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "edeb1774b10f9657eb1972e38084e90d6817ba9ae8a675f9dbf33553a3a3571d",
@@ -519,7 +523,7 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "323fb86ca1f6bc3d8f4b43eb6b2a1965429c2edd4c837d9e852ee1f1197c32af",
@@ -527,7 +531,7 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "592fc07cddbdcbb2b43dfa6de513f67ba8d6b773f377af34b2e4c5dd0abbdf4d",
@@ -535,7 +539,7 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         },
         {
           "id": "d1df54e0e8036888d40c995f9285f131f1d62d1d5584b00ca6f98b29d0c1b9a3",
@@ -543,7 +547,7 @@
           "variable": "volume",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 8
+          "mask": 1
         }
       ]
     },
