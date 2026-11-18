@@ -49,16 +49,29 @@ def safe_path(path):
 
 def file_bytes(path, maximum, owner=None):
     path = safe_path(path)
-    info = path.stat()
-    require(stat.S_ISREG(info.st_mode) and info.st_size <= maximum, 'metadata file bound/type invalid')
-    if owner is not None:
-        require(info.st_uid == owner and not info.st_mode & 0o022, 'metadata ownership/mode invalid')
-    with path.open('rb') as stream:
-        raw = stream.read(maximum + 1)
-        after = os.fstat(stream.fileno())
-    require(len(raw) <= maximum and (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns) ==
-            (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns), 'metadata changed during read')
-    return raw
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    try:
+        before = os.fstat(descriptor)
+        require(stat.S_ISREG(before.st_mode) and before.st_size <= maximum, 'metadata file bound/type invalid')
+        if owner is not None:
+            require(before.st_uid == owner and not before.st_mode & 0o022, 'metadata ownership/mode invalid')
+        # NFS pathname attributes may be stale before open. The held descriptor
+        # is authoritative; the final lexical path must still name that file.
+        with os.fdopen(descriptor, 'rb', closefd=False) as stream:
+            raw = stream.read(before.st_size + 1)
+            after = os.fstat(descriptor)
+        final = path.lstat()
+        def signature(info):
+            return (info.st_dev, info.st_ino, info.st_mode, info.st_uid,
+                    info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+        if len(raw) != before.st_size or signature(before) != signature(after) or signature(after) != signature(final):
+            detail = dict(schema='kuina-metadata-read-failure-v1', path=str(path)[:512],
+                          raw_length=len(raw), raw_sha256=hashlib.sha256(raw).hexdigest(),
+                          fd_before=signature(before), fd_after=signature(after), path_after=signature(final))
+            raise ValueError('metadata changed during read: ' + json.dumps(detail, sort_keys=True, separators=(',', ':')))
+        return raw
+    finally:
+        os.close(descriptor)
 
 
 def parse(raw):

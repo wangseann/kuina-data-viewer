@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from coordination.task_manager import Hub, digest, read, write
-from coordination.unique_queue import UniqueQueue
+from coordination.unique_queue import UniqueQueue, file_bytes
 
 
 def claim_race(root, legacy, batch, start, result):
@@ -548,3 +548,80 @@ class SnapshotDefinitionPerformanceTests(unittest.TestCase):
             return result
         with patch.object(queue,'_show_row',side_effect=fence_after_first),self.assertRaisesRegex(ValueError,'unknown.*fence|lock'):
             queue.snapshot()
+
+
+class MetadataDescriptorTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.path = Path(self.temp.name).resolve()/'metadata.json'
+        self.body = b'{"private": "never emit this value"}'
+        self.path.write_bytes(self.body)
+        self.path.chmod(0o444)
+
+    def test_stale_initial_path_attributes_do_not_reject_stable_descriptor(self):
+        from types import SimpleNamespace
+        real_stat = Path.stat
+        actual = real_stat(self.path)
+        stale = SimpleNamespace(**{name:getattr(actual,name) for name in dir(actual) if name.startswith('st_')})
+        stale.st_ctime_ns -= 1000
+        stale.st_size = 0
+        def cached(path, *args, **kwargs):
+            if path == self.path and kwargs.get('follow_symlinks',True):
+                return stale
+            return real_stat(path,*args,**kwargs)
+        with patch.object(Path,'stat',cached):
+            self.assertEqual(file_bytes(self.path,1024,os.getuid()),self.body)
+
+    def changed_during_read(self, action):
+        real_fstat = os.fstat
+        descriptors = []
+        def inspect(fd):
+            descriptors.append(fd)
+            if len(descriptors)==2:
+                action()
+            return real_fstat(fd)
+        with patch('coordination.unique_queue.os.fstat',inspect):
+            with self.assertRaises(ValueError) as error:
+                file_bytes(self.path,1024,os.getuid())
+        self.assertNotIn(self.body.decode(),str(error.exception))
+        self.assertLessEqual(len(str(error.exception).encode()),4096)
+        with self.assertRaises(OSError):
+            real_fstat(descriptors[0])
+
+    def test_in_place_same_size_mutation_rejected(self):
+        def mutate():
+            before=self.path.stat()
+            self.path.chmod(0o644)
+            self.path.write_bytes(b'x'*len(self.body))
+            os.utime(self.path,ns=(before.st_atime_ns,before.st_mtime_ns+1000000))
+        self.changed_during_read(mutate)
+
+    def test_path_replacement_rejected_even_with_same_bytes(self):
+        def replace():
+            replacement=self.path.with_suffix('.new')
+            replacement.write_bytes(self.body);replacement.chmod(0o444)
+            replacement.replace(self.path)
+        self.changed_during_read(replace)
+
+    def test_symlink_swap_rejected(self):
+        def replace():
+            other=self.path.with_suffix('.other');other.write_bytes(self.body)
+            self.path.unlink();self.path.symlink_to(other)
+        self.changed_during_read(replace)
+
+    def test_mode_change_during_read_rejected(self):
+        self.changed_during_read(lambda:self.path.chmod(0o666))
+
+    def test_short_read_rejected(self):
+        import io
+        with patch('coordination.unique_queue.os.fdopen',return_value=io.BytesIO(self.body[:-1])):
+            with self.assertRaises(ValueError):file_bytes(self.path,1024,os.getuid())
+
+    def test_descriptor_bounds_owner_mode_and_initial_symlink_rejected(self):
+        with self.assertRaises(ValueError):file_bytes(self.path,len(self.body)-1,os.getuid())
+        with self.assertRaises(ValueError):file_bytes(self.path,1024,os.getuid()+1)
+        self.path.chmod(0o666)
+        with self.assertRaises(ValueError):file_bytes(self.path,1024,os.getuid())
+        link=self.path.with_suffix('.link');link.symlink_to(self.path)
+        with self.assertRaises(ValueError):file_bytes(link,1024)
