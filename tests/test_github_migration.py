@@ -271,6 +271,70 @@ class MigrationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             encode(result, max_compressed_bytes=1)
 
+    def test_exact_empty_markers_all_five_namespaces_are_preserved(self):
+        self.fence()
+        markers = []
+        for namespace in ('claims', 'work-claims', 'assignments', 'verified', 'task-locks'):
+            path = self.hub.root / namespace / '.keep'
+            path.write_bytes(b'')
+            path.chmod(0o644)
+            markers.append(path)
+        before = self.tree()
+        result = export(self.cat)
+        self.assertEqual(self.tree(), before)
+        self.assertEqual(result['provenance']['referenced_legacy_tasks'], 1)
+        self.assertNotIn('.keep', json.dumps(result))
+        self.assertTrue(all(p.read_bytes() == b'' and p.stat().st_mode & 0o777 == 0o644 for p in markers))
+
+    def test_nonzero_marker_rejected_before_open_all_five_namespaces(self):
+        from coordination.github_migration import _Epoch
+        self.fence()
+        for namespace in ('claims', 'work-claims', 'assignments', 'verified', 'task-locks'):
+            path = self.hub.root / namespace / '.keep'
+            path.write_bytes(b'UNKNOWN-CONTENT-DO-NOT-OPEN')
+            path.chmod(0o644)
+            reads = []
+            original = _Epoch.read
+            def track(epoch, selected, *args, **kwargs):
+                reads.append(Path(selected))
+                return original(epoch, selected, *args, **kwargs)
+            with self.subTest(namespace=namespace), patch.object(_Epoch, 'read', track), self.assertRaises(ValueError):
+                export(self.cat)
+            self.assertNotIn(path, reads)
+            path.unlink()
+
+    def test_marker_wrong_mode_directory_or_symlink_rejected(self):
+        self.fence()
+        path = self.hub.root / 'claims/.keep'
+        for mode in (0o444, 0o666):
+            path.write_bytes(b'')
+            path.chmod(mode)
+            with self.subTest(mode=mode), self.assertRaises(ValueError):
+                export(self.cat)
+            path.unlink()
+        path.mkdir()
+        with self.assertRaises(ValueError):
+            export(self.cat)
+        path.rmdir()
+        target = self.hub.root / 'marker-target'
+        target.write_bytes(b'')
+        path.symlink_to(target)
+        with self.assertRaises(ValueError):
+            export(self.cat)
+
+    def test_marker_epoch_change_fails_closed(self):
+        self.fence()
+        path = self.hub.root / 'task-locks/.keep'
+        path.write_bytes(b'')
+        path.chmod(0o644)
+        original = self.cat.public_catalogue
+        def touch_marker():
+            value = original()
+            path.touch()
+            return value
+        with patch.object(self.cat, 'public_catalogue', side_effect=touch_marker), self.assertRaises(ValueError):
+            export(self.cat)
+
 
 if __name__ == '__main__':
     unittest.main()
