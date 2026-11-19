@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T17:12:12.907723+00:00",
+  "assessment_utc": "2026-11-19T18:53:14.941366+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "3cc66df95197a2b9006b631dafa42f5c96d001144f6ce066d5c841a05fa6ec55",
-  "counts_sha256": "4e86d63376ef48f6dc842c36ef3e5f31d42a31bfbe994a4b73453f92220f477a",
+  "catalogue_sha256": "681558d487bfb525baab9aee173a3d823607ec4f7ae702252c464db17cef2bce",
+  "counts_sha256": "1c633a321a84717748d1820aadb69b3c369a4dbdfc512c203c553e5a15252c08",
   "schema": 1,
   "types": [
     {
@@ -4884,6 +4884,14 @@
           "id": "2ae0236e97d88bf7469471752cb26ab6b71e867ce4eabb1b24009030dd831864",
           "label": "LIN",
           "variable": "open",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "2ae7a2c56a8d1e3532eeddcbd4cf532c12bc07381d2044ca99569b97b53814a3",
+          "label": "IMNM",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -9897,6 +9905,14 @@
           "mask": 0
         },
         {
+          "id": "530d4990864f9c4aea76018c9ea61a7eebc4070df469ddde642b6bad500cc690",
+          "label": "CF",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "531626badf94cabeb139b60daa6eb9e28b37f46ab4583327bfb3c91390b3c4ba",
           "label": "AAP",
           "variable": "high",
@@ -12668,6 +12684,14 @@
           "id": "6b966e31b1ee35b80852385f73f888597ce8cfc98d9e87c71af6628896903f86",
           "label": "WDC",
           "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "6b9c702ec77fefb01e969875055c71755a1a75b1e51523e74c38492dc41e76e8",
+          "label": "CLMT",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -16020,6 +16044,14 @@
           "id": "863decd94c6a9439c16d5648c25cea00e3bfddfa67acde700f703b2ff202b27f",
           "label": "EXK",
           "variable": "open",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "864fdbc35969c5d521d4aef26b333f15f89304b7d2b7874599e39a8ffd53e717",
+          "label": "CIEN",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
