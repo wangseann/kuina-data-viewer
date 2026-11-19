@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T18:53:14.941366+00:00",
+  "assessment_utc": "2026-11-19T20:05:54.517257+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "681558d487bfb525baab9aee173a3d823607ec4f7ae702252c464db17cef2bce",
-  "counts_sha256": "1c633a321a84717748d1820aadb69b3c369a4dbdfc512c203c553e5a15252c08",
+  "catalogue_sha256": "2f775930f9e71b45515467997b82fb1ceeca5f0c17450dd33161598d8a786cfc",
+  "counts_sha256": "4a41f2f8f6c6cdb3c60aecb8a214a99ab9b8796bb225d85e754b8fe5f9914aca",
   "schema": 1,
   "types": [
     {
@@ -3812,6 +3812,14 @@
           "id": "211a5306948b9e02f348ec50543e51263a91b0aba37f9655a747595bdbdce233",
           "label": "FUBO",
           "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "212735157d211affc6bbfbec62ebc5ebf6d31d57c1f4443bc6b93ced1f7422cc",
+          "label": "FVRR",
+          "variable": "volume",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -7796,6 +7804,14 @@
           "id": "42061ead183a8aab08cc649cf88b410604f0c860e11003ee9bf4361aec72a178",
           "label": "AVPT",
           "variable": "vwap",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "420cf416f235ef059fd001a6094906070c133ac7cb8d352432acc04fbee783c6",
+          "label": "BRSL",
+          "variable": "volume",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -14852,6 +14868,14 @@
           "id": "7c3ea65e3601572c3fb799a58c2e2474cb28240b93d54a74b14c49886d0a734b",
           "label": "AON",
           "variable": "close",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "7c53cf1b046d9da84e12ed393dac79ff25756f1fb77c2bdffa25772c90daa56b",
+          "label": "G",
+          "variable": "volume",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -29505,6 +29529,14 @@
           "mask": 0
         },
         {
+          "id": "f7b69418ffc931063611ec921e14daee39c8ffdb0e601dd9097d5789711eb035",
+          "label": "KGS",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "f7c09c3d973ab49645de4f48d74395f8c3d88c0d1668f987835703291c14b939",
           "label": "ALK",
           "variable": "vwap",
@@ -29692,6 +29724,14 @@
           "id": "f96744e2a21580a4dfcdebbb81d5792a32bddc5d4420be44cb358175c62ecdb1",
           "label": "OII",
           "variable": "open",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "f9707067a91c8d7c27f186386b5fc211052a34b0e2149b81f1ab77e2601a6abe",
+          "label": "IONQ",
+          "variable": "volume",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
