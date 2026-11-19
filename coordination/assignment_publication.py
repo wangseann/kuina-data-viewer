@@ -8,7 +8,7 @@ from coordination.task_manager import require
 import unique_dashboard
 
 
-def task_snapshot(summary, catalogue, ledger, generated_at):
+def task_snapshot(summary, catalogue, ledger, generated_at, progress=None):
     validate_ledger(ledger)
     Assignments._validate_started(ledger)
     require(type(catalogue) is dict and set(catalogue) in (
@@ -20,6 +20,8 @@ def task_snapshot(summary, catalogue, ledger, generated_at):
             'GitHub and immutable catalogue generations differ')
     require(type(catalogue['batches']) is list and len(catalogue['batches']) <= 20000,
             'Public batch bound exceeded')
+    from coordination.assignment_progress import validated
+    advisory = validated(ledger, progress)
     batches = []
     for row in catalogue['batches']:
         require(type(row) is dict and set(row) == {'id', 'category', 'target_count', 'series_count',
@@ -35,6 +37,8 @@ def task_snapshot(summary, catalogue, ledger, generated_at):
                     current['catalogue_generation'] == catalogue['generation'],
                     'Confirmed assignment definition differs')
             status, assignee, issue = current['status'], current['person'], current['assignment_issue']
+            if row['id'] in advisory:
+                status = advisory[row['id']]['status']
             if current['origin'] == 'migration' and status == 'assigned':
                 status = 'blocked'
         batches.append(dict(id=row['id'], category=row['category'], target_count=row['target_count'],
@@ -47,8 +51,8 @@ def task_snapshot(summary, catalogue, ledger, generated_at):
     return result
 
 
-def render_assets(summary, catalogue, ledger, generated_at):
-    tasks = task_snapshot(summary, catalogue, ledger, generated_at)
+def render_assets(summary, catalogue, ledger, generated_at, progress=None):
+    tasks = task_snapshot(summary, catalogue, ledger, generated_at, progress=progress)
     with tempfile.TemporaryDirectory(prefix='kuina-public-assignments-') as folder:
         unique_dashboard.build(summary, tasks, Path(folder))
         html = (Path(folder) / 'unique.html').read_bytes()
