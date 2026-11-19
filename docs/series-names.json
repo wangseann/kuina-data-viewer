@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T10:12:20.361452+00:00",
+  "assessment_utc": "2026-11-19T12:04:57.307055+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "bf7f9396265f62bb28ec7da6b1c26bf53d9024447c08a438e844707e30bfe7c7",
-  "counts_sha256": "666429bd73266aa6c9422e7d66ca097aafebd9f77b71c12ef7e8416f642291ff",
+  "catalogue_sha256": "fd3fd6e97160d08908f8ef15d8fddb91cf70cbc0db6877cd515a9db78b19c654",
+  "counts_sha256": "91ddb48fe6fab411ad8743ece43af7d0a454619ad4ad0cb2448c418b0c8fe614",
   "schema": 1,
   "types": [
     {
@@ -62366,6 +62366,14 @@
           "variable": "quote_volume"
         },
         {
+          "id": "754e060d79134b55d96c0c735946fe27627a782fa66949b0938d6353138aa248",
+          "label": "WIF/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "788a71c0267dfdad0e296d8c9fcf2cb4d3cacf8c4443e253cf6520cecd691ecd",
           "label": "SUIUSDT",
           "mask": 0,
@@ -62404,6 +62412,14 @@
           "native_seconds": 60,
           "source": "Binance",
           "variable": "trades"
+        },
+        {
+          "id": "811f274a4c01c782a75a8c9de49bec11c343f869674f5f6cc2a5101c62e53d00",
+          "label": "WIF/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
         },
         {
           "id": "87f5944a4f10e1c763d092441433a722c644f937fabc69aef0fa93906c1348f7",
@@ -63332,14 +63348,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "trade_count"
-        },
-        {
-          "id": "811f274a4c01c782a75a8c9de49bec11c343f869674f5f6cc2a5101c62e53d00",
-          "label": "WIF/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 1
         },
         {
           "id": "820f62e5f35ce76c5c8c4116beda280de54c2dac9f8a8e2cdd469943215d5ddd",
@@ -65460,14 +65468,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "vwap"
-        },
-        {
-          "id": "754e060d79134b55d96c0c735946fe27627a782fa66949b0938d6353138aa248",
-          "label": "WIF/USD",
-          "variable": "volume",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
         },
         {
           "id": "7616995e6ce1d220c3eb0d24f94c224a0280e68d1bc8e887d9f61a9fb9c38e85",
