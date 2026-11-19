@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T20:05:54.517257+00:00",
+  "assessment_utc": "2026-11-19T20:45:27.317620+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "2f775930f9e71b45515467997b82fb1ceeca5f0c17450dd33161598d8a786cfc",
-  "counts_sha256": "4a41f2f8f6c6cdb3c60aecb8a214a99ab9b8796bb225d85e754b8fe5f9914aca",
+  "catalogue_sha256": "52dfccc9f853fae29ec71b396db17f719d9d240ef769859675b6d6a3eb9d467b",
+  "counts_sha256": "45e07592490f7caebef31109b23a6b6d027156732d6f6d162256cd93388be288",
   "schema": 1,
   "types": [
     {
@@ -4953,6 +4953,14 @@
           "mask": 0
         },
         {
+          "id": "2b57788b338f2cb503ee5ffa5fdec255ffb941c39a2e82ab6c454ecf5865f192",
+          "label": "CFR",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "2b7053fd9a69d654aef4478ad6c946b12bc0a8aa3d6a0d9be5d5ea8b1d81b084",
           "label": "CDP",
           "variable": "open",
@@ -5564,6 +5572,14 @@
           "id": "30358ca19af2c2340e1d23b6995d2026e0667823a5a00be4827d751a27ef0af6",
           "label": "MPLX",
           "variable": "vwap",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "304565c8ded11d18d419e853a1e99d127a7cd30eeb95672e4c873dca0e650395",
+          "label": "NUVB",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -7033,6 +7049,14 @@
           "mask": 0
         },
         {
+          "id": "3c22075ab20cc1b457ada5dc1b37bfb0cec46c34760a6100fb64db8fed475b39",
+          "label": "OPFI",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "3c2266a51bafa080b0d95b44c7352221fbbf8b3f5c5c135b359e9c068b6944e3",
           "label": "NOG",
           "variable": "open",
@@ -7475,6 +7499,14 @@
         {
           "id": "3fadb1ac7984a007ce3d972d4099215f63500b11ac13fce2c3d9a44c29a4f367",
           "label": "JPM",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "3fb3c26963e4128b6ae7427d44f113876158293f796934dc7ca458a187bd0f98",
+          "label": "PPTA",
           "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
@@ -10185,6 +10217,14 @@
           "mask": 0
         },
         {
+          "id": "55f4022a2f2d459a848082347eb5158d20e336be33cf6750558b7ca7e926dc4a",
+          "label": "BBAR",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "55fa9885044bf7b60b1f1a1f5430af374a12e060659aacb9179f970bf67482e1",
           "label": "BILL",
           "variable": "close",
@@ -10436,6 +10476,14 @@
           "id": "57cd55076cb76287a93ded66308a60b9c90e6c39c3c96f12ae20de53d19e31da",
           "label": "ARLO",
           "variable": "open",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "57f7d1893f06b6417f1448f2dbe90a5b7f0c1152df26ace32511ed8700120bd2",
+          "label": "VMC",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -11297,6 +11345,14 @@
           "mask": 0
         },
         {
+          "id": "5e53ea826b7c72980f725098ca0ef28abeb90a58aafa4dc8b7ac896879899bed",
+          "label": "DBC",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "5e83a9ebe50afb54d5a9ec43632bbf8e3ac8669000461e6ea94fa884cb43f5fb",
           "label": "OR",
           "variable": "low",
@@ -11388,6 +11444,14 @@
           "id": "5f2dab433c81af36596417d5954c7c0c0bd304f62c404dc87024f9fc82dd1245",
           "label": "PCVX",
           "variable": "high",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "5f40cd810eb1ee6889da98ed8ca4fbc7ac2257a4f304596228a50aa42d62c9d7",
+          "label": "HE",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -11564,6 +11628,14 @@
           "id": "60dd99235b9508339d134a8b7ac821b8810041906a5ddb1e59082f18e8a98eeb",
           "label": "M",
           "variable": "vwap",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "6105b13fba289fd4bdfb5eaa4e9cd7da4cbfccd20f77444014b662cf138e8d06",
+          "label": "KOS",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -11747,6 +11819,14 @@
         {
           "id": "62caf66a1fb8d955357406670b9e22df40dc3d84d0a29853f48eaca4e762143c",
           "label": "ALSN",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "62d2477390b68188d0a18def7e0e005a17b276a7007c173ae0fd49ff8474e890",
+          "label": "PRIM",
           "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
@@ -12153,6 +12233,14 @@
           "mask": 0
         },
         {
+          "id": "672d140757837dd7adca62ecb71ef8138a4dfc2ac7aa270a8d4335dba4858f4f",
+          "label": "RCUS",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "6732f235bbe2c5b6fa100b39a5d81624949fbb380b6abd275940130ebfe682f1",
           "label": "DDOG",
           "variable": "open",
@@ -12387,6 +12475,14 @@
         {
           "id": "68cfe6a1e8eb76ab8be2aa7ba6151f5d0ca20902a2399622c2c797ff845041eb",
           "label": "CLF",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "68db2747a281f218999a1af59ea68c919372ecc2881810818fa33b4e87a0ef6c",
+          "label": "OPLN",
           "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
@@ -12788,6 +12884,14 @@
           "id": "6c43dd629ae72c299171eec5098c49ffd1a51869107cb827abdbb6521da75b4f",
           "label": "SBH",
           "variable": "vwap",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "6c43f937ce41af0a8d4218242051cc41c00f59ed02753d1eae7ea4a171b9bc6a",
+          "label": "ORA",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -13409,6 +13513,14 @@
           "mask": 0
         },
         {
+          "id": "706dffbf9b59fe5e29d491975bdc0cac20ef00108c1c04f430ed0edc4d80eea3",
+          "label": "RGEN",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "7071d45318dcab60aecfb2a3e82c9cad3a30f718efda77c8fabd01d1fd1959bb",
           "label": "DX",
           "variable": "volume",
@@ -13756,6 +13868,14 @@
           "id": "7312debd0c7b8832654924d89b72dbcae19718e717fc57c89b61b130e16d9c50",
           "label": "RIO",
           "variable": "low",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "73133aa6ec55da09289d90ec86779ab468a52eddbd8fec097c8d46a9060cdccd",
+          "label": "STNG",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -15641,6 +15761,14 @@
           "mask": 0
         },
         {
+          "id": "829b83ee79c3c7330155c8024577b3e9d96bdfcfcb59cbf917376e04321e3ee3",
+          "label": "DLB",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "82a5055352218ca6aebc2558c81cde867435cf493c9ee79dcdb4ca82d50c5eb1",
           "label": "RLJ",
           "variable": "high",
@@ -15924,6 +16052,14 @@
           "id": "84d6a2f9fcb2e7c455e9ce3d49f85a2298940fa50b4f1dfff9c7bef5efd2db24",
           "label": "NPKI",
           "variable": "high",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "84e20c7040c51afda5cb218b4b950267184eb48968b25aba032f5c5631b52643",
+          "label": "GSL",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -17300,6 +17436,14 @@
           "id": "90a234130eb177a1e6483c49fcb346247e64501b7bf3ecc0b88cc3deba9a6103",
           "label": "GLOB",
           "variable": "open",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "90a37554529b095569d4e483c25ede8ee17a741d1a2a2848ce7075c63bb1c16d",
+          "label": "NRGV",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -18721,6 +18865,14 @@
           "mask": 0
         },
         {
+          "id": "9d049cb960968476bc50fc0b5f69787925bc1f512d9813293f704fd51a9491ae",
+          "label": "MTH",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "9d0aac430650d32a9c8fb2c7204a668902bb547483634da9d6ce9a29872101d6",
           "label": "ALSN",
           "variable": "open",
@@ -18972,6 +19124,14 @@
           "id": "9fd0879d8c0cf80d82a641b8cfed1c4ac7cbcc55a42700a3f3d306475afb25fa",
           "label": "SA",
           "variable": "close",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "9fd5fce43719c12c80f10e418e50a0a7f61e9d012d4c9b615d78a7bdb2a11025",
+          "label": "PTCT",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -22713,6 +22873,14 @@
           "mask": 0
         },
         {
+          "id": "bfb0d7b9fb487909dc0760e372d7f6baddc813ddf6af2ea08546b8ba704f574c",
+          "label": "STRL",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "bfb1770582447fdef4cd815869f949dd8d89fc1f4040ba6b24ca50a44937edb0",
           "label": "BLDR",
           "variable": "trade_count",
@@ -23627,6 +23795,14 @@
         {
           "id": "c7651e264decacb21c2e564005d88f48064540267055025110f3e02a0f24853a",
           "label": "COMP",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "c78808e0c6c7c3b3a4dd9d02f0e305b86e566d718677c6b7cf64b498f84cb9e6",
+          "label": "GKOS",
           "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
@@ -24561,6 +24737,14 @@
           "mask": 0
         },
         {
+          "id": "cf38daafc12123864ac1c57767a12aecc0ae1351a9da0ed4d6db20d1f91c062c",
+          "label": "NOK",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "cf422247835097d2a2459b7605689bd0fa303b2468164db8474628bf7ca04354",
           "label": "TTE",
           "variable": "vwap",
@@ -25065,6 +25249,14 @@
           "mask": 0
         },
         {
+          "id": "d2bdc8569b7d15d5254066e8da5d4782bdfca3e1e3aae80e42acdad17cdd0e45",
+          "label": "HGV",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "d2c5ae45a2fbeba795e09d69ea0a70d5f103622a65400921dae75a2f6201c528",
           "label": "AR",
           "variable": "volume",
@@ -25433,6 +25625,14 @@
           "mask": 0
         },
         {
+          "id": "d5e14bdf17685a7901be21a0e308fe27dfb0de675af87568108bdfc6f5d8c728",
+          "label": "BC",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "d5e975ec9f9c1d361d2d338feac7b3a838780d63502dbfd495855a0d4adc285c",
           "label": "HTGC",
           "variable": "volume",
@@ -25788,6 +25988,14 @@
           "id": "d9ea4f14b8c42437ad853d9fcb7a1ee2ee67b4857ea736bb75ac119b0de3be10",
           "label": "GDX",
           "variable": "high",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "d9f136286add9ae59fd3ae35008ba9208f8f726f0d8bbc21530ef394a38919f2",
+          "label": "MHK",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -27121,6 +27329,14 @@
           "mask": 0
         },
         {
+          "id": "e4d6cb96016cee9885c9f41645fd0a2a990020ca147caa6ed28762e8f5565152",
+          "label": "LEA",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "e4dbbef27b55cb6259b5adf168801e3d6f53abcb7eb834fa7abf555e8f1a0dc0",
           "label": "NEO",
           "variable": "high",
@@ -27348,6 +27564,14 @@
           "id": "e67d871248d7f9da6cc323c0d5d767171a3ca01138688154088f6b9295bfca3e",
           "label": "HAYW",
           "variable": "low",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "e68300cc81083eae94807d99177017ebaad11edf8158a16fc1fd18f6d369331f",
+          "label": "DFH",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -27969,6 +28193,14 @@
           "mask": 0
         },
         {
+          "id": "eb6f0e7f47e0032e99dd5d3fe96bc3f91f7ae49985765d2d7b619830c5d657bc",
+          "label": "POR",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "eb7ff21c56b270f15958a66b4fd58197b1ae1e473c833e87c7e77e185c9d0b2f",
           "label": "LAR",
           "variable": "low",
@@ -28068,6 +28300,14 @@
           "id": "ec6260e1c3f41988a4356be09412d48a0e997e75a3f035bc65997663ce25d6dc",
           "label": "LAZ",
           "variable": "low",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "ec6efe8798e3df4e7197b9401d090c1ff29755f6d757ce21754e770269051a24",
+          "label": "HAE",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -31396,14 +31636,6 @@
           "id": "f2b709612a49ae6a89f34933560870477e485f05ff2d2a1c4df65cbb36d4490a",
           "label": "AB",
           "variable": "low",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 1
-        },
-        {
-          "id": "f67f73611b4ccf4175a461f9d5e28012aa740a02f55431bd55f5c8910cb4d5a3",
-          "label": "ACA",
-          "variable": "volume",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 1
@@ -39423,6 +39655,14 @@
           "native_seconds": 86400,
           "source": "Daily global equity export",
           "variable": "low"
+        },
+        {
+          "id": "30e9cd980e558f1cd8f59a62d73731ed141af335186d9e6ab0942438cd05a117",
+          "label": "19X.F \u00b7 market=Frankfurt, currency=EUR, source=Yahoo chart query2, volume_unit=nan",
+          "variable": "volume",
+          "source": "Daily global equity export",
+          "native_seconds": 86400,
+          "mask": 14
         },
         {
           "id": "30f5b5e6e0ff35c558f5e45af12e86b1319a551a7799a0c727ffa580278d174b",
