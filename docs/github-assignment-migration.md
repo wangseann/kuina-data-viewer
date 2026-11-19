@@ -19,7 +19,10 @@ Current workers retain their actual participant, status and source timestamps;
 an opaque owner-file hash replaces private owner details. Each reservation must
 have zero history and exactly its original confirmed assignment receipt. Other
 history, missing receipts, unknown journals, unbound definitions or reused issues
-block export. The only ignored marker is a validated empty `assignments/.keep`.
+block export. In the five known Native namespaces, an exact coordinator-owned
+regular `.keep` file with mode `0644` and zero bytes is preserved and excluded
+from task counts. Unexpected marker contents, types, ownership or changes block
+the export.
 
 Every imported row is permanently protected with `origin=migration`. Original
 legacy IDs and definition hashes are appended as disabled `legacy_definitions`
