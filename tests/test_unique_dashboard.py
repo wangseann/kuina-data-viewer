@@ -105,7 +105,7 @@ class UniqueDashboardTests(unittest.TestCase):
         script="""const b={...data.tasks.batches[0],status:'assigned',assignee:'seann',assignment_issue:17};
         console.log(JSON.stringify([U.workerCommand(b,'seann'),U.workerCommand(b,'olga'),
           U.workerCommand({...b,status:'available'},'seann'),U.workerCommand({...b,assignee:null},'seann')]));"""
-        expected='python3 -B "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" claim \'unique-stocks-001\' --person \'seann\''
+        expected='python3 -B "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" prepare-work \'unique-stocks-001\' --person \'seann\' --assignment-issue 17'
         self.assertEqual(self.run_js(summary,tasks,script),[expected,None,None,None])
 
     def test_existing_own_work_gets_readonly_show_and_never_another_claim(self):
@@ -126,7 +126,7 @@ class UniqueDashboardTests(unittest.TestCase):
         self.assertTrue(all(value is None for value in self.run_js(summary,tasks,script)))
 
     def test_agent_button_reveals_plain_command_and_identity_change_clears_it(self):
-        for status,issue,action in [('assigned',17,"claim 'unique-stocks-001' --person 'seann'"),
+        for status,issue,action in [('assigned',17,"prepare-work 'unique-stocks-001' --person 'seann' --assignment-issue 17"),
                                     ('active',None,"show 'unique-stocks-001'")]:
             summary,tasks=fixtures();tasks['batches'][0].update(status=status,assignee='seann',assignment_issue=issue)
             setup=self.dom_setup()

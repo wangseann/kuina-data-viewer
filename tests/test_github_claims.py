@@ -7,9 +7,11 @@ from coordination.github_claims import InvalidRequest, NativeFailure, parse_requ
 
 def issue(action='assign', person='seann', task='batch-synthetic-000001'):
     import json
-    label = 'claim' if action == 'assign' else 'release'
+    label = {'assign': 'claim', 'release': 'release', 'working': 'start'}[action]
     payload = dict(version=1, action=action, task_id=task, person=person)
     if action == 'release': payload['assignment_issue'] = 7
+    if action == 'working':
+        payload.update(assignment_issue=6, proof_sha256='c' * 64)
     return dict(number=7, title='[Kuina '+label+'] '+task,
                 body='<!-- kuina-request-v1\n'+json.dumps(payload)+'\n-->',
                 user=dict(login='wangseann'), labels=[])
@@ -53,6 +55,27 @@ class Github:
 
 
 class GithubClaimTests(unittest.TestCase):
+    def test_work_start_requires_bound_assignment_and_opaque_preparation(self):
+        source = issue('working')
+        self.assertEqual(parse_request(source)['proof_sha256'], 'c' * 64)
+        for key, value in [('proof_sha256', '/private/file'), ('assignment_issue', 0)]:
+            import json
+            payload = parse_request(source)
+            payload[key] = value
+            bad = dict(source, body='<!-- kuina-request-v1\n' + json.dumps(payload) + '\n-->')
+            with self.assertRaises(InvalidRequest):
+                parse_request(bad)
+
+    def test_start_confirmation_waits_for_backend_execution_permit(self):
+        native, github = Native(), Github()
+        native.requires_receipt = True
+        native.start = lambda *args: dict(status='started')
+        result = process_issue(issue('working'), github, native, 'wangseann')
+        self.assertEqual(result['status'], 'started')
+        native.start = lambda *args: (_ for _ in ()).throw(NativeFailure('permit unavailable'))
+        with self.assertRaises(NativeFailure):
+            process_issue(issue('working'), github, native, 'wangseann')
+
     def test_request_contract_rejects_commands_extra_fields_and_spoofed_actor(self):
         self.assertEqual(parse_request(issue())['person'], 'seann')
         for mutation in ('extra', 'actor', 'duplicate', 'person', 'title', 'pull'):
@@ -92,6 +115,21 @@ class GithubClaimTests(unittest.TestCase):
         result = process_issue(issue(), github, native, 'wangseann')
         self.assertEqual(result['status'], 'confirmed')
         self.assertEqual(native.calls, 1)
+
+    def test_github_authority_requires_observed_receipt_before_confirmation(self):
+        native, github = Native(), Github()
+        native.requires_receipt = True
+        with self.assertRaises(NativeFailure):
+            process_issue(issue(), github, native, 'wangseann')
+        self.assertEqual(github.results, [])
+
+    def test_github_authority_does_not_confirm_same_name_without_a_receipt(self):
+        native, github = Native(), Github()
+        native.requires_receipt = True
+        native.current.update(status='assigned', assignee='seann', assignment_issue=6)
+        result = process_issue(issue(), github, native, 'wangseann')
+        self.assertEqual(result['status'], 'rejected')
+        self.assertEqual(native.calls, 0)
 
     def test_active_work_cannot_be_released_from_web(self):
         native, github = Native(), Github()

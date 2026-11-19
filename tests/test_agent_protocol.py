@@ -12,7 +12,7 @@ def protocol():return json.loads((ROOT/'docs/agent-protocol.json').read_text())
 
 class AgentProtocolTests(unittest.TestCase):
     def test_new_default_counts_subjects_and_retains_original_variants_and_legacy(self):
-        p=protocol();self.assertEqual(p['schema'],'kuina-agent-coordination-v4')
+        p=protocol();self.assertEqual(p['schema'],'kuina-agent-coordination-v5')
         self.assertEqual(p['default_queue'],'unique')
         self.assertEqual(p['review_batches']['maximum_repair_subjects'],100)
         self.assertTrue(p['review_batches']['all_original_fields_and_variants_retained'])
@@ -39,9 +39,13 @@ class AgentProtocolTests(unittest.TestCase):
         self.assertIn('target_id',p['private_context_lookup'])
         self.assertIn('series_ids',p['private_context_lookup'])
         self.assertNotIn('context',p['commands'])
-        self.assertIn('--include-legacy',p['commands']['list_work'])
+        self.assertEqual(p['assignment_ledger']['path'], 'coordination/assignments.json')
+        self.assertEqual(p['commands']['claim'], ['claim', '--proof-sha256', 'PREPARATION_SHA256'])
+        self.assertIn('--assignment-issue', p['commands']['prepare_work'])
     def test_advertised_cli_routes_unique_work_and_resumes_legacy_without_reclaim(self):
-        p=protocol()
+        # Historical source remains supported; v5's guarded start is exercised
+        # by the new private CLI and broker integration tests.
+        p=json.loads((ROOT/'tests/fixtures/agent-protocol-v4.json').read_text())
         with tempfile.TemporaryDirectory()as temporary:
             base=Path(temporary).resolve();hub=Hub(base/'hub');hub.init()
             for task_id in ('leaf-unique','legacy-resume'):

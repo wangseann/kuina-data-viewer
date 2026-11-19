@@ -22,7 +22,7 @@ def is_request_issue(issue):
     labels = [label.get('name') for label in issue.get('labels', []) if isinstance(label, dict)]
     return ('pull_request' not in issue and 'kuina-integration-test' not in labels and
             isinstance(issue.get('title'), str) and
-            issue['title'].startswith(('[Kuina claim] ', '[Kuina release] ')))
+            issue['title'].startswith(('[Kuina claim] ', '[Kuina release] ', '[Kuina start] ')))
 
 
 def parse_request(issue):
@@ -37,19 +37,23 @@ def parse_request(issue):
     except (ValueError, TypeError):
         raise InvalidRequest('The request payload could not be read.')
     fields = {'version', 'action', 'task_id', 'person'}
-    if isinstance(request, dict) and request.get('action') == 'release':
+    if isinstance(request, dict) and request.get('action') in ('release', 'working'):
         fields.add('assignment_issue')
+        if request['action'] == 'working':
+            fields.add('proof_sha256')
     if not isinstance(request, dict) or set(request) != fields:
         raise InvalidRequest('The request fields do not match the tracker form.')
     if type(request['version']) is not int or request['version'] != 1:
         raise InvalidRequest('Unsupported request version.')
-    if request['action'] == 'release' and (type(request['assignment_issue']) is not int or request['assignment_issue'] <= 0):
-        raise InvalidRequest('Release requests must identify the displayed reservation.')
-    if request['action'] not in ('assign', 'release') or request['person'] not in PEOPLE:
+    if request['action'] in ('release', 'working') and (type(request['assignment_issue']) is not int or request['assignment_issue'] <= 0):
+        raise InvalidRequest('The request must identify the confirmed reservation.')
+    if request['action'] == 'working' and (not isinstance(request['proof_sha256'], str) or not re.fullmatch('[0-9a-f]{64}', request['proof_sha256'])):
+        raise InvalidRequest('Start requests require the agent’s opaque preparation hash.')
+    if request['action'] not in ('assign', 'release', 'working') or request['person'] not in PEOPLE:
         raise InvalidRequest('Choose a registered participant and action.')
     if not isinstance(request['task_id'], str) or not TASK_ID.fullmatch(request['task_id']):
         raise InvalidRequest('Invalid batch identifier.')
-    title = '[Kuina '+('claim' if request['action'] == 'assign' else 'release')+'] '+request['task_id']
+    title = '[Kuina '+{'assign': 'claim', 'release': 'release', 'working': 'start'}[request['action']]+'] '+request['task_id']
     author = issue.get('user', {}).get('login')
     if issue.get('title') != title or not isinstance(author, str) or not LOGIN.fullmatch(author):
         raise InvalidRequest('Request title or GitHub author is invalid.')
@@ -73,7 +77,17 @@ def process_issue(issue, github, native, owner, remember=None):
         return finish(result)
     task_id, person = request['task_id'], request['person']
     author = issue['user']['login']
+    requires_receipt = getattr(native, 'requires_receipt', False)
     result = dict(task_id=task_id, person=person, issue=issue['number'])
+    if request['action'] == 'working':
+        if not requires_receipt or not callable(getattr(native, 'start', None)):
+            result.update(status='rejected', message='This queue does not support GitHub work starts yet.')
+            return finish(result)
+        receipt = native.start(task_id, person, author, issue['number'], request['assignment_issue'], request['proof_sha256'])
+        if receipt.get('status') != 'started':
+            raise NativeFailure('Working state and private execution permit are not confirmed.')
+        result.update(status='started', message='GitHub saved the working reservation and the private execution permit is ready. Your agent may continue its prepared claim.')
+        return finish(result)
     previous = native.request_status(task_id, issue['number'])
     if previous is not None:
         if previous['action'] != request['action'] or previous['person'] != person:
@@ -84,7 +98,10 @@ def process_issue(issue, github, native, owner, remember=None):
     before = native.status(task_id)
     if request['action'] == 'assign':
         if before['assignee'] == person and before['status'] in ('assigned', 'active', 'blocked', 'awaiting_verification'):
-            result.update(status='confirmed', message='This batch is already assigned to you.')
+            if requires_receipt:
+                result.update(status='rejected', message='This batch already has a reservation. Continue its original confirmed assignment.')
+            else:
+                result.update(status='confirmed', message='This batch is already assigned to you.')
         elif before['status'] != 'available' or before['assignee'] is not None:
             result.update(status='rejected', message='This batch is no longer available. Choose another available batch.')
         else:
@@ -97,6 +114,8 @@ def process_issue(issue, github, native, owner, remember=None):
                 result.update(status='confirmed', message='Reservation request confirmed. Check the current private assignment before working.')
                 return finish(result)
             after = native.status(task_id)
+            if requires_receipt and after['assignee'] == person:
+                raise NativeFailure('GitHub reservation receipt is not observed; keep this request pending.')
             if after['assignee'] == person and after['status'] in ('assigned', 'active', 'blocked', 'awaiting_verification'):
                 result.update(status='confirmed', message='Reservation confirmed in the shared queue.')
             elif after['assignee'] is not None or after['status'] != 'available':
@@ -118,6 +137,8 @@ def process_issue(issue, github, native, owner, remember=None):
                 result.update(status='released', message='Reservation release confirmed. Later assignments are separate.')
                 return finish(result)
             after = native.status(task_id)
+            if requires_receipt and after['status'] == 'available' and after['assignee'] is None:
+                raise NativeFailure('GitHub release receipt is not observed; keep this request pending.')
             if after['status'] == 'available' and after['assignee'] is None:
                 result.update(status='released', message='Reservation released; the batch is available.')
             elif after['status'] == 'assigned' and after['assignee'] == person:
@@ -227,6 +248,8 @@ class Native:
 def poll(config, state=None, save_state=None):
     github = GitHub(config['repo'], config.get('gh', '/opt/homebrew/bin/gh'))
     native = Native(config['host'], config['cli'], config['hub'])
+    from coordination.assignment_config import make_backend
+    native = make_backend(config, github, native)
     if state is None:
         state = {}
     cursor = state.get('last_issue', 0)

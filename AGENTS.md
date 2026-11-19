@@ -4,8 +4,11 @@ Publish only viewer source and the strict counts metadata accepted by counts.py.
 Never commit dataset observations, data-bearing HTML exports, timestamp arrays,
 credentials or private collection targets, paths and agent reports. The user's
 November 2026 task-manager request authorizes the eleven volunteer names (including Vitoria and Olga) and a
-whitelisted public task-status snapshot. The private Kuina hub owns authoritative
-claims, collection scopes and delegation records. The 12 November series-hover
+whitelisted public task-status snapshot. The user's latest decision makes GitHub the
+authority for permanent confirmed assignments and embedded immutable issue
+receipts. Kuina retains private data, worker proofs, collection scopes and
+scientific reports. Preserve all imported claims and reservations; missing
+private proof must never make assigned or started work available or releasable. The 12 November series-hover
 request additionally authorizes a closed, audit-bound name index containing only
 series hashes, public display names, numeric field names, provider labels, native
 intervals and failure masks. No observations, private paths or source references
