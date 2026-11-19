@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-19T06:55:32.438527+00:00",
+  "assessment_utc": "2026-11-19T07:39:58.387702+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -224,7 +224,7 @@
         },
         {
           "id": "cadence_unknown",
-          "count": 1098
+          "count": 1094
         },
         {
           "id": "calendar_unverified",
@@ -232,7 +232,7 @@
         },
         {
           "id": "coarse_resolution",
-          "count": 1069130
+          "count": 1069134
         },
         {
           "id": "completeness_unverified",
@@ -251,10 +251,6 @@
           "count": 45
         },
         {
-          "id": "invalid_times",
-          "count": 4
-        },
-        {
           "id": "invalid_values",
           "count": 12
         },
@@ -268,7 +264,7 @@
         },
         {
           "id": "no_window_data",
-          "count": 989445
+          "count": 989441
         },
         {
           "id": "not_source_observations",
@@ -276,7 +272,7 @@
         },
         {
           "id": "price_definition_unverified",
-          "count": 45147
+          "count": 45151
         },
         {
           "id": "series_type_unknown",
@@ -298,11 +294,11 @@
         },
         {
           "mask": 9,
-          "count": 53
+          "count": 49
         },
         {
           "mask": 10,
-          "count": 64241
+          "count": 64245
         },
         {
           "mask": 11,

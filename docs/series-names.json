@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T06:55:32.438527+00:00",
+  "assessment_utc": "2026-11-19T07:39:58.387702+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "1f99b40c5ff61bade73be14febb9dd0ea32109e5fd713e053b49935baefe8eb6",
-  "counts_sha256": "e55a2a0b6cd50cbddee1d0bd31e034f2434fd39e8f556ef8d60a0da82f6d6458",
+  "catalogue_sha256": "f4efec67d27adf4eb4ef0966c0f825c051d52a67c19642c1e5782a618a54a0ca",
+  "counts_sha256": "31f27b2e69057dbdf75888b3be9cbf6d81e638a47dc8d2615f5513e643d49eec",
   "schema": 1,
   "types": [
     {
@@ -72619,6 +72619,14 @@
           "mask": 10
         },
         {
+          "id": "834ef565869837c973bdd4638b1c7d4475648220f6d1ea5fd2639b167583c88d",
+          "label": "xauusd_d",
+          "variable": "High",
+          "source": "Stooq",
+          "native_seconds": 86400,
+          "mask": 10
+        },
+        {
           "id": "85b85c17a4f6013820ebdb8360ec7994f20cb980f7a27fc1d3242f83ce0eb2a4",
           "label": "XAU/SAR",
           "variable": "open",
@@ -72784,6 +72792,14 @@
           "variable": "high",
           "source": "Dukascopy bank CSV",
           "native_seconds": 3600,
+          "mask": 10
+        },
+        {
+          "id": "9a24c3793426a9844e5979be6f84892f1f4d12280a462bf9f6c3227232ced860",
+          "label": "xauusd_d",
+          "variable": "Open",
+          "source": "Stooq",
+          "native_seconds": 86400,
           "mask": 10
         },
         {
@@ -73083,6 +73099,14 @@
           "mask": 10
         },
         {
+          "id": "c38c066e63968d908b8243d0e370489ecde202c4fcbc0af209ebc5d9eaa97de2",
+          "label": "xauusd_d",
+          "variable": "Low",
+          "source": "Stooq",
+          "native_seconds": 86400,
+          "mask": 10
+        },
+        {
           "id": "c54052472402afc8483cae0b71d797f9abaefee7057b1d4aa615ff95f49e89d5",
           "label": "XAG/CNH",
           "variable": "open",
@@ -73208,6 +73232,14 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 3600,
+          "mask": 10
+        },
+        {
+          "id": "d2d5b934700f795b683e415176d380d88896d24a5c90a593b4d2ff8b068e8077",
+          "label": "xauusd_d",
+          "variable": "Close",
+          "source": "Stooq",
+          "native_seconds": 86400,
           "mask": 10
         },
         {
@@ -73453,38 +73485,6 @@
         {
           "id": "f93df834b17b3be669eda21ed89451ebde67aaad736936a6cf4e66a35346c0b7",
           "label": "XAU/CZK",
-          "variable": "low",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 3600,
-          "mask": 10
-        },
-        {
-          "id": "fd23263d1f23e3db98c076ff96cb1da7ce3e802476258d072293bed884ea651b",
-          "label": "XAU/SEK",
-          "variable": "volume",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 3600,
-          "mask": 10
-        },
-        {
-          "id": "fdf941f368e2232c2b3e9c05c6822098c468e242563ae52d1a607f92ec29f1ac",
-          "label": "XAU/CZK",
-          "variable": "open",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 3600,
-          "mask": 10
-        },
-        {
-          "id": "ff10a146fe2e2cdd9ae0f74213c82111c29f43b7713dfa62252f72d517f70e64",
-          "label": "XAG/THB",
-          "variable": "volume",
-          "source": "Dukascopy bank CSV",
-          "native_seconds": 3600,
-          "mask": 10
-        },
-        {
-          "id": "ffc3a82a9a8ccdbdb01c3dc3c9092d56902c0ff4d1bf456e67a40fad7cb0d4c5",
-          "label": "XAU/CHF",
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 3600,
