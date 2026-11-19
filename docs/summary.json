@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-19T22:43:00.742212+00:00",
+  "assessment_utc": "2026-11-19T23:32:56.279475+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -9,10 +9,10 @@
   "types": [
     {
       "id": "stocks",
-      "confirmed_series": 3843,
+      "confirmed_series": 3865,
       "confirmed_units": 610,
-      "excluded_series": 130852,
-      "excluded_measured": 130732,
+      "excluded_series": 130830,
+      "excluded_measured": 130710,
       "excluded_missing_evidence": 120,
       "source_failures": 165,
       "issues": [
@@ -54,7 +54,7 @@
         },
         {
           "id": "long_gaps",
-          "count": 6943
+          "count": 6921
         },
         {
           "id": "missing_months",
@@ -80,7 +80,7 @@
       "failure_masks": [
         {
           "mask": 1,
-          "count": 3598
+          "count": 3576
         },
         {
           "mask": 8,
