@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T09:49:45.015943+00:00",
+  "assessment_utc": "2026-11-19T10:12:20.361452+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "f5662ac4fa438afc17abf3299a63b57ba19d8174e5ac4adb2183bf267c80c28e",
-  "counts_sha256": "3282e29e1c26c794e61c55e4ef71f3827baa910e6646b5582d5673464afe0a65",
+  "catalogue_sha256": "bf7f9396265f62bb28ec7da6b1c26bf53d9024447c08a438e844707e30bfe7c7",
+  "counts_sha256": "666429bd73266aa6c9422e7d66ca097aafebd9f77b71c12ef7e8416f642291ff",
   "schema": 1,
   "types": [
     {
@@ -62734,6 +62734,14 @@
           "variable": "volume"
         },
         {
+          "id": "ed6ffcbf885ab4e3e342f7e7b0a0de109a9eaf5dc65142c182d440f15059a6b1",
+          "label": "BONK/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "f0d4afe26d6ae483904860e79b48432cc74a8bd21b9d4085967b82921f26f95a",
           "label": "XRPUSDT",
           "mask": 0,
@@ -67332,14 +67340,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "high"
-        },
-        {
-          "id": "ed6ffcbf885ab4e3e342f7e7b0a0de109a9eaf5dc65142c182d440f15059a6b1",
-          "label": "BONK/USD",
-          "variable": "volume",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
         },
         {
           "id": "ed985f33314c000343432308c56c1902c802a8db34ec7101dc15548757f6522c",

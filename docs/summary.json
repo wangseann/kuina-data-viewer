@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-19T09:49:45.015943+00:00",
+  "assessment_utc": "2026-11-19T10:12:20.361452+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -118,10 +118,10 @@
     },
     {
       "id": "crypto",
-      "confirmed_series": 85,
+      "confirmed_series": 86,
       "confirmed_units": 15,
-      "excluded_series": 1076,
-      "excluded_measured": 1074,
+      "excluded_series": 1075,
+      "excluded_measured": 1073,
       "excluded_missing_evidence": 2,
       "source_failures": 0,
       "issues": [
@@ -147,7 +147,7 @@
         },
         {
           "id": "hourly_gaps",
-          "count": 370
+          "count": 369
         },
         {
           "id": "invalid_values",
@@ -155,7 +155,7 @@
         },
         {
           "id": "long_gaps",
-          "count": 370
+          "count": 369
         },
         {
           "id": "missing_months",
@@ -171,7 +171,7 @@
         },
         {
           "id": "price_definition_unverified",
-          "count": 481
+          "count": 480
         },
         {
           "id": "series_type_unknown",
@@ -193,7 +193,7 @@
         },
         {
           "mask": 9,
-          "count": 482
+          "count": 481
         },
         {
           "mask": 10,
