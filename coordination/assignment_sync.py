@@ -1,8 +1,9 @@
 """Publish three strict assignment assets, reconciling only ledger CAS commits.
 
 Call under the existing counts publisher lock. No Native reads, ledger writes or
-private reports belong here. Git mutations are limited to reviewed metadata.
+private report text belongs here. Git mutations are limited to reviewed metadata.
 """
+from copy import deepcopy
 from datetime import timezone
 import os
 from pathlib import Path
@@ -34,7 +35,7 @@ def stable_generated_at(ledger, initialized_at):
 
 
 class Synchronizer:
-    def __init__(self, project, github, ledger_path=LEDGER, branch='main', expected_origins=ORIGINS):
+    def __init__(self, project, github, ledger_path=LEDGER, branch='main', expected_origins=ORIGINS, progress_provider=None):
         self.project = Path(project).absolute()
         require(not self.project.is_symlink() and self.project.is_dir(), 'Invalid publication checkout')
         require(ledger_path == LEDGER and branch == 'main', 'Only the reviewed assignment ledger/main route is supported')
@@ -42,6 +43,7 @@ class Synchronizer:
         self.ledger_path = ledger_path
         self.branch = branch
         self.expected_origins = tuple(expected_origins)
+        self.progress_provider = progress_provider
 
     def git(self, *args):
         command = ['/usr/bin/git', '-c', 'credential.helper=', '-c',
@@ -177,7 +179,24 @@ class Synchronizer:
                 'Fetched branch and observed GitHub ledger differ; retry a fresh poll')
         ledger = observed['ledger']
         generated_at = stable_generated_at(ledger, initialized_at)
-        assets = render_assets(summary, catalogue, ledger, generated_at)
+        progress = None
+        if self.progress_provider is not None:
+            from coordination.assignment_progress import validated
+            try:
+                progress = self.progress_provider(deepcopy(observed))
+            except Exception:
+                # This optional private transport cannot release or block a permanent reservation.
+                progress = None
+            refreshed = Assignments(self.github, None, None, path=self.ledger_path, branch=self.branch).snapshot()
+            require(refreshed['ledger_sha'] == observed['ledger_sha'], 'GitHub authority changed during progress query')
+            advisory = validated(ledger, progress)
+            if advisory:
+                generated_at = max([stamp(generated_at)] + [stamp(value['report_at']) for value in advisory.values()]).astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
+        previous_tasks = self.project / 'docs/unique-tasks.json'
+        if self.progress_provider is not None and previous_tasks.exists():
+            previous_time = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))['generated_at']
+            generated_at = max((generated_at, previous_time), key=stamp)
+        assets = render_assets(summary, catalogue, ledger, generated_at, progress=progress)
         previous = self.project / 'docs/unique-tasks.json'
         if previous.exists():
             saved = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))

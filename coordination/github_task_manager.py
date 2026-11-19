@@ -34,6 +34,31 @@ def bounded_json(raw):
     return value
 
 
+def progress_stamp(path):
+    info = path.lstat()
+    require(stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode), 'Unsafe progress dependency')
+    return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns,
+            info.st_uid, info.st_gid, info.st_mode, info.st_nlink)
+
+
+def progress_epoch(paths, root):
+    """Strict metadata epoch for the bounded worker-proof dependency closure."""
+    dependencies = set(paths)
+    for path in paths:
+        for parent in path.parents:
+            dependencies.add(parent)
+            if parent == root:
+                break
+    return {path: progress_stamp(path) for path in dependencies}
+
+
+def progress_epoch_matches(epoch):
+    try:
+        return all(progress_stamp(path) == signature for path, signature in epoch.items())
+    except (ValueError, OSError):
+        return False
+
+
 class Manager:
     def __init__(self, hub_root):
         self.legacy = Hub(hub_root)
@@ -89,7 +114,7 @@ class Manager:
             return self.legacy.read_batch(batch_id)
         return self.catalogue().read_batch(batch_id)
 
-    def worker_state(self, catalogue, row, own_report_lock=False):
+    def worker_state(self, catalogue, row, own_report_lock=False, report_limit=None):
         path = safe_path(self.legacy.shared_directory('work-claims') / row['id'])
         if not path.exists():
             return path, None, 'no_private_worker_proof'
@@ -113,7 +138,8 @@ class Manager:
         require(authorization['proof_sha256'] == owner['preparation_sha256']
                 and sha(raw) == owner['authorization_sha256'], 'Actual observed permit differs')
         reports = []
-        for entry in path.iterdir():
+        for index, entry in enumerate(path.iterdir()):
+            require(report_limit is None or index < report_limit, 'Progress journal bound exceeded')
             if entry.name == 'owner.json':
                 continue
             if entry.name == '.report-lock':
@@ -143,6 +169,71 @@ class Manager:
         return dict(id=batch_id, category=row['category'], target_count=row['target_count'],
                     series_count=row['series_count'], status=status, worker=owner,
                     assignment_authority='GitHub; absent private proof does not release working reservation')
+
+    def progress(self, requests):
+        """Return only proof-bound advisory status; never notes, UID or paths."""
+        from coordination.assignment_progress import MAX_RECORDS, MAX_JSON_BYTES, SCHEMA, validate_request
+        require(type(requests) is list and len(requests) <= MAX_RECORDS and
+                len(json.dumps(requests).encode()) <= MAX_JSON_BYTES, 'Bounded progress page required')
+        require(len({item['batch_id'] for item in requests}) == len(requests), 'Duplicate progress request')
+        for item in requests:
+            validate_request(item)
+        authority = self.legacy.root / 'github-assignment-authority.json'
+        authority_raw = file_bytes(authority, 4096, self.legacy.root.stat().st_uid)
+        catalogue = self.catalogue()
+        records = []
+        for item in requests:
+            try:
+                protocol = CombinedWorkProtocol(catalogue)
+                path = safe_path(self.legacy.shared_directory('work-claims') / item['batch_id'])
+                entries = []
+                for index, entry in enumerate(path.iterdir()):
+                    require(index < 128, 'Progress journal bound exceeded')
+                    entries.append(entry)
+                dependencies = [path, path / 'owner.json',
+                                protocol.preparation_path(item['preparation_sha256']),
+                                protocol.authorization_path(item['batch_id']), authority,
+                                catalogue.manifest_path] + entries
+                epoch = progress_epoch(dependencies, self.legacy.root)
+                row = catalogue.row(item['batch_id'])
+                require(catalogue.generation == item['catalogue_generation'] and
+                        row['file']['sha256'] == item['definition_sha256'], 'Progress catalogue differs')
+                path, owner, status = self.worker_state(catalogue, row, report_limit=128)
+                require(owner is not None and owner['person'] == item['person'] and
+                        owner['preparation_sha256'] == item['preparation_sha256'], 'Progress worker differs')
+                def signature():
+                    info = path.stat()
+                    return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns,
+                            info.st_ctime_ns, info.st_uid, info.st_mode)
+                before = signature()
+                authorization = parse(file_bytes(protocol.authorization_path(row['id']), 8192,
+                                                  self.legacy.root.stat().st_uid))
+                require(authorization['assignment_issue'] == item['assignment_issue'] and
+                        authorization['working_request_issue'] == item['working_request_issue'], 'Progress permit differs')
+                reports = []
+                for index, entry in enumerate(path.iterdir()):
+                    require(index < 128, 'Progress journal bound exceeded')
+                    if entry.name.startswith('report-'):
+                        raw = file_bytes(entry, 16384, owner['uid'])
+                        reports.append((parse(raw), sha(raw), entry, raw))
+                require(reports, 'No private report yet')
+                report, report_hash, _, _ = max(reports, key=lambda pair: instant(pair[0]['at']))
+                require(self.worker_state(catalogue, row, report_limit=128)[1:] == (owner, status) and
+                        all(file_bytes(entry, 16384, owner['uid']) == raw for _, _, entry, raw in reports) and before == signature()
+                        and report['status'] == status, 'Progress changed during read')
+                from coordination.github_assignments import stamp
+                stamp(report['at'])
+                require(progress_epoch_matches(epoch), 'Progress dependency changed during read')
+                records.append((dict(item, status=status, report_at=report['at'], report_sha256=report_hash), epoch))
+            except (ValueError, OSError, KeyError, TypeError):
+                continue  # Missing private proof never changes the permanent active reservation.
+        catalogue.check_generation()
+        require(file_bytes(authority, 4096, self.legacy.root.stat().st_uid) == authority_raw,
+                'Progress authority changed during read')
+        result = dict(schema=SCHEMA, records=[record for record, epoch in records
+                                            if progress_epoch_matches(epoch)])
+        require(len(json.dumps(result, indent=2).encode()) + 1 <= MAX_JSON_BYTES, 'Progress response bound')
+        return result
 
     def report(self, batch_id, person, status, note):
         if not batch_id.startswith('unique-'):
@@ -192,6 +283,8 @@ def parser():
     claim.add_argument('--proof-sha256', required=True)
     for name in ('show', 'read-batch'):
         commands.add_parser(name).add_argument('batch')
+    progress = commands.add_parser('progress')
+    progress.add_argument('--requests-json', required=True)
     report = commands.add_parser('report')
     report.add_argument('batch')
     report.add_argument('--person', choices=PEOPLE, required=True)
@@ -210,6 +303,9 @@ def dispatch(args):
         return manager.authorize(args.authorization)
     if args.command == 'claim':
         return manager.claim(args.proof_sha256)
+    if args.command == 'progress':
+        require(len(args.requests_json.encode()) <= 16384, 'Progress request bound')
+        return manager.progress(parse(args.requests_json))
     if args.command == 'report':
         return manager.report(args.batch, args.person, args.status, args.note)
     if args.command == 'read-batch':
