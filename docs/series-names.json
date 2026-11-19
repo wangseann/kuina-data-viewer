@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T20:45:27.317620+00:00",
+  "assessment_utc": "2026-11-19T22:43:00.742212+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "52dfccc9f853fae29ec71b396db17f719d9d240ef769859675b6d6a3eb9d467b",
-  "counts_sha256": "45e07592490f7caebef31109b23a6b6d027156732d6f6d162256cd93388be288",
+  "catalogue_sha256": "93e0aeee995688d2f68589eee10fe6d3ede96c1d312191b4385619530abfa8bd",
+  "counts_sha256": "155d1df4a71bd6dae8732cd09c101342eee8429d729e927c2b88068313524d85",
   "schema": 1,
   "types": [
     {
@@ -63110,6 +63110,14 @@
           "variable": "close"
         },
         {
+          "id": "a0ba5ed18e20cb16eafdc579a8b15609cc19e1c03cd0e2754a3b6d448b793700",
+          "label": "ARB/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "a18e8cc82e0d094edbeb317ffd4f26990cd15b05fd21dde8697afd5460f97b51",
           "label": "ONDO/USD",
           "variable": "trade_count",
@@ -64068,14 +64076,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "volume"
-        },
-        {
-          "id": "a0ba5ed18e20cb16eafdc579a8b15609cc19e1c03cd0e2754a3b6d448b793700",
-          "label": "ARB/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 1
         },
         {
           "id": "a0ea9545f0aa05a9c45a3dcd19d4f730a9b5781d4dfba718bbe402557f459f92",
