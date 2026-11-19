@@ -87,6 +87,18 @@ class Synchronizer:
             summary = parse(self.read_asset('docs/unique-summary.json', 64 * 1024))
             tasks = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))
             unique_dashboard.validate(summary, tasks)
+            previous_raw = self.git('show', 'origin/main:docs/unique-summary.json')
+            previous_tasks_raw = self.git('show', 'origin/main:docs/unique-tasks.json')
+            require(len(previous_raw.encode()) <= 64 * 1024 and
+                    len(previous_tasks_raw.encode()) <= 8 * 1024 * 1024,
+                    'Published assignment metadata exceeds bounds')
+            previous_summary, previous_tasks = parse(previous_raw), parse(previous_tasks_raw)
+            unique_dashboard.validate(previous_summary, previous_tasks)
+            unique_dashboard.require_current_eligibility(previous_summary, summary)
+            require(stamp(summary['generated_at']) >= stamp(previous_summary['generated_at']),
+                    'Older pending grouping summary cannot publish')
+            require(stamp(tasks['generated_at']) >= stamp(previous_tasks['generated_at']),
+                    'Older pending assignment snapshot cannot publish')
             html = self.read_asset('docs/unique.html', 16 * 1024 * 1024)
             payloads = re.findall(r'<script id="unique-data" type="application/json">(.*?)</script>',
                                   html.decode(), flags=re.DOTALL)

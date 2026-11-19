@@ -116,6 +116,21 @@ class GitSyncTests(unittest.TestCase):
         self.assertEqual(saved['batches'][0]['assignee'], 'seann')
         self.assertEqual(json.loads(self.run_git(self.bare, 'show', 'main:coordination/assignments.json')), self.ledger)
 
+    def test_pending_metadata_commit_cannot_replace_newer_remote_eligibility(self):
+        from tests.test_unique_eligibility_summary import assessed_summary
+        self.summary, _ = assessed_summary()
+        self.assertEqual(self.publish()['status'], 'PUBLISHED')
+        for incoming in (assessed_summary('2026-11-19T18:00:00Z')[0], fixtures()[0]):
+            for name, raw in render_assets(incoming, self.catalogue, self.ledger, self.at).items():
+                (self.a / name).write_bytes(raw)
+            self.commit(self.a, 'Owned fixture: stale pending metadata')
+            self.summary = incoming
+            with self.assertRaises(ValueError):
+                self.publish()
+            remote = json.loads(self.run_git(self.bare, 'show', 'main:docs/unique-summary.json'))
+            self.assertEqual(remote['eligibility']['assessed_at'], '2026-11-19T19:00:00Z')
+            self.run_git(self.a, 'reset', '--hard', 'origin/main')
+
     def test_local_metadata_ahead_and_remote_ledger_rebase_preserves_both(self):
         for name,raw in render_assets(self.summary,self.catalogue,self.ledger,'2026-11-19T00:01:00Z').items():
             (self.a/name).write_bytes(raw)
