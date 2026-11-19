@@ -30,16 +30,6 @@ function commandButton(text,command) {
   button.addEventListener('click',()=>copyCommand(button,command));
   return button;
 }
-function requestLink(task,person,action) {
-  const link = node('a',action==='assign'?'Claim via GitHub':'Release via GitHub');
-  link.href = T.requestURL(task,person,action);
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.addEventListener('click',()=>{
-    byId('request-note').textContent='GitHub opened for '+task.id+'. Submit the issue to send your request. It stays pending until the Mac broker confirms it and the refreshed board shows the change. Your GitHub issue records the result.';
-  });
-  return link;
-}
 function renderActions(task,person,manual) {
   const actions = node('td');
   if (!manual) {
@@ -47,14 +37,11 @@ function renderActions(task,person,manual) {
     return actions;
   }
   if (task.status === 'available') {
-    if (person) actions.append(requestLink(task,person,'assign'));
-    else actions.append(node('span','Choose “I am” above to claim','small'));
+    const link=node('a','Choose a unique batch');link.href='unique.html';actions.append(link);
   } else if (task.status === 'assigned' && task.assignee === person) {
-    actions.append(commandButton('Copy agent claim','python3 "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" claim '+task.id+' --person '+person));
     if (Number.isSafeInteger(task.assignment_issue) && task.assignment_issue > 0) {
-      const release = node('p');
-      release.append(requestLink(task,person,'release'));
-      actions.append(release);
+      actions.append(commandButton('Prepare original assignment','python3 -B "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" prepare-work '+task.id+' --person '+person+' --assignment-issue '+task.assignment_issue));
+      actions.append(node('small','Submit the returned GitHub start request. Wait for confirmation before your agent claims its preparation hash.'));
     }
   } else if (task.assignee === person) {
     actions.append(commandButton('Copy agent status','python3 "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" show '+task.id));
@@ -77,12 +64,12 @@ function render() {
   const identity = byId('identity').value;
   const people = new Map(snapshot.people.map(person=>[person.id,person]));
   byId('batch-note').textContent = manual
-    ? T.availableRecords(snapshot).toLocaleString()+' review records are available. Choose a batch of at most 500 catalogue records; your agent starts only after its Native claim succeeds.'
+    ? 'This board preserves existing assignments. Choose new repair work from the unique batches page; these older unassigned review records cannot be claimed here.'
     : 'Historical assignments are shown read only. Self-service links appear after the private queue migration.';
   byId('identity').disabled = !manual;
   byId('my-work').disabled = !manual || !identity;
   byId('available-work').disabled = !manual;
-  byId('poll-command').textContent='python3 "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" list --person '+(identity||'YOUR_PERSON_ID');
+  byId('poll-command').textContent='gh api repos/wangseann/kuina-data-viewer/contents/coordination/assignments.json -H "Accept: application/vnd.github.raw+json"';
   const maxRecords = Math.max(1,...snapshot.people.map(person=>T.remaining(person,snapshot)));
   byId('people').replaceChildren();
   for (const person of snapshot.people) {

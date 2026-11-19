@@ -78,12 +78,12 @@ as data, without executing the selected HTML or trusting its old pass labels.
 `docs/tasks.html` shows available batches, confirmed assignees and filterable
 progress. Choose your name explicitly, select an available batch and submit its
 prepared GitHub claim issue. The Mac broker validates the request, atomically
-reserves the task in the private Native hub and records its result on GitHub.
+saves the reservation and its issue receipt in the GitHub assignment ledger before confirming it.
 Requests stay pending until confirmed; selecting a name or opening a link does
 not reserve work. There are no dataset leads, effort weights or automatic
 assignments in self-service mode.
 
-The participant's own agent then creates the actual persistent worker claim using
+The participant's own agent prepares a private UID-bound token and submits the returned GitHub start request. After GitHub saves the protected working reservation, the agent creates the actual persistent worker claim using
 the private shared-filesystem CLI in [coordination/README.md](coordination/README.md)
 and the hub's `AGENT_TASKS.md`. A reservation is distinct from a worker claim.
 Only your own unstarted assignment offers a release request, bound to its current
@@ -92,7 +92,7 @@ No participant's agent is installed or run by the website. Source/window overlap
 checks prevent duplicate repairs. Completion waits for coordinator verification;
 collection repairs require a fresh matching eligibility audit.
 
-Review batches contain at most 500 saved catalogue records. Private selectors pin
+New unique batches contain at most 100 repair subjects, retaining each measured field and source version. Original review batches contain at most 500 saved catalogue records. Private selectors pin
 the source manifest, page hash and disjoint row ranges. Already-eligible records
 in mixed pages are skipped by `read-batch`. Shared findings can be reused across
 batches. Source groups with unknown series counts remain separate inventory work.

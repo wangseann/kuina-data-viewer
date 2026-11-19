@@ -101,7 +101,7 @@ CORE_SCRIPT = r"""const KuinaUnique = (() => {
     if (typeof batch.id!=='string' || batch.id.length<1 || batch.id.length>96 || /[^A-Za-z0-9_-]/.test(batch.id)) return null;
     const confirmed=Number.isSafeInteger(batch.assignment_issue) && batch.assignment_issue>0;
     const prefix='python3 -B "$KUINA_TASK_MANAGER" --hub "$KUINA_TASK_HUB" ';
-    if (batch.status==='assigned' && confirmed) return prefix+"claim '"+batch.id+"' --person '"+person+"'";
+    if (batch.status==='assigned' && confirmed) return prefix+"prepare-work '"+batch.id+"' --person '"+person+"' --assignment-issue "+batch.assignment_issue;
     if (['active','blocked','awaiting_verification'].includes(batch.status) && (batch.assignment_issue===null || confirmed)) return prefix+"show '"+batch.id+"'";
     return null;
   }
@@ -161,7 +161,7 @@ SCRIPT = r"""
         const help=node('small'),pre=node('pre'),code=node('code');pre.hidden=true;pre.append(code);
         button.addEventListener('click',()=>{
           code.textContent=command;pre.hidden=false;
-          help.textContent=batch.status==='assigned'?'Use your agent’s configured private environment. If the claim fails, stop before starting work.':'Inspect the current private state before continuing. This command does not create another worker claim.';
+          help.textContent=batch.status==='assigned'?'Run this in your agent’s private environment. Submit the returned GitHub start request, wait for confirmation, then let the same agent claim its preparation hash.':'Inspect the current private state before continuing. This command does not create another worker claim.';
         });action.append(button,help,pre);
       }
       else if(pending.has(batch.id))action.append(node('span','Request opened · pending sync'));
@@ -207,14 +207,14 @@ def build(summary,tasks,output_dir):
 <div class="scroll"><table><thead><tr><th>Category</th><th>Stored numeric series</th><th>Repair subjects</th><th>Field groups</th><th>Subjects with eligible data<br><small>At least one numeric field passes</small></th><th>Unresolved identities</th></tr></thead><tbody id="counts"></tbody></table></div>
 <p class="small">Reviewed input manifest <code>MANIFEST</code></p></section>
 <section class="panel"><div class="heading"><h2>Choose repair work</h2><button id="refresh" type="button">Refresh confirmed snapshot</button></div>
-<p>All eleven participants choose their own work. Select your name and open a claim for an available, unblocked batch. Submit the prepared GitHub issue. The live queue checks existing reservations; confirmation appears on the issue and in a refreshed snapshot. Requests do not start an agent.</p>
+<p>All eleven participants choose their own work. Select your name and open a claim for an available, unblocked batch. Submit the prepared GitHub issue. GitHub permanently records the confirmed assignment before confirmation appears on the issue and in a refreshed snapshot. Requests do not start an agent.</p>
 <p>“Available” means unassigned. A batch named <code>statistical</code> contains reports whose native recording interval is too coarse; downloading the same report again cannot make it eligible. Inspect the private repair brief before choosing a batch.</p>
 <div class="controls"><label>I am<select id="identity"><option value="">Choose your name</option></select></label><label>Category<select id="category"><option value="all">All categories</option></select></label><label>Review kind<select id="review-kind"><option value="all">All</option><option value="market">Market prices</option><option value="statistical">Coarse statistical reports</option><option value="identity">Identity review</option><option value="context">Other context</option><option value="unknown">Unclassified</option></select></label><label>Status<select id="status"><option value="all">All statuses</option></select></label><label>Assignee<select id="person"><option value="all">Everyone</option></select></label></div>
 <p class="small">Review kind describes the assignment’s subject. Eligibility comes from a separate scientific audit.</p>
 <p id="request-note" role="status" aria-live="polite">Selecting your name does not reserve work. A request stays pending until the confirmed snapshot changes.</p>
 <div class="heading"><span id="visible-count"></span><div class="pager"><button id="previous" type="button">← Previous</button><span id="page"></span><button id="next" type="button">Next →</button></div></div>
 <div class="scroll"><table><thead><tr><th>Batch / category</th><th>Work targets</th><th>Numeric series</th><th>Status</th><th>Assignee</th><th>Blockers</th><th>Action</th></tr></thead><tbody id="queue"></tbody></table></div>
-<p class="small">50 batches per page. Blockers and legacy reservations prevent claims. Verified work is a task result; data eligibility requires a matching scientific audit. Follow the <a href="tasks.html">agent instructions</a> only after a confirmed assignment.</p></section>
+<p class="small">50 batches per page. Blockers and legacy reservations prevent claims. GitHub records working reservations before agents start; private work and reports stay in Kuina. Verified work is a task result; data eligibility requires a matching scientific audit. Follow the <a href="tasks.html">agent instructions</a> only after a confirmed assignment.</p></section>
 </main><script id="unique-data" type="application/json">DATA</script><script>SCRIPT</script></body></html>
 '''
     replacements=dict(POLICY=policy,STYLE=STYLE,GROUPING=status,SUMMARY_TIME=summary['generated_at'],TASK_TIME=tasks['generated_at'],MANIFEST=summary['input_manifest_sha256'],DATA=raw,SCRIPT=script)
