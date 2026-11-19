@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-18T23:49:36.547566+00:00",
+  "assessment_utc": "2026-11-19T01:21:22.938936+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "87f3707451e440c28cb9e3b020f81eb12bfc23eba27def7d1fbef69c441c3d87",
-  "counts_sha256": "62ad7e946305db80a3f421a9ec1fa1e1b0c800670daf2be65e56c800b57af5b5",
+  "catalogue_sha256": "2f675194542a2ec41b350af0afe172a88fc1d2b4856be566b011a56d0020a1d5",
+  "counts_sha256": "6cdde126506d166084fb39117d3e017284b1869f31260b22d200f4cbf05a39e7",
   "schema": 1,
   "types": [
     {
@@ -62734,6 +62734,14 @@
           "variable": "quote_volume"
         },
         {
+          "id": "f82b5201e53d867ebd4b0e9fe950d13fe58123b437f2339309400f5d31ccc82a",
+          "label": "PEPE/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "f87bd09defebc23b77d2e551ec3633a93e18871e604dae6fd109a3ca1b3527b0",
           "label": "BNBUSDT",
           "mask": 0,
@@ -67500,14 +67508,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "close"
-        },
-        {
-          "id": "f82b5201e53d867ebd4b0e9fe950d13fe58123b437f2339309400f5d31ccc82a",
-          "label": "PEPE/USD",
-          "variable": "volume",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
         },
         {
           "id": "f8d3a386b3e1b777ad4ad7ee854e9145c67632489f2f52e02da5295c9021eae5",
