@@ -6,6 +6,7 @@ claim, writes GitHub, or interprets private report text as public metadata.
 import copy
 import gzip
 import json
+import stat
 
 from coordination.github_assignments import record, receipt, stamp, validate_ledger, SCHEMA
 from coordination.task_manager import Hub, digest, identifier, require
@@ -118,6 +119,15 @@ def _reservation(task, hub, epoch):
     return current, expected
 
 
+def _empty_marker(path, owner, epoch):
+    """Preserve the five observed zero-byte Native namespace placeholders."""
+    path = epoch.watch(path)
+    info = path.stat()
+    require(path.name == '.keep' and stat.S_ISREG(info.st_mode) and info.st_uid == owner and
+            stat.S_IMODE(info.st_mode) == 0o644 and info.st_size == 0, 'Unknown Native namespace marker')
+    require(epoch.read(path, owner, 0) == b'', 'Native namespace marker changed')
+
+
 def export(catalogue):
     """Return a bounded public envelope; requires explicit prior migration fences."""
     hub = catalogue.legacy
@@ -164,8 +174,8 @@ def export(catalogue):
     candidates = set(referenced)
     for name in ('claims', 'work-claims', 'assignments', 'verified', 'task-locks'):
         for path in epoch.directory(hub.root / name):
-            if name == 'assignments' and path.name == '.keep':
-                require(epoch.read(path, hub.root.stat().st_uid) == b'', 'Unknown assignment marker')
+            if path.name == '.keep':
+                _empty_marker(path, hub.root.stat().st_uid, epoch)
                 continue
             if name in ('assignments', 'verified'):
                 require(path.name.endswith('.json') and path.is_file(), 'Unknown Native metadata entry')
