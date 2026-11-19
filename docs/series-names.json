@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T15:25:53.214947+00:00",
+  "assessment_utc": "2026-11-19T17:12:12.907723+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "0c37825995e76bd6d53f8aeda08a4241c9bd4d8b5f028ccd2cea4248f2e5fee4",
-  "counts_sha256": "8b01bdfbe204d94a8c376ce589a25ea771a1f0d6d91bfd03dc5bb4e3f5463af2",
+  "catalogue_sha256": "3cc66df95197a2b9006b631dafa42f5c96d001144f6ce066d5c841a05fa6ec55",
+  "counts_sha256": "4e86d63376ef48f6dc842c36ef3e5f31d42a31bfbe994a4b73453f92220f477a",
   "schema": 1,
   "types": [
     {
@@ -290847,6 +290847,14 @@
       "id": "weather",
       "series": [
         {
+          "id": "b38584f8a4fd6101273d920394385f8da64a2ee0a7c1568b2594e9725fb6d745",
+          "label": "Kaub \u00b7 Rhine water level (W, cm relative to gauge zero)",
+          "variable": "value",
+          "source": "GDWS PEGELONLINE",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "00016cd5ee91aeafde51f02f70e2e52ae9cce7ecd3f4c54cdf63aebc2f613755",
           "label": "Atlanta \u00b7 lat=33.75, lon=-84.4, group=US",
           "mask": 10,
@@ -311709,14 +311717,6 @@
           "native_seconds": 86400,
           "source": "NASA POWER",
           "variable": "ALLSKY_SFC_SW_DWN"
-        },
-        {
-          "id": "b38584f8a4fd6101273d920394385f8da64a2ee0a7c1568b2594e9725fb6d745",
-          "label": "2026-10-07",
-          "mask": 12,
-          "native_seconds": null,
-          "source": "Rivers",
-          "variable": "value"
         },
         {
           "id": "01fee033928bcddc9841850243f41bbe5297fe9ebf7ea02b546c9b09ae7fa890",

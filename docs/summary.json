@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-19T15:25:53.214947+00:00",
+  "assessment_utc": "2026-11-19T17:12:12.907723+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -862,24 +862,20 @@
     },
     {
       "id": "weather",
-      "confirmed_series": 0,
-      "confirmed_units": 0,
-      "excluded_series": 2839,
-      "excluded_measured": 2839,
+      "confirmed_series": 1,
+      "confirmed_units": 1,
+      "excluded_series": 2838,
+      "excluded_measured": 2838,
       "excluded_missing_evidence": 0,
       "source_failures": 31,
       "issues": [
         {
           "id": "availability_unverified",
-          "count": 2839
-        },
-        {
-          "id": "cadence_unknown",
-          "count": 1
+          "count": 2838
         },
         {
           "id": "calendar_unverified",
-          "count": 281
+          "count": 280
         },
         {
           "id": "coarse_resolution",
@@ -887,7 +883,7 @@
         },
         {
           "id": "completeness_unverified",
-          "count": 281
+          "count": 280
         },
         {
           "id": "context_gaps",
@@ -899,7 +895,7 @@
         },
         {
           "id": "short_history",
-          "count": 231
+          "count": 230
         }
       ],
       "failure_masks": [
@@ -910,10 +906,6 @@
         {
           "mask": 11,
           "count": 279
-        },
-        {
-          "mask": 12,
-          "count": 1
         },
         {
           "mask": 14,
