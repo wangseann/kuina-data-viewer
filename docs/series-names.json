@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T07:39:58.387702+00:00",
+  "assessment_utc": "2026-11-19T08:17:43.790942+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "f4efec67d27adf4eb4ef0966c0f825c051d52a67c19642c1e5782a618a54a0ca",
-  "counts_sha256": "31f27b2e69057dbdf75888b3be9cbf6d81e638a47dc8d2615f5513e643d49eec",
+  "catalogue_sha256": "c19a35df3118a9aba1966dbc8bdd66e29826d3c37b211d7321b9cb989788d660",
+  "counts_sha256": "a70494cefca955391dfb1fa62838b3f63bde5efa66766fa22a68a76c11fa63e6",
   "schema": 1,
   "types": [
     {
@@ -62262,6 +62262,14 @@
           "variable": "taker_buy_quote"
         },
         {
+          "id": "3ff49529a90c7cac5b26f4c79644e80387a67c1a257ca81745b9aafa6820acb4",
+          "label": "BONK/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "4275656b59c5e0e8b2d43da93ea7b405dbba9af6c8bac75a31707c8f43f53654",
           "label": "ETHUSDT",
           "mask": 0,
@@ -63092,14 +63100,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "volume"
-        },
-        {
-          "id": "3ff49529a90c7cac5b26f4c79644e80387a67c1a257ca81745b9aafa6820acb4",
-          "label": "BONK/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 1
         },
         {
           "id": "4072527847f750bbf9dad98dd0d28b98aff9c0c99b25d9055f709ca91db5c1f3",
