@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T01:21:22.938936+00:00",
+  "assessment_utc": "2026-11-19T01:56:12.459137+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "2f675194542a2ec41b350af0afe172a88fc1d2b4856be566b011a56d0020a1d5",
-  "counts_sha256": "6cdde126506d166084fb39117d3e017284b1869f31260b22d200f4cbf05a39e7",
+  "catalogue_sha256": "5113de20032de54bc48ea84376b376e2f5ff2fa982a3ddb9da3fab0ee2d4266b",
+  "counts_sha256": "7ca98d7a683f6866c335b33ace47e7c83db4fd0636e00ba369aefd6b6705e753",
   "schema": 1,
   "types": [
     {
@@ -62454,6 +62454,14 @@
           "variable": "close"
         },
         {
+          "id": "a18e8cc82e0d094edbeb317ffd4f26990cd15b05fd21dde8697afd5460f97b51",
+          "label": "ONDO/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "a843d7e5e59b6f313281c599d36c95ff5b144713d724a25cf9e6da1547fd4265",
           "label": "BNBUSDT",
           "mask": 0,
@@ -62724,6 +62732,14 @@
           "native_seconds": 60,
           "source": "Binance",
           "variable": "taker_buy_quote"
+        },
+        {
+          "id": "f6bb6d7183d887374022669c9731ab7c2a13d004f24df535f449873bfb5b7d80",
+          "label": "ONDO/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
         },
         {
           "id": "f71240d8d1c8bd5ad4efab9570d461a1ed3d69c16e8c390f0202d290774e7b9c",
@@ -63411,14 +63427,6 @@
           "variable": "low",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 1
-        },
-        {
-          "id": "a18e8cc82e0d094edbeb317ffd4f26990cd15b05fd21dde8697afd5460f97b51",
-          "label": "ONDO/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
           "mask": 1
         },
         {
@@ -67481,14 +67489,6 @@
           "id": "f69cd59a60ccf24af88768e2cfd1c2f043f2b92090c06a805715028ab6bd0002",
           "label": "POL/USD",
           "variable": "open",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
-        },
-        {
-          "id": "f6bb6d7183d887374022669c9731ab7c2a13d004f24df535f449873bfb5b7d80",
-          "label": "ONDO/USD",
-          "variable": "volume",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 9
