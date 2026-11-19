@@ -123,6 +123,19 @@ class GithubClaimTests(unittest.TestCase):
             process_issue(issue(), github, native, 'wangseann')
         self.assertEqual(github.results, [])
 
+    def test_github_confirmation_names_the_permanent_record(self):
+        native, github = Native(), Github()
+        native.requires_receipt = True
+        original = native.assign
+        def assign(*args):
+            original(*args)
+            native.receipt = dict(task_id='batch-synthetic-000001', request_issue=7,
+                                  action='assign', person='seann', status='confirmed')
+        native.assign = assign
+        result = process_issue(issue(), github, native, 'wangseann')
+        self.assertIn('GitHub', result['message'])
+        self.assertNotIn('private assignment', result['message'])
+
     def test_github_authority_does_not_confirm_same_name_without_a_receipt(self):
         native, github = Native(), Github()
         native.requires_receipt = True
