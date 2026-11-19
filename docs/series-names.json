@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T05:02:31.751406+00:00",
+  "assessment_utc": "2026-11-19T06:55:32.438527+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "5053aff65a092a36e5d551ebd0b043e12d147ef820d3bd5f189ec5ddcf9fea24",
-  "counts_sha256": "5e7f2616e403920f949c865a1114102f8c9cc1f5fb105c9bd0119250b1268133",
+  "catalogue_sha256": "1f99b40c5ff61bade73be14febb9dd0ea32109e5fd713e053b49935baefe8eb6",
+  "counts_sha256": "e55a2a0b6cd50cbddee1d0bd31e034f2434fd39e8f556ef8d60a0da82f6d6458",
   "schema": 1,
   "types": [
     {
@@ -62190,6 +62190,14 @@
           "mask": 0
         },
         {
+          "id": "173b0aed482ad1d68a88658985cde5245bb359e4c954a9f89190cdf8d0ecca7d",
+          "label": "RENDER/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "1868aedae251478e01c08d07490820c665bca4702dba3838e97597025af84cc9",
           "label": "XRPUSDT",
           "mask": 0,
@@ -62774,6 +62782,14 @@
           "variable": "trades"
         },
         {
+          "id": "f9292ad9ed3d0a0955e74daee910cff9957c3b5aab81c563a17f006b89f0c6f7",
+          "label": "RENDER/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "fb02daeead3b9981d4288747a90e6484b2a19b2cc4459816a98e1e9b8f7ae52a",
           "label": "ADA/USD",
           "variable": "volume",
@@ -62867,14 +62883,6 @@
           "variable": "close",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 1
-        },
-        {
-          "id": "173b0aed482ad1d68a88658985cde5245bb359e4c954a9f89190cdf8d0ecca7d",
-          "label": "RENDER/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
           "mask": 1
         },
         {
@@ -67524,14 +67532,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "close"
-        },
-        {
-          "id": "f9292ad9ed3d0a0955e74daee910cff9957c3b5aab81c563a17f006b89f0c6f7",
-          "label": "RENDER/USD",
-          "variable": "volume",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
         },
         {
           "id": "f93c0163824fc52856f8429d993a27439795149f5dd47f99b6ee323ea5342895",
