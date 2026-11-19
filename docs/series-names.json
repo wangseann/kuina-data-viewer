@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T08:17:43.790942+00:00",
+  "assessment_utc": "2026-11-19T09:49:45.015943+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "c19a35df3118a9aba1966dbc8bdd66e29826d3c37b211d7321b9cb989788d660",
-  "counts_sha256": "a70494cefca955391dfb1fa62838b3f63bde5efa66766fa22a68a76c11fa63e6",
+  "catalogue_sha256": "f5662ac4fa438afc17abf3299a63b57ba19d8174e5ac4adb2183bf267c80c28e",
+  "counts_sha256": "3282e29e1c26c794e61c55e4ef71f3827baa910e6646b5582d5673464afe0a65",
   "schema": 1,
   "types": [
     {
@@ -62230,6 +62230,14 @@
           "variable": "taker_buy_base"
         },
         {
+          "id": "23fc720cc5057e3238f2ea20f4693bd775397dc9bc9214d8f1a8a0784d7bb336",
+          "label": "POL/USD",
+          "variable": "volume",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "29d1d88a76f1ad4583a224c88624e8be2800dc68251b2163c93b765d502e3b50",
           "label": "PEPE/USD",
           "variable": "trade_count",
@@ -62572,6 +62580,14 @@
           "native_seconds": 60,
           "source": "Binance",
           "variable": "high"
+        },
+        {
+          "id": "c376020b24476983b50168ae10c5f1cfb315d2afbd33d2b6a503e87eb0838248",
+          "label": "POL/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
         },
         {
           "id": "c4dbbfe55d27ee2c91681bc39a74e3df796c9e2bcd9d365d11cca5bc34d18a67",
@@ -63558,14 +63574,6 @@
           "variable": "trade_count"
         },
         {
-          "id": "c376020b24476983b50168ae10c5f1cfb315d2afbd33d2b6a503e87eb0838248",
-          "label": "POL/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 1
-        },
-        {
           "id": "c4b605585ba8b09f4d0500f024546dd2043435379193f26d5865a48a25de6743",
           "label": "XLM/GBP",
           "variable": "close",
@@ -64308,14 +64316,6 @@
           "native_seconds": 900,
           "source": "Alpaca",
           "variable": "vwap"
-        },
-        {
-          "id": "23fc720cc5057e3238f2ea20f4693bd775397dc9bc9214d8f1a8a0784d7bb336",
-          "label": "POL/USD",
-          "variable": "volume",
-          "source": "Alpaca",
-          "native_seconds": 900,
-          "mask": 9
         },
         {
           "id": "23fce2bf68388881ea6de1aaa898fa631417d5118fe1f605aeb58e1102099354",
