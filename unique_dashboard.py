@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 
 SUMMARY_SCHEMA = 'kuina-unique-public-summary-v1'
+ELIGIBILITY_SUMMARY_SCHEMA = 'kuina-unique-public-summary-v2'
 TASK_SCHEMA = 'kuina-unique-public-tasks-v1'
 PEOPLE = dict(juan='Juan',emily='Emily',brian='Brian',amir='Amir',seann='Seann',taha='Taha',saswato='Saswato',th='TH',jion='Jion',vitoria='Vitoria',olga='Olga')
 CATEGORIES = dict(stocks='Stocks / ETFs',crypto='Crypto',commodities='Commodities',currencies='Currencies',derivatives='Derivatives',economics='Economics',gdelt='GDELT / news',sentiment='Tweets / Sentiments',emotions='Emotions',trade='Trade',weather='Weather / rivers',reddit='Reddit',**{'prediction-markets':'Prediction markets','other-markets':'Indices / bonds / other'})
@@ -37,10 +38,25 @@ def timestamp(value):
 
 
 def validate(summary,tasks):
-    keys(summary,('schema','generated_at','input_manifest_sha256','grouping_status','categories'))
+    summary_fields = ('schema','generated_at','input_manifest_sha256','grouping_status','categories')
+    require(type(summary) is dict, 'Unique summary must be an object')
+    if summary.get('schema') == ELIGIBILITY_SUMMARY_SCHEMA:
+        keys(summary, (*summary_fields, 'eligibility'))
+        evidence = summary['eligibility']
+        keys(evidence, ('assessed_at', 'quality_manifest_sha256', 'proof_sha256'))
+        timestamp(evidence['assessed_at'])
+        for field in ('quality_manifest_sha256', 'proof_sha256'):
+            require(type(evidence[field]) is str and re.fullmatch('[0-9a-f]{64}', evidence[field]) is not None,
+                    'Eligibility evidence SHA256 required')
+    else:
+        keys(summary, summary_fields)
     keys(tasks,('schema','generated_at','people','batches'))
-    require(summary['schema']==SUMMARY_SCHEMA and tasks['schema']==TASK_SCHEMA,'Unsupported unique dashboard metadata')
+    require(summary['schema'] in (SUMMARY_SCHEMA, ELIGIBILITY_SUMMARY_SCHEMA) and tasks['schema']==TASK_SCHEMA,'Unsupported unique dashboard metadata')
     timestamp(summary['generated_at']);timestamp(tasks['generated_at'])
+    if summary['schema'] == ELIGIBILITY_SUMMARY_SCHEMA:
+        require(datetime.fromisoformat(summary['eligibility']['assessed_at'].replace('Z', '+00:00')) >=
+                datetime.fromisoformat(summary['generated_at'].replace('Z', '+00:00')),
+                'Eligibility assessment cannot predate the grouping snapshot')
     require(type(summary['input_manifest_sha256']) is str and re.fullmatch('[0-9a-f]{64}',summary['input_manifest_sha256']) is not None,'Manifest SHA256 required')
     require(summary['grouping_status'] in ('VERIFIED_WITHIN_DATASETS','VERIFIED_CROSS_SOURCE'),'Reviewed verified grouping status required')
     require(type(summary['categories']) is list and 0<len(summary['categories'])<=len(CATEGORIES),'Invalid category list')
@@ -80,6 +96,16 @@ def validate(summary,tasks):
         require(targets<=categories[category]['unique_work_targets'] and series<=categories[category]['stored_numeric_series'],'Batch scope exceeds reviewed category counts')
     require(len(json.dumps(summary,allow_nan=False).encode())<=64*1024 and len(json.dumps(tasks,allow_nan=False).encode())<=8*1024**2,'Public metadata byte bound exceeded')
     return True
+
+
+def require_current_eligibility(previous, incoming):
+    """Reject stale eligibility metadata after both summaries have been validated."""
+    if previous['schema'] == ELIGIBILITY_SUMMARY_SCHEMA:
+        require(incoming['schema'] == ELIGIBILITY_SUMMARY_SCHEMA,
+                'Current eligibility counts cannot revert to a saved grouping snapshot')
+        old = datetime.fromisoformat(previous['eligibility']['assessed_at'].replace('Z', '+00:00'))
+        new = datetime.fromisoformat(incoming['eligibility']['assessed_at'].replace('Z', '+00:00'))
+        require(new >= old, 'Older eligibility assessment cannot replace current counts')
 
 
 CORE_SCRIPT = r"""const KuinaUnique = (() => {
@@ -192,6 +218,11 @@ def build(summary,tasks,output_dir):
     def csp_hash(text):return "'sha256-"+base64.b64encode(hashlib.sha256(text.encode()).digest()).decode()+"'"
     policy="default-src 'none'; script-src "+csp_hash(script)+' '+csp_hash(raw)+"; style-src "+csp_hash(STYLE)+"; base-uri 'none'; form-action 'none'"
     status='Verified within datasets' if summary['grouping_status']=='VERIFIED_WITHIN_DATASETS' else 'Verified cross-source grouping'
+    eligibility_note = 'Eligible subject counts use the saved grouping snapshot; see Quality counts for current numeric-series totals.'
+    if summary['schema'] == ELIGIBILITY_SUMMARY_SCHEMA:
+        evidence = summary['eligibility']
+        eligibility_note = ('Eligibility counts checked ' + evidence['assessed_at'] +
+                            '. Quality catalogue <code>' + evidence['quality_manifest_sha256'] + '</code>.')
     html='''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="POLICY"><title>Kuina · Unique repair work</title><style>STYLE</style></head>
@@ -200,6 +231,7 @@ def build(summary,tasks,output_dir):
 <p>Sources, frequencies and measured fields remain separate representations. Removing duplicate work creates no new eligibility. One saved eligible field does not make a whole target eligible.</p>
 <div class="requirements">Native interval ≤900 seconds (15 minutes) · At least two years of actual history · No unexplained gaps</div>
 <p class="small">GROUPING · Summary generated SUMMARY_TIME · Task snapshot TASK_TIME. These publication timestamps are not new scientific audit dates.</p>
+<p class="small">ELIGIBILITY_NOTE</p>
 </header><section class="panel"><h2>Work targets and numeric series</h2>
 <p>A repair subject is an instrument, account, location or statistical subject. Field groups count different field labels within each subject. Models, sources and recording intervals remain separate versions; matching field labels do not prove that their values are equivalent. “Subjects with eligible data” counts subjects with at least one passing numeric field; other fields retain their saved results. Unresolved identities may still contain duplicates.</p>
 <p>Different countries, products, contracts and measured quantities remain separate. Annual or monthly statistics cannot meet a 15-minute requirement simply by downloading them again.</p>
@@ -217,7 +249,7 @@ def build(summary,tasks,output_dir):
 <p class="small">50 batches per page. Blockers and legacy reservations prevent claims. GitHub records working reservations before agents start; private work and reports stay in Kuina. Verified work is a task result; data eligibility requires a matching scientific audit. Follow the <a href="tasks.html">agent instructions</a> only after a confirmed assignment.</p></section>
 </main><script id="unique-data" type="application/json">DATA</script><script>SCRIPT</script></body></html>
 '''
-    replacements=dict(POLICY=policy,STYLE=STYLE,GROUPING=status,SUMMARY_TIME=summary['generated_at'],TASK_TIME=tasks['generated_at'],MANIFEST=summary['input_manifest_sha256'],DATA=raw,SCRIPT=script)
+    replacements=dict(POLICY=policy,STYLE=STYLE,GROUPING=status,SUMMARY_TIME=summary['generated_at'],TASK_TIME=tasks['generated_at'],MANIFEST=summary['input_manifest_sha256'],ELIGIBILITY_NOTE=eligibility_note,DATA=raw,SCRIPT=script)
     html=re.sub('|'.join(replacements),lambda match:replacements[match.group()],html)
     destination=Path(output_dir);destination.mkdir(parents=True,exist_ok=True)
     with (destination/'unique.html').open('x') as stream:stream.write(html)

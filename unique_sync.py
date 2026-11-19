@@ -27,6 +27,7 @@ def changed(previous_summary, previous_tasks, summary, tasks):
     """Publish real changes and a daily heartbeat; reject stale incoming metadata."""
     unique_dashboard.validate(previous_summary, previous_tasks)
     unique_dashboard.validate(summary, tasks)
+    unique_dashboard.require_current_eligibility(previous_summary, summary)
     timestamps = []
     for previous, incoming in ((previous_summary, summary), (previous_tasks, tasks)):
         old = datetime.fromisoformat(previous['generated_at'].replace('Z', '+00:00'))

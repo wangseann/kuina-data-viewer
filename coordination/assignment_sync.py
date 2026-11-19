@@ -202,6 +202,7 @@ class Synchronizer:
             saved = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))
             previous_summary = parse(self.read_asset('docs/unique-summary.json', 64 * 1024))
             unique_dashboard.validate(previous_summary, saved)
+            unique_dashboard.require_current_eligibility(previous_summary, summary)
             require(stamp(summary['generated_at']) >= stamp(previous_summary['generated_at']),
                     'Older grouping summary cannot replace current publication')
             require(stamp(generated_at) >= stamp(saved['generated_at']), 'Older assignment metadata cannot replace current publication')

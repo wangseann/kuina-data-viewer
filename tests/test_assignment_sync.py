@@ -103,6 +103,19 @@ class GitSyncTests(unittest.TestCase):
         self.assertEqual(self.run_git(self.a,'rev-parse','HEAD'),self.run_git(self.bare,'rev-parse','main'))
         self.assertEqual(json.loads(self.run_git(self.bare,'show','main:coordination/assignments.json')),self.ledger)
 
+    def test_current_eligibility_cannot_regress_while_assignments_are_preserved(self):
+        from tests.test_unique_eligibility_summary import assessed_summary
+        self.assign_remote()
+        self.summary, _ = assessed_summary()
+        self.assertEqual(self.publish()['status'], 'PUBLISHED')
+        for incoming in (assessed_summary('2026-11-19T18:00:00Z')[0], fixtures()[0]):
+            self.summary = incoming
+            with self.assertRaises(ValueError):
+                self.publish()
+        saved = json.loads((self.a / 'docs/unique-tasks.json').read_text())
+        self.assertEqual(saved['batches'][0]['assignee'], 'seann')
+        self.assertEqual(json.loads(self.run_git(self.bare, 'show', 'main:coordination/assignments.json')), self.ledger)
+
     def test_local_metadata_ahead_and_remote_ledger_rebase_preserves_both(self):
         for name,raw in render_assets(self.summary,self.catalogue,self.ledger,'2026-11-19T00:01:00Z').items():
             (self.a/name).write_bytes(raw)
