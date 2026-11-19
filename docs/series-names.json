@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-19T12:10:23.458204+00:00",
+  "assessment_utc": "2026-11-19T13:30:47.200001+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "229fbe69bd6d07456bd2d2926335381c9695955333a76fa340e7b66cbc34e41a",
-  "counts_sha256": "eeeec4bb19f15c743f92ea1f91dad9e8db4b2994619eae4655cc1593ccaf72c7",
+  "catalogue_sha256": "60cfd97670f77a4dea6b942e43727672c694dd705949acd27dc1aef523a6b323",
+  "counts_sha256": "fb918d1ca3fb7017fb76cda29237a459c44c7d906d4d96bd7e9a03a8e5de2943",
   "schema": 1,
   "types": [
     {
@@ -3404,6 +3404,14 @@
           "id": "1d550a31adf82abe639b1c5d1252791fe947d9404723b1bc80c5717505faa82d",
           "label": "HTGC",
           "variable": "high",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "1d550c8af2f93a4cb75f57d4ec4b91ca1926d0b215b720659c7752b0bc2a8dcf",
+          "label": "BDN",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
@@ -17265,6 +17273,14 @@
           "mask": 0
         },
         {
+          "id": "91aaea478bb4a20fcafe5dc39fda7b770b458055228b8cb4e80bf683d05012e0",
+          "label": "BBT",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "91af78a511c32d1565f1eefb4051909a3e515c0a9d290bd3f7ae1629907ede2c",
           "label": "MU",
           "variable": "close",
@@ -21292,6 +21308,14 @@
           "id": "b4efda22415a35215bab5924e7abac8a7b7624482a0082618b00be22b26d845d",
           "label": "EGO",
           "variable": "open",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "b50896460ae208b0a7476c7c054dbaba0e81d99d81ba94d77de4f808ab966bd1",
+          "label": "BB",
+          "variable": "trade_count",
           "source": "Alpaca",
           "native_seconds": 900,
           "mask": 0
