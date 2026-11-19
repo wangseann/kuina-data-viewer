@@ -93,7 +93,10 @@ def process_issue(issue, github, native, owner, remember=None):
         if previous['action'] != request['action'] or previous['person'] != person:
             result.update(status='rejected', message='This request number was already used for another action.')
         else:
-            result.update(status=previous['status'], message='This request was already processed. Check the current private assignment before working.')
+            message = 'This request was already processed. Check the current private assignment before working.'
+            if requires_receipt:
+                message = 'GitHub retains this request’s original receipt. Check its current assignment record before working.'
+            result.update(status=previous['status'], message=message)
         return finish(result)
     before = native.status(task_id)
     if request['action'] == 'assign':
@@ -111,7 +114,10 @@ def process_issue(issue, github, native, owner, remember=None):
                 pass  # Query the authoritative record instead of repeating the write.
             recorded = native.request_status(task_id, issue['number'])
             if recorded is not None and recorded['action'] == 'assign' and recorded['person'] == person:
-                result.update(status='confirmed', message='Reservation request confirmed. Check the current private assignment before working.')
+                message = 'Reservation request confirmed. Check the current private assignment before working.'
+                if requires_receipt:
+                    message = 'The confirmed reservation is saved in GitHub. Prepare a private work token before starting.'
+                result.update(status='confirmed', message=message)
                 return finish(result)
             after = native.status(task_id)
             if requires_receipt and after['assignee'] == person:
@@ -187,7 +193,10 @@ class GitHub:
             lines = [marker, '**'+result['status'].capitalize()+'**: '+result['message']]
             if 'task_id' in result:
                 lines.append('Batch: `'+result['task_id']+'` · Participant: '+result['person'])
-            lines.append('This closes the request, not the dataset repair. Verify your private queue assignment before starting work.')
+            if getattr(self, 'assignment_authority', 'native') == 'github':
+                lines.append('This closes the request, not the dataset repair. GitHub stores the assignment. Your agent must prepare private work and confirm its start before collecting data.')
+            else:
+                lines.append('This closes the request, not the dataset repair. Verify your private queue assignment before starting work.')
             self.api('repos/'+self.repo+'/issues/'+str(issue['number'])+'/comments', 'POST', dict(body='\n\n'.join(lines)))
         self.api('repos/'+self.repo+'/issues/'+str(issue['number']), 'PATCH',
                  dict(state='closed', state_reason='completed' if result['status'] != 'rejected' else 'not_planned'))
@@ -247,6 +256,7 @@ class Native:
 
 def poll(config, state=None, save_state=None):
     github = GitHub(config['repo'], config.get('gh', '/opt/homebrew/bin/gh'))
+    github.assignment_authority = config.get('assignment_authority', 'native')
     native = Native(config['host'], config['cli'], config['hub'])
     from coordination.assignment_config import make_backend
     native = make_backend(config, github, native)
