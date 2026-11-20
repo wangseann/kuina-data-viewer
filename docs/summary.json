@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "assessment_utc": "2026-11-19T23:32:56.279475+00:00",
+  "assessment_utc": "2026-11-20T00:46:20.188742+00:00",
   "requirements": {
     "max_native_seconds": 900,
     "min_history_years": 2
@@ -397,10 +397,10 @@
     },
     {
       "id": "derivatives",
-      "confirmed_series": 0,
-      "confirmed_units": 0,
-      "excluded_series": 869918,
-      "excluded_measured": 869918,
+      "confirmed_series": 2,
+      "confirmed_units": 1,
+      "excluded_series": 869916,
+      "excluded_measured": 869916,
       "excluded_missing_evidence": 0,
       "source_failures": 249,
       "issues": [
@@ -426,7 +426,7 @@
         },
         {
           "id": "hourly_gaps",
-          "count": 77
+          "count": 75
         },
         {
           "id": "inconsistent_ohlc",
@@ -438,7 +438,7 @@
         },
         {
           "id": "long_gaps",
-          "count": 77
+          "count": 75
         },
         {
           "id": "missing_months",
@@ -460,7 +460,7 @@
       "failure_masks": [
         {
           "mask": 1,
-          "count": 77
+          "count": 75
         },
         {
           "mask": 8,
