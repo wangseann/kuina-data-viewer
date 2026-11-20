@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-20T01:20:44.464777+00:00",
+  "assessment_utc": "2026-11-20T01:45:17.828631+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "b0288d83968a95b7a737e44d00751988c243ec9d9e61a3b0a4f1041021624e00",
-  "counts_sha256": "5148fa3a9a8f2eeef332d6899cb48c336f3d35a45fa49088df105b302b1c1ac2",
+  "catalogue_sha256": "4cc6ce7d7c052cfaacbd11dc25603e1107657f8863e66bad409357c9aa786fb2",
+  "counts_sha256": "adde26f1b8a19e4a11955784d42fc4b49ae17e8a9dffb0400d9f6f01816315c8",
   "schema": 1,
   "types": [
     {
@@ -130333,6 +130333,14 @@
       "id": "derivatives",
       "series": [
         {
+          "id": "0093925129a098e394f57bbd60ae57eab216f07a01fdd0e27ce42b2d6d38bca8",
+          "label": "ADM270115C00080000",
+          "variable": "volume",
+          "source": "Alpaca OPRA",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "69e0c7758d51cb64f4838becff154f29cb5db0e6e81483a9933e911a81f6848b",
           "label": "ADM270115C00060000",
           "variable": "trade_count",
@@ -130344,6 +130352,14 @@
           "id": "a58d2063b6213a7ad230a5bfd5edb64a10a0d9edb56809fad01b227aa7d67629",
           "label": "ADM270115C00060000",
           "variable": "volume",
+          "source": "Alpaca OPRA",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
+          "id": "c7f92fede477815473744f807c42663a6e19fc02bc72fbf3a91f217be3e29b8f",
+          "label": "ADM270115C00080000",
+          "variable": "trade_count",
           "source": "Alpaca OPRA",
           "native_seconds": 900,
           "mask": 0
