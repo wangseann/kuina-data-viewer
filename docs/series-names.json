@@ -1,8 +1,8 @@
 {
-  "assessment_utc": "2026-11-20T00:46:20.188742+00:00",
+  "assessment_utc": "2026-11-20T01:20:44.464777+00:00",
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
-  "catalogue_sha256": "5204a1601b5d6c8a9c598681c7a2207292a2c4b512eb6b09ac9121147a47ce3a",
-  "counts_sha256": "5f02dbbfc50848b696cd20393f3d580bf405cde7beeddf469e6fed0ded8ef9c3",
+  "catalogue_sha256": "b0288d83968a95b7a737e44d00751988c243ec9d9e61a3b0a4f1041021624e00",
+  "counts_sha256": "5148fa3a9a8f2eeef332d6899cb48c336f3d35a45fa49088df105b302b1c1ac2",
   "schema": 1,
   "types": [
     {
@@ -63054,6 +63054,14 @@
           "variable": "taker_buy_quote"
         },
         {
+          "id": "3ee9a18904b767f8c7dde9396007c345dc7016306e5b3ddcc3276c3445415c9c",
+          "label": "FIL/USD",
+          "variable": "trade_count",
+          "source": "Alpaca",
+          "native_seconds": 900,
+          "mask": 0
+        },
+        {
           "id": "3ff49529a90c7cac5b26f4c79644e80387a67c1a257ca81745b9aafa6820acb4",
           "label": "BONK/USD",
           "variable": "trade_count",
@@ -63915,14 +63923,6 @@
           "variable": "open",
           "source": "Dukascopy bank CSV",
           "native_seconds": 60,
-          "mask": 1
-        },
-        {
-          "id": "3ee9a18904b767f8c7dde9396007c345dc7016306e5b3ddcc3276c3445415c9c",
-          "label": "FIL/USD",
-          "variable": "trade_count",
-          "source": "Alpaca",
-          "native_seconds": 900,
           "mask": 1
         },
         {
