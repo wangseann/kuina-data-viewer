@@ -126,3 +126,5 @@ the matching counts before publishing it as `docs/series-names.json`. New audit
 counts require a matching name export; until then the browser disables stale names
 instead of guessing their correspondence. The counts publisher cannot generate
 new names from aggregate counts alone.
+
+The [gap allowance comparison](docs/gaps.html) publishes the verified 23 November 2026 aggregate figure and PDF. It varies missing percentages and continuous in-session gap limits while retaining the 3,972-field baseline and all non-gap requirements. This dated comparison does not change eligibility or publish observations. The quality page links it through the shared renderer, with an idempotent navigation fallback for existing generated pages.

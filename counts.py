@@ -17,7 +17,8 @@ LABELS={
 IDS=list(LABELS)
 NAVIGATION = ('<nav aria-label="Main navigation"><a href="index.html">Quality counts</a> · '
               '<a href="explorer.html">Inspect series</a> · <a href="m1.html">Dukascopy m1 audit</a> · '
-              '<a href="unique.html">Repair batches</a> · <a href="tasks.html">Legacy assignments</a></nav>')
+              '<a href="unique.html">Repair batches</a> · <a href="tasks.html">Legacy assignments</a> · '
+              '<a href="gaps.html">Gap allowance</a></nav>')
 COUNTS={'confirmed_series','confirmed_units','provisional_series','additional_failed','additional_review','unvalidated_groups'}
 ISSUES={
     'short_history':('Less than two years of valid history','failed'),

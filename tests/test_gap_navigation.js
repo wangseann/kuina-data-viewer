@@ -1,0 +1,13 @@
+'use strict';
+const assert = require('node:assert/strict');
+const {addGapNavigation} = require('../docs/quality-series.js');
+const links=[];
+const nav={querySelector:()=>links.find(link=>link.href==='gaps.html'),append:(...nodes)=>links.push(...nodes.filter(node=>typeof node==='object'))};
+const document={querySelector:()=>nav,createElement:()=>({})};
+assert.equal(addGapNavigation(document),true);
+assert.equal(links[0].textContent,'Gap allowance');
+assert.equal(links[0].href,'gaps.html');
+assert.equal(addGapNavigation(document),false);
+assert.equal(links.length,1);
+assert.equal(addGapNavigation({querySelector:()=>null}),false);
+console.log('Gap navigation is discoverable and idempotent');

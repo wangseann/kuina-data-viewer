@@ -54,3 +54,8 @@ class CountsTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+class GapNavigationTests(unittest.TestCase):
+    def test_generated_pages_keep_gap_comparison_link(self):
+        page=render(validate(snapshot()))
+        self.assertTrue('<a href="gaps.html">Gap allowance</a>' in page, 'Gap comparison link must survive dashboard regeneration')

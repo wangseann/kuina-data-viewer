@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Kuina · Gap allowance comparison</title>
+  <style>
+    :root{color-scheme:light;font:16px system-ui,sans-serif;color:#18304c;background:#f4f7fa}
+    *{box-sizing:border-box}body{max-width:1500px;margin:auto;padding:30px 22px}
+    nav{font-size:.95rem;line-height:1.9}a{color:#17658b}h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:12px}
+    p{max-width:85ch;line-height:1.7;color:#42556a}.panel{background:white;border:1px solid #dce4eb;border-radius:12px;padding:22px;margin:24px 0}
+    .notice{border-left:5px solid #27648b;padding:12px 18px;background:#eaf2f8}.downloads{display:flex;gap:20px;flex-wrap:wrap}
+    figure{margin:0}img{display:block;width:100%;height:auto}figcaption{font-size:.9rem;line-height:1.6;margin-top:12px;color:#42556a}
+    .wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;max-width:850px}th,td{padding:12px;border-bottom:1px solid #dce4eb;text-align:right}th:first-child,td:first-child{text-align:left}caption{text-align:left;margin-bottom:16px;font-weight:600}
+    footer{font-size:.9rem;line-height:1.6;color:#42556a}a:focus-visible{outline:3px solid #27648b;outline-offset:4px}
+    @media(max-width:600px){body{padding:22px 12px}.panel{padding:14px}th,td{padding:10px 8px}}
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Main navigation"><a href="index.html">Quality counts</a> · <a href="explorer.html">Inspect series</a> · <a href="unique.html">Repair batches</a> · <a href="gaps.html" aria-current="page">Gap allowance</a></nav>
+  <h1>What happens if we allow missing data?</h1>
+  <p>This comparison starts with the <strong>3,972 eligible numeric series</strong> in the saved quality snapshot and shows how many more could qualify under different gap limits. The analysis covers <strong>1 October 2024 to 30 September 2026</strong>.</p>
+  <p class="notice"><strong>The eligibility rules have not changed.</strong> Every additional series still needs 15-minute or finer native resolution, two actual years of history and a pass on every non-gap check.</p>
+  <section class="panel" aria-labelledby="figure-title">
+    <h2 id="figure-title">Missing percentage and longest gap</h2>
+    <p>Choose a column for the amount of missing data and a row for the longest gap. A series must meet both limits. The table beneath the heatmap shows which dataset types would benefit.</p>
+    <p class="downloads"><a href="assets/gap-allowance-20261123.png">Open full-size figure</a><a href="assets/gap-allowance-20261123.pdf">Download PDF</a></p>
+    <figure>
+      <a href="assets/gap-allowance-20261123.png" aria-label="Open the full-size gap allowance figure"><img src="assets/gap-allowance-20261123.png" width="2850" height="2280" alt="Heatmap of eligible series by missing percentage and longest in-session gap, followed by a dataset breakdown. The current baseline is 3,972. Allowing 0.1 percent missing and one-hour gaps gives 5,050; one percent and six-hour gaps gives 6,003; five percent and one-day gaps gives 6,840. Most gains are stocks."></a>
+      <figcaption>Measured comparison completed 23 November 2026 from 4,719,383 saved audit records. Quality assessment: 20 November 2026. Original full-source audit: 9 November 2026. This figure is a dated snapshot; publishing it does not run a new audit.</figcaption>
+    </figure>
+  </section>
+  <section class="panel" aria-labelledby="examples-title">
+    <h2 id="examples-title">Examples from the figure</h2>
+    <div class="wrap"><table>
+      <caption>Potential counts with all other requirements held fixed</caption>
+      <thead><tr><th scope="col">Missing data allowed</th><th scope="col">Longest in-session gap</th><th scope="col">Eligible series</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Current rules</th><td>Current limit</td><td>3,972</td></tr>
+        <tr><th scope="row">0.1%</th><td>1 hour</td><td>5,050</td></tr>
+        <tr><th scope="row">1%</th><td>6 hours</td><td>6,003</td></tr>
+        <tr><th scope="row">5%</th><td>1 day</td><td>6,840</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Most additions would be stocks.</strong> At 5% missing with a one-day gap limit, 2,804 of the 2,868 additions are stock series. Relaxing gaps alone would leave the market imbalance largely intact. New collection and repairs therefore prioritize missing market types and underrepresented stock sectors.</p>
+  </section>
+  <section class="panel" aria-labelledby="meaning-title">
+    <h2 id="meaning-title">How to read the limits</h2>
+    <p><strong>Missing percentage</strong> is the share of expected recorded points that are absent, using each series’ own native interval of 15 minutes or finer. Scheduled market closures are excluded.</p>
+    <p><strong>Longest in-session gap</strong> is the longest continuous run of missing expected points. A market closure ends that run, so a gap spanning several trading days can contain several separate in-session runs. Crypto trades continuously.</p>
+    <p><strong>Current limit</strong> means no additional gap allowance. The existing profile checks 15-minute completeness; finer data can contain shorter holes. The 3,972 baseline series are retained throughout this comparison.</p>
+    <p><strong>Counts refer to numeric fields.</strong> Open, high, low, close and volume can count separately for one instrument. Only series whose remaining failures are gaps can be added. All 3,777 such candidates had measured gap metrics; accepting every one would give a theoretical ceiling of 7,749 series.</p>
+  </section>
+  <footer>Only aggregate counts and the visualization are published here. Observations and private run reports remain in Kuina. <a href="index.html">Return to the quality dashboard</a>.</footer>
+</main>
+</body>
+</html>

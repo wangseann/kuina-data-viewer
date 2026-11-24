@@ -27,3 +27,5 @@ The current schema 4 profile requires 15-minute or finer native intervals for al
 regular series. Preserve all failure colours through their exact joint mask
 counts; never infer combinations from overlapping marginal reason counts.
 Keep source audit and metadata reassessment timestamps separate.
+
+The user's 24 November request additionally authorizes the verified counts-only gap-allowance PNG/PDF and its explanatory page. Publish only aggregate counts and public method explanations; private run provenance and input paths remain private. This comparison does not change scientific eligibility rules.

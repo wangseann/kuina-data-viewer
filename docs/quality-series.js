@@ -166,7 +166,19 @@
       if (status) status.textContent = 'Series names unavailable or out of date. The counts and failure colours remain valid.';
     }
   }
-  const api = {canonicalJSON,validate,apply,load,visibleCounts};
+  function addGapNavigation(document) {
+    const nav = document.querySelector('nav[aria-label="Main navigation"]');
+    if (!nav || nav.querySelector('a[href="gaps.html"]')) return false;
+    const link = document.createElement('a');
+    link.href = 'gaps.html';
+    link.textContent = 'Gap allowance';
+    nav.append(' · ',link);
+    return true;
+  }
+  const api = {canonicalJSON,validate,apply,load,visibleCounts,addGapNavigation};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
-  else if (root.document) load(root.document,root.fetch.bind(root));
+  else if (root.document) {
+    addGapNavigation(root.document);
+    load(root.document,root.fetch.bind(root));
+  }
 })(globalThis);
