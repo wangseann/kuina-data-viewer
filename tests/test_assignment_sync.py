@@ -18,6 +18,32 @@ except ImportError:
 
 
 class GitSyncTests(unittest.TestCase):
+    def test_source_job_assets_publish_together_and_reject_private_pending_fields(self):
+        import source_job_board
+        from coordination.source_jobs import confirm, catalogue_rows, public_definition
+        from coordination.github_work import encoded
+        sources=json.loads((Path(__file__).resolve().parents[1]/'docs/acquisition-sources.json').read_text())
+        manifest=confirm(sources,['crypto-spot-kraken'],self.catalogue['generation'])
+        self.catalogue['batches'].extend(catalogue_rows(manifest))
+        definitions=dict(schema=source_job_board.DEFINITION_SCHEMA,
+                         jobs=[public_definition(j) for j in manifest['jobs']])
+        (self.a/'docs/acquisition-sources.json').write_bytes(encoded(sources))
+        (self.a/'coordination/source_job_definitions.json').write_bytes(encoded(definitions))
+        self.commit(self.a,'Reviewed source job definitions')
+        self.run_git(self.a,'push','origin','main')
+        self.assertEqual(self.publish()['status'],'PUBLISHED')
+        snapshot=json.loads((self.a/'docs/source-jobs.json').read_text())
+        self.assertEqual(snapshot['jobs'][0]['state'],'open')
+        self.assertIn('source-jobs-data',(self.a/'docs/sources.html').read_text())
+        self.assertEqual(len(json.loads((self.a/'docs/unique-tasks.json').read_text())['batches']),1)
+        changed=self.run_git(self.a,'diff-tree','--no-commit-id','--name-only','-r','HEAD').splitlines()
+        self.assertIn('docs/sources.html',changed)
+        self.assertIn('docs/source-jobs.json',changed)
+        self.sync().validate_pending(changed)
+        snapshot['jobs'][0]['note']='PRIVATE /private/data'
+        (self.a/'docs/source-jobs.json').write_bytes(encoded(snapshot))
+        with self.assertRaises(ValueError):self.sync().validate_pending(['docs/source-jobs.json'])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

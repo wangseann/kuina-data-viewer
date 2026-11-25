@@ -1,9 +1,12 @@
 # Kuina dataset quality counts
 
 Current pages: **Overview** (`docs/index.html`), **Find new data**
-(`docs/sources.html`), and **Assignments** (`docs/unique.html`). Detailed quality
-grids, older methods and agent instructions remain linked from the overview's
-collapsed details section.
+(`docs/sources.html`), and **Assignments** (`docs/unique.html`). The overview
+retains the category series blocks and hover details. Older audit explanations
+and methods remain in its collapsed details section.
+
+Confirmed free-source jobs appear on **Find new data** with claim buttons and
+Open / In progress / Finished ownership. See [the source-job guide](coordination/SOURCE_JOBS.md).
 
 The source-search log is `docs/acquisition-sources.json`. Update its market,
 sector, provider, status and next check, then rebuild with:

@@ -25,6 +25,8 @@ def task_snapshot(summary, catalogue, ledger, generated_at, progress=None):
     advisory = validated(ledger, progress)
     batches = []
     for row in catalogue['batches']:
+        if row['id'].startswith('unique-source-'):
+            continue  # New acquisition work is separate from the audited repair inventory.
         require(not retired_batch(row['id']), 'Confirmed unrecoverable batch cannot enter the work board')
         require(type(row) is dict and set(row) == {'id', 'category', 'target_count', 'series_count',
                                                   'definition_sha256', 'assignment_enabled'} and

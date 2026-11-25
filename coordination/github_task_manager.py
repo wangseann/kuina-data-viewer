@@ -81,7 +81,8 @@ class Manager:
                     'Unprotected authority queue ancestor')
             if directory == root:
                 break
-        return LegacyCatalogue(queue, self.legacy, config['generation'])
+        from coordination.source_jobs import with_source_jobs
+        return with_source_jobs(LegacyCatalogue(queue, self.legacy, config['generation']))
 
     def protocol(self):
         return CombinedWorkProtocol(self.catalogue())
@@ -193,7 +194,7 @@ class Manager:
                 dependencies = [path, path / 'owner.json',
                                 protocol.preparation_path(item['preparation_sha256']),
                                 protocol.authorization_path(item['batch_id']), authority,
-                                catalogue.manifest_path] + entries
+                                catalogue.manifest_path] + getattr(catalogue, 'extra_dependencies', []) + entries
                 epoch = progress_epoch(dependencies, self.legacy.root)
                 row = catalogue.row(item['batch_id'])
                 require(catalogue.generation == item['catalogue_generation'] and

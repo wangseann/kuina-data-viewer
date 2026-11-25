@@ -78,7 +78,7 @@ SCRIPT = """(() => {
 })();"""
 
 
-def render(data):
+def render(data, jobs=None):
     validate(data)
     from counts import NAVIGATION
     esc=lambda value:html.escape(value,quote=True)
@@ -91,24 +91,32 @@ def render(data):
                esc(row['resolution'])+'<small>'+esc(row['history'])+'</small>',esc(ACCESS[row['access']]),
                '<strong>'+esc(STATUSES[row['status']])+'</strong><small>'+esc(row['next_step'])+'</small>']
         rows.append('<tr data-market="'+esc(row['market'])+'" data-sector="'+esc(row['sector'])+'" data-status="'+esc(row['status'])+'">'+''.join('<td>'+v+'</td>' for v in cells)+'</tr>')
-    script_hash=base64.b64encode(hashlib.sha256(SCRIPT.encode()).digest()).decode()
+    script = SCRIPT
+    job_panel = ''
+    if jobs is not None:
+        import source_job_board
+        job_panel = source_job_board.panel(jobs)
+        script += '\n' + source_job_board.SCRIPT
+    script_hash=base64.b64encode(hashlib.sha256(script.encode()).digest()).decode()
     return ('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'sha256-'+script_hash+'\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">'
-            '<title>Kuina · Find new data</title><style>body{font:15px system-ui;color:#193247;background:#f5f7fa;max-width:1550px;margin:30px auto;padding:0 22px}a{color:#17658b}p{line-height:1.6}h1{font-size:32px}section{background:white;border:1px solid #dce4eb;border-radius:12px;padding:22px;margin:20px 0}.filters{display:flex;gap:18px;flex-wrap:wrap}select{font:inherit;padding:8px;margin-left:8px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:900px}th,td{padding:14px;text-align:left;border-bottom:1px solid #dce4eb;vertical-align:top}small{display:block;color:#526878;line-height:1.5;margin-top:7px}.note{color:#526878}nav{line-height:1.8}tr[hidden]{display:none}</style><body><main>'+NAVIGATION+
+            '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'sha256-'+script_hash+'\'; connect-src \'self\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">'
+            '<title>Kuina · Find new data</title><style>body{font:15px system-ui;color:#193247;background:#f5f7fa;max-width:1550px;margin:30px auto;padding:0 22px}a{color:#17658b}p{line-height:1.6}h1{font-size:32px}section{background:white;border:1px solid #dce4eb;border-radius:12px;padding:22px;margin:20px 0}.filters{display:flex;gap:18px;flex-wrap:wrap}select{font:inherit;padding:8px;margin-left:8px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:900px}th,td{padding:14px;text-align:left;border-bottom:1px solid #dce4eb;vertical-align:top}small{display:block;color:#526878;line-height:1.5;margin-top:7px}.note{color:#526878}nav{line-height:1.8}tr[hidden]{display:none}.source-job-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}.source-job{border:1px solid #dce4eb;border-radius:10px;padding:18px}.source-job h3{margin:0}.source-job a,.source-job button{display:inline-block;margin:12px 12px 0 0}button{font:inherit;padding:7px;cursor:pointer}</style><body><main>'+NAVIGATION+
             '<h1>Find new data</h1><p>Search by market and sector. Prioritize broader coverage, then verify individual instruments.</p>'
-            '<p class="note">Target window: October 2024–September 2026 · Native interval ≤15 minutes · Two years of actual history · Verified calendar and gaps.</p>'
+            '<p class="note">Target window: October 2024–September 2026 · Native interval ≤15 minutes · Two years of actual history · Verified calendar and gaps.</p>'+job_panel+
             '<section><h2>Source investigations</h2><p>Free sources only: public archives or free access with registration. Markets without a verified free candidate remain uncovered.</p><p><strong>No data downloaded in this source search.</strong> Provider documentation is verified; instrument coverage and collection permission remain separate checks. No candidate below is certified eligible.</p>'
             '<div class="filters"><label>Market<select id="market-filter"><option value="all">All markets</option>'+options(MARKETS.items())+'</select></label>'
             '<label>Sector<select id="sector-filter"><option value="all">All sectors</option>'+options((v,v) for v in sorted({r['sector'] for r in data['sources']}))+'</select></label>'
             '<label>Status<select id="status-filter"><option value="all">All statuses</option>'+options(STATUSES.items())+'</select></label></div>'
             '<p id="visible-count"></p><div class="scroll"><table><thead><tr><th>Market</th><th>Sector / region</th><th>Provider</th><th>Documented data</th><th>Access</th><th>Status / Next check</th></tr></thead><tbody>'+''.join(rows)+'</tbody></table></div></section>'
             '<p class="note">Sector labels describe search priorities, not a verified classification of individual instruments. Quotes, trades, futures contracts and continuous series retain separate definitions.</p>'
-            '<p class="note">Documentation checked '+esc(data['checked_at'][:10])+'. <a href="acquisition-sources.json">Download search log</a></p></main><script>'+SCRIPT+'</script></body></html>')
+            '<p class="note">Documentation checked '+esc(data['checked_at'][:10])+'. <a href="acquisition-sources.json">Download search log</a></p></main><script>'+script+'</script></body></html>')
 
 
 def build(data,output):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
-    (output/'sources.html').write_text(render(data))
+    jobs_path = output / 'source-jobs.json'
+    jobs = json.loads(jobs_path.read_text()) if jobs_path.exists() else None
+    (output/'sources.html').write_text(render(data, jobs))
 
 
 if __name__ == '__main__':

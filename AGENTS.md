@@ -43,3 +43,12 @@ older audit and method pages outside the main navigation.
 The user's follow-up retains the category series blocks and their audit-bound
 hover names on the overview. Source investigations must be free public data or
 free access with registration; exclude paid and unverified-plan offerings.
+
+The user authorizes claimable confirmed-free-source jobs with public owner and
+Open / In progress / Finished status. Reuse GitHub reservations and UID-bound
+Native claims/reports. Preserve the original queue and all assignments. Source
+jobs are separate from audited inventory counts. Free-source confirmation is a
+metadata-first job; actual downloads retain preflight, private source-admission,
+overlap and bounded resource gates. Finished collection still awaits a matching
+eligibility audit. Publish only the closed source-job projection, never notes,
+UIDs, private scopes, credentials, paths or observations.

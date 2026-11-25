@@ -20,8 +20,9 @@ import counts
 import unique_dashboard
 
 UNIQUE_ASSETS = frozenset(('docs/unique.html', 'docs/unique-summary.json', 'docs/unique-tasks.json'))
+SOURCE_ASSETS = frozenset(('docs/sources.html', 'docs/source-jobs.json'))
 COUNTS_ASSETS = frozenset(('docs/index.html', 'docs/summary.json', 'docs/tasks-summary.json'))
-GENERATED = UNIQUE_ASSETS | COUNTS_ASSETS
+GENERATED = UNIQUE_ASSETS | COUNTS_ASSETS | SOURCE_ASSETS
 ORIGINS = ('https://github.com/wangseann/kuina-data-viewer.git',
            'git@github.com:wangseann/kuina-data-viewer.git')
 LEDGER = 'coordination/assignments.json'
@@ -69,6 +70,13 @@ class Synchronizer:
 
     def validate_pending(self, paths):
         require(bool(paths) and set(paths) <= GENERATED, 'Pending commit includes unreviewed files')
+        if set(paths) & SOURCE_ASSETS:
+            import acquisition
+            import source_job_board
+            jobs = source_job_board.validate_snapshot(parse(self.read_asset('docs/source-jobs.json', 256*1024)))
+            sources = acquisition.validate(parse(file_bytes(self.project/'docs/acquisition-sources.json', 128*1024)))
+            require(self.read_asset('docs/sources.html', 2*1024*1024).decode() == acquisition.render(sources, jobs),
+                    'Pending source-job HTML differs from its closed snapshot')
         if set(paths) & {'docs/index.html', 'docs/summary.json'}:
             summary = counts.validate(parse(self.read_asset('docs/summary.json', 128 * 1024)))
             require(self.read_asset('docs/index.html', 32 * 1024 * 1024).decode() == counts.render(summary),
@@ -152,8 +160,9 @@ class Synchronizer:
         return bool(ahead)
 
     def write_assets(self, assets):
-        require(set(assets) == UNIQUE_ASSETS and all(type(raw) is bytes for raw in assets.values()),
-                'Renderer must return exactly the three assignment assets')
+        require(set(assets) in (UNIQUE_ASSETS, UNIQUE_ASSETS | SOURCE_ASSETS) and
+                all(type(raw) is bytes for raw in assets.values()),
+                'Renderer must return the complete assignment and optional source-job assets')
         for name, raw in assets.items():
             maximum = 64 * 1024 if name.endswith('summary.json') else 16 * 1024 * 1024
             require(len(raw) <= maximum, 'Assignment asset exceeds bound')
@@ -210,6 +219,13 @@ class Synchronizer:
             previous_time = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))['generated_at']
             generated_at = max((generated_at, previous_time), key=stamp)
         assets = render_assets(summary, catalogue, ledger, generated_at, progress=progress)
+        definitions_path = self.project / 'coordination/source_job_definitions.json'
+        if definitions_path.exists():
+            import source_job_board
+            sources = parse(file_bytes(self.project/'docs/acquisition-sources.json', 128*1024))
+            definitions = parse(file_bytes(definitions_path, 64*1024))
+            assets.update(source_job_board.render_assets(sources, definitions, catalogue, ledger,
+                                                        generated_at, progress))
         previous = self.project / 'docs/unique-tasks.json'
         if previous.exists():
             saved = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))
@@ -220,11 +236,12 @@ class Synchronizer:
                     'Older grouping summary cannot replace current publication')
             require(stamp(generated_at) >= stamp(saved['generated_at']), 'Older assignment metadata cannot replace current publication')
         self.write_assets(assets)
-        changed = self.git('diff', '--name-only').splitlines()
-        require(set(changed) <= UNIQUE_ASSETS, 'Unexpected generated changes')
+        changed = set(self.git('diff', '--name-only').splitlines())
+        changed.update(self.git('ls-files', '--others', '--exclude-standard').splitlines())
+        require(set(changed) <= UNIQUE_ASSETS | SOURCE_ASSETS, 'Unexpected generated changes')
         if changed:
-            self.git('add', '--', *sorted(UNIQUE_ASSETS))
-            require(set(self.git('diff', '--cached', '--name-only').splitlines()) <= UNIQUE_ASSETS,
+            self.git('add', '--', *sorted(assets))
+            require(set(self.git('diff', '--cached', '--name-only').splitlines()) <= set(assets),
                     'Unreviewed staged changes')
             if pending:
                 self.git('commit', '--amend', '--no-edit')
