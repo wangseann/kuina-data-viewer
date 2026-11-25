@@ -16,8 +16,8 @@ class CountsTests(unittest.TestCase):
         from copy import deepcopy
         data=snapshot();before=deepcopy(data);page=render(data)
         self.assertIn('<nav aria-label="Main navigation">',page)
-        self.assertIn('<a href="unique.html">Repair batches</a>',page)
-        self.assertIn('<a href="tasks.html">Legacy assignments</a>',page)
+        self.assertIn('<a href="unique.html">Assignments</a>',page)
+        self.assertIn('<a href="sources.html">Find new data</a>',page)
         self.assertEqual(data,before)
         self.assertEqual(totals(data),(6337,129))
 
@@ -57,5 +57,6 @@ if __name__=='__main__':unittest.main()
 
 class GapNavigationTests(unittest.TestCase):
     def test_generated_pages_keep_gap_comparison_link(self):
-        page=render(validate(snapshot()))
+        from test_failure_colours import snapshot as current_snapshot
+        page=render(validate(current_snapshot()))
         self.assertTrue('<a href="gaps.html">Gap allowance</a>' in page, 'Gap comparison link must survive dashboard regeneration')

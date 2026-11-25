@@ -15,7 +15,7 @@ class UniqueSyncTests(unittest.TestCase):
             'docs/unique.html', 'docs/unique-summary.json', 'docs/unique-tasks.json'})
         self.assertEqual(json.loads(artifacts['docs/unique-summary.json']), summary)
         self.assertEqual(json.loads(artifacts['docs/unique-tasks.json']), tasks)
-        self.assertIn('Unique work.', artifacts['docs/unique.html'])
+        self.assertIn('<h1>Assignments</h1>', artifacts['docs/unique.html'])
         contaminated = deepcopy(tasks)
         contaminated['batches'][0]['private_path'] = '/private/source'
         with self.assertRaises(ValueError):

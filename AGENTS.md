@@ -29,3 +29,13 @@ counts; never infer combinations from overlapping marginal reason counts.
 Keep source audit and metadata reassessment timestamps separate.
 
 The user's 24 November request additionally authorizes the verified counts-only gap-allowance PNG/PDF and its explanatory page. Publish only aggregate counts and public method explanations; private run provenance and input paths remain private. This comparison does not change scientific eligibility rules.
+
+The user's 25 November request authorizes the public new-source search log:
+market, sector, region, provider documentation, documented cadence/history,
+access category, investigation status and next metadata check. Documentation
+does not establish instrument eligibility. Publish no credentials, observations
+or private collection scopes. Confirmed source-frequency exclusions must not
+appear in the active assignment catalogue. Retain their immutable definitions
+as disabled history and preserve unaffected confirmed assignments. Keep the
+main dashboard focused on current data, new acquisition and ownership; retain
+older audit and method pages outside the main navigation.

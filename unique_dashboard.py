@@ -3,6 +3,7 @@
 No audit, claim backend, publishing, observations, or private target information.
 """
 import base64
+import recovery
 from datetime import datetime
 import hashlib
 import json
@@ -106,6 +107,12 @@ def require_current_eligibility(previous, incoming):
         old = datetime.fromisoformat(previous['eligibility']['assessed_at'].replace('Z', '+00:00'))
         new = datetime.fromisoformat(incoming['eligibility']['assessed_at'].replace('Z', '+00:00'))
         require(new >= old, 'Older eligibility assessment cannot replace current counts')
+
+
+def require_active_batches(tasks):
+    """Historical snapshots remain readable; excluded batches cannot republish."""
+    require(not any(recovery.retired_batch(row['id']) for row in tasks['batches']),
+            'Confirmed unrecoverable batches cannot enter an active work snapshot')
 
 
 CORE_SCRIPT = r"""const KuinaUnique = (() => {
@@ -212,6 +219,8 @@ STYLE = """:root{font:15px system-ui,sans-serif;color:#193247;background:#f3f6f8
 
 def build(summary,tasks,output_dir):
     validate(summary,tasks)
+    require_active_batches(tasks)
+    from counts import NAVIGATION
     payload=dict(summary=summary,tasks=tasks,category_labels=CATEGORIES,status_labels=STATUSES)
     raw=json.dumps(payload,ensure_ascii=False,separators=(',',':'),allow_nan=False).replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026').replace('\u2028','\\u2028').replace('\u2029','\\u2029')
     script=CORE_SCRIPT+'\n'+SCRIPT
@@ -226,21 +235,14 @@ def build(summary,tasks,output_dir):
     html='''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="POLICY"><title>Kuina · Unique repair work</title><style>STYLE</style></head>
-<body><main><header><nav><a href="index.html">Quality counts</a> · <a href="explorer.html">Inspect series</a> · <a href="tasks.html">Agent instructions</a> · <a href="https://github.com/wangseann/kuina-data-viewer">Source</a></nav>
-<p class="eyebrow">Kuina · Shared data improvement</p><h1>Unique work. Every measurement retained.</h1>
-<p>Sources, frequencies and measured fields remain separate representations. Removing duplicate work creates no new eligibility. One saved eligible field does not make a whole target eligible.</p>
-<div class="requirements">Native interval ≤900 seconds (15 minutes) · At least two years of actual history · No unexplained gaps</div>
-<p class="small">GROUPING · Summary generated SUMMARY_TIME · Task snapshot TASK_TIME. These publication timestamps are not new scientific audit dates.</p>
-<p class="small">ELIGIBILITY_NOTE</p>
-</header><section class="panel"><h2>Work targets and numeric series</h2>
-<p>A repair subject is an instrument, account, location or statistical subject. Field groups count different field labels within each subject. Models, sources and recording intervals remain separate versions; matching field labels do not prove that their values are equivalent. “Subjects with eligible data” counts subjects with at least one passing numeric field; other fields retain their saved results. Unresolved identities may still contain duplicates.</p>
-<p>Different countries, products, contracts and measured quantities remain separate. Annual or monthly statistics cannot meet a 15-minute requirement simply by downloading them again.</p>
-<p>Account subjects also include authors found inside quoted or reposted material. This is not a count of fully scraped account timelines.</p>
-<div class="scroll"><table><thead><tr><th>Category</th><th>Stored numeric series</th><th>Repair subjects</th><th>Field groups</th><th>Subjects with eligible data<br><small>At least one numeric field passes</small></th><th>Unresolved identities</th></tr></thead><tbody id="counts"></tbody></table></div>
-<p class="small">Reviewed input manifest <code>MANIFEST</code></p></section>
-<section class="panel"><div class="heading"><h2>Choose repair work</h2><button id="refresh" type="button">Refresh confirmed snapshot</button></div>
-<p>All eleven participants choose their own work. Select your name and open a claim for an available, unblocked batch. Submit the prepared GitHub issue. GitHub permanently records the confirmed assignment before confirmation appears on the issue and in a refreshed snapshot. Requests do not start an agent.</p>
-<p>“Available” means unassigned. A batch named <code>statistical</code> contains reports whose native recording interval is too coarse; downloading the same report again cannot make it eligible. Inspect the private repair brief before choosing a batch.</p>
+<body><main><header>NAVIGATION
+<h1>Assignments</h1><p>Current ownership and investigations. Collection does not start automatically.</p>
+RECOVERY_NOTICE
+<p class="small">At least two years of history · 15 minutes or finer · Verified calendar. No unexplained gaps.</p>
+</header><details class="panel"><summary>Inventory grouping details</summary><p>An eligible field does not make a whole target eligible.</p><p class="small">ELIGIBILITY_NOTE</p><p class="small">Summary generated SUMMARY_TIME · Task snapshot TASK_TIME.</p><div class="scroll"><table><thead><tr><th>Category</th><th>Stored numeric series</th><th>Repair subjects</th><th>Field groups</th><th>Subjects with eligible data<br><small>At least one numeric field passes</small></th><th>Unresolved identities</th></tr></thead><tbody id="counts"></tbody></table></div></details>
+<section class="panel"><div class="heading"><h2>Existing investigation batches</h2><button id="refresh" type="button">Refresh confirmed snapshot</button></div>
+<p>Use <a href="sources.html">Find new data</a> for the current market and sector priorities. Existing assignments keep their original scope and history.</p>
+<p>Available means unassigned investigation work, not confirmed recoverable data. Confirmed-unrecoverable source batches have been removed. Inspect the private brief before starting.</p>
 <div class="controls"><label>I am<select id="identity"><option value="">Choose your name</option></select></label><label>Category<select id="category"><option value="all">All categories</option></select></label><label>Review kind<select id="review-kind"><option value="all">All</option><option value="market">Market prices</option><option value="statistical">Coarse statistical reports</option><option value="identity">Identity review</option><option value="context">Other context</option><option value="unknown">Unclassified</option></select></label><label>Status<select id="status"><option value="all">All statuses</option></select></label><label>Assignee<select id="person"><option value="all">Everyone</option></select></label></div>
 <p class="small">Review kind describes the assignment’s subject. Eligibility comes from a separate scientific audit.</p>
 <p id="request-note" role="status" aria-live="polite">Selecting your name does not reserve work. A request stays pending until the confirmed snapshot changes.</p>
@@ -249,7 +251,7 @@ def build(summary,tasks,output_dir):
 <p class="small">50 batches per page. Blockers and legacy reservations prevent claims. GitHub records working reservations before agents start; private work and reports stay in Kuina. Verified work is a task result; data eligibility requires a matching scientific audit. Follow the <a href="tasks.html">agent instructions</a> only after a confirmed assignment.</p></section>
 </main><script id="unique-data" type="application/json">DATA</script><script>SCRIPT</script></body></html>
 '''
-    replacements=dict(POLICY=policy,STYLE=STYLE,GROUPING=status,SUMMARY_TIME=summary['generated_at'],TASK_TIME=tasks['generated_at'],MANIFEST=summary['input_manifest_sha256'],ELIGIBILITY_NOTE=eligibility_note,DATA=raw,SCRIPT=script)
+    replacements=dict(NAVIGATION=NAVIGATION,POLICY=policy,STYLE=STYLE,GROUPING=status,SUMMARY_TIME=summary['generated_at'],TASK_TIME=tasks['generated_at'],MANIFEST=summary['input_manifest_sha256'],ELIGIBILITY_NOTE=eligibility_note,RECOVERY_NOTICE=recovery.work_notice(),DATA=raw,SCRIPT=script)
     html=re.sub('|'.join(replacements),lambda match:replacements[match.group()],html)
     destination=Path(output_dir);destination.mkdir(parents=True,exist_ok=True)
     with (destination/'unique.html').open('x') as stream:stream.write(html)

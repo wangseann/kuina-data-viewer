@@ -6,6 +6,7 @@ from coordination.github_assignments import digest, validate_ledger
 from coordination.github_assignments_v2 import Assignments
 from coordination.task_manager import require
 import unique_dashboard
+from recovery import retired_batch
 
 
 def task_snapshot(summary, catalogue, ledger, generated_at, progress=None):
@@ -24,6 +25,7 @@ def task_snapshot(summary, catalogue, ledger, generated_at, progress=None):
     advisory = validated(ledger, progress)
     batches = []
     for row in catalogue['batches']:
+        require(not retired_batch(row['id']), 'Confirmed unrecoverable batch cannot enter the work board')
         require(type(row) is dict and set(row) == {'id', 'category', 'target_count', 'series_count',
                                                   'definition_sha256', 'assignment_enabled'} and
                 digest(row['definition_sha256']) and type(row['assignment_enabled']) is bool,

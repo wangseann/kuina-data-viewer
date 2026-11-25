@@ -1,5 +1,5 @@
 import unittest,copy
-from counts import validate,render,IDS
+from counts import validate, render_audit_details as render, IDS
 
 
 def full_snapshot():
@@ -11,11 +11,12 @@ def full_snapshot():
 
 class FullAuditTests(unittest.TestCase):
     def test_full_dashboard_navigation_has_new_batches_and_legacy_assignments(self):
-        page=render(full_snapshot())
-        self.assertIn('<a href="unique.html">Repair batches</a>',page)
-        self.assertIn('<a href="tasks.html">Legacy assignments</a>',page)
-        self.assertIn('<a href="explorer.html">Inspect series</a>',page)
-        self.assertIn('<a href="m1.html">Dukascopy m1 audit</a>',page)
+        from counts import render as render_overview
+        page=render_overview(full_snapshot())
+        for link in ['<a href="unique.html">Assignments</a>', '<a href="sources.html">Find new data</a>',
+                     '<a href="quality-details.html">Full quality audit and series names</a>',
+                     '<a href="gaps.html">Gap allowance</a>']:
+            self.assertTrue(link in page,'Missing current or archived navigation link: '+link)
 
     def test_all_excluded_series_are_red_including_missing_evidence(self):
         data=full_snapshot();validate(data);page=render(data)

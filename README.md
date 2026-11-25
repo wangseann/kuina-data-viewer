@@ -1,5 +1,22 @@
 # Kuina dataset quality counts
 
+Current pages: **Overview** (`docs/index.html`), **Find new data**
+(`docs/sources.html`), and **Assignments** (`docs/unique.html`). Detailed quality
+grids, older methods and agent instructions remain linked from the overview's
+collapsed details section.
+
+The source-search log is `docs/acquisition-sources.json`. Update its market,
+sector, provider, status and next check, then rebuild with:
+
+```sh
+python3 -B acquisition.py --input docs/acquisition-sources.json --out docs
+```
+
+Provider documentation is a lead, not a passing coverage audit. The reviewed
+Comtrade/FAOSTAT/CFTC source-limit batches are retired from the active catalogue;
+their data and historical definitions remain intact. Other investigation work
+is not automatically confirmed rescuable.
+
 Public, buildless GitHub Pages dashboard. Code, aggregate quality counts, and an
 approved sample of series names, field labels, public source labels and native
 intervals are published. The user also authorized the eleven volunteer names (including Vitoria and Olga) and a sanitized

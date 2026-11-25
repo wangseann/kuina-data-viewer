@@ -87,6 +87,7 @@ class Synchronizer:
             summary = parse(self.read_asset('docs/unique-summary.json', 64 * 1024))
             tasks = parse(self.read_asset('docs/unique-tasks.json', 8 * 1024 * 1024))
             unique_dashboard.validate(summary, tasks)
+            unique_dashboard.require_active_batches(tasks)
             previous_raw = self.git('show', 'origin/main:docs/unique-summary.json')
             previous_tasks_raw = self.git('show', 'origin/main:docs/unique-tasks.json')
             require(len(previous_raw.encode()) <= 64 * 1024 and

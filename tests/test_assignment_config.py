@@ -51,6 +51,18 @@ class CatalogueTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             make_backend(dict(assignment_authority='something'), None, native)
 
+    def test_confirmed_impossible_batch_cannot_reenter_active_catalogue(self):
+        self.value['batches'][0]['id'] = 'unique-trade-comtrade-statistical-7e4192e4cc9c5661-000001'
+        with self.assertRaisesRegex(ValueError, 'unrecoverable'):
+            PublicCatalogue(self.path, self.write())
+
+    def test_retired_definition_remains_known_but_unassignable(self):
+        retired = 'unique-trade-comtrade-statistical-7e4192e4cc9c5661-000001'
+        self.value['legacy_definitions'] = [dict(batch_id=retired, definition_sha256='c' * 64)]
+        row = PublicCatalogue(self.path, self.write())(retired)
+        self.assertFalse(row['assignment_enabled'])
+        self.assertEqual(row['definition_sha256'], 'c' * 64)
+
 
 if __name__ == '__main__':
     unittest.main()

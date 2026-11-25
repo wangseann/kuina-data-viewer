@@ -1,6 +1,7 @@
 """Load the pinned public catalogue and wire the existing private broker route."""
 import json
 from pathlib import Path
+from recovery import retired_batch
 
 from coordination.github_assignments import digest
 from coordination.github_assignments_v2 import Assignments
@@ -29,6 +30,7 @@ class PublicCatalogue:
                                                       'definition_sha256', 'assignment_enabled'},
                     'Unexpected public batch fields')
             identifier(row['id'])
+            require(not retired_batch(row['id']), 'Confirmed unrecoverable batch cannot enter the active catalogue')
             require(row['id'] not in self.rows and row['category'] in IDS and
                     type(row['target_count']) is int and 0 < row['target_count'] <= 100 and
                     type(row['series_count']) is int and row['target_count'] <= row['series_count'] <= 9007199254740991 and

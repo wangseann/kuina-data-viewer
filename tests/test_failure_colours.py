@@ -1,6 +1,6 @@
 import unittest
 
-from counts import IDS, render, validate
+from counts import IDS, render_audit_details as render, validate
 from failure_codes import classify_reasons, reassess
 
 

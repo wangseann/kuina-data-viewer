@@ -24,7 +24,7 @@ class UniqueDashboardTests(unittest.TestCase):
             self.assertEqual({p.name for p in output.iterdir()},{'unique.html'})
             html=(output/'unique.html').read_text()
             self.assertEqual(result['batches'],1)
-            self.assertIn('900 seconds',html)
+            self.assertIn('15 minutes or finer',html)
             self.assertIn('two years',html)
             self.assertIn('No unexplained gaps',html)
             self.assertIn('Subjects with eligible data',html)

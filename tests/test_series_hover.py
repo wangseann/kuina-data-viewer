@@ -2,7 +2,7 @@ from pathlib import Path
 import subprocess
 import unittest
 
-from counts import render, validate, eligible_grid, failure_waffle
+from counts import render_audit_details as render, validate, eligible_grid, failure_waffle
 from test_failure_colours import snapshot
 
 ROOT = Path(__file__).resolve().parent.parent
