@@ -39,3 +39,7 @@ appear in the active assignment catalogue. Retain their immutable definitions
 as disabled history and preserve unaffected confirmed assignments. Keep the
 main dashboard focused on current data, new acquisition and ownership; retain
 older audit and method pages outside the main navigation.
+
+The user's follow-up retains the category series blocks and their audit-bound
+hover names on the overview. Source investigations must be free public data or
+free access with registration; exclude paid and unverified-plan offerings.

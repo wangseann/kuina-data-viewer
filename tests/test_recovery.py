@@ -54,11 +54,14 @@ class RecoveryTests(unittest.TestCase):
         data['types'][0]['excluded_series']+=1
         self.assertEqual(recovery.panel(data),'')
 
-    def test_overview_is_compact_and_keeps_audit_available_separately(self):
+    def test_overview_restores_series_blocks_and_keeps_clean_navigation(self):
         data=json.loads((Path(__file__).resolve().parents[1]/'docs/summary.json').read_text())
         page=counts.render(data)
-        self.assertLess(len(page.encode()),20000)
-        self.assertFalse('data-failure-mask=' in page)
+        for marker in ['One square per identified numeric series', 'data-failure-mask=',
+                       'id="series-names-status"', '<script src="quality-series.js" defer></script>',
+                       "script-src 'self'; connect-src 'self'", 'data-series-state="eligible"',
+                       'data-series-state="excluded"']:
+            self.assertTrue(marker in page, 'Missing restored block feature: '+marker)
         for marker in ['Current usable data','Find new data','Assignments','Detailed audit and methods','quality-details.html']:
             self.assertTrue(marker in page, 'Missing current dashboard route: '+marker)
 

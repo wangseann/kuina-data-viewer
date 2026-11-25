@@ -13,7 +13,7 @@ MARKETS = dict(forex='Forex', futures='Futures', stocks='Stocks / ETFs', crypto=
                indices='Indices', options='Options')
 STATUSES = dict(metadata_needed='Instrument metadata needed', access_required='Access / plan check',
                 known_incomplete='Known coverage issue', rejected='Does not meet requirements')
-ACCESS = dict(public_archive='Public archive', free_login='Free · login required', paid='Paid', plan_check='Check account plan')
+ACCESS = dict(public_archive='Free public archive', free_login='Free · login required')
 FIELDS = {'id','market','sector','region','provider','resolution','history','access','status','next_step','source_url'}
 HOSTS = {'massive.com','databento.com','eodhd.com','www.truefx.com','algoseek.com','jpx-jquants.com','www.jpx.co.jp','github.com'}
 
@@ -91,7 +91,7 @@ def render(data):
             '<title>Kuina · Find new data</title><style>body{font:15px system-ui;color:#193247;background:#f5f7fa;max-width:1550px;margin:30px auto;padding:0 22px}a{color:#17658b}p{line-height:1.6}h1{font-size:32px}section{background:white;border:1px solid #dce4eb;border-radius:12px;padding:22px;margin:20px 0}.filters{display:flex;gap:18px;flex-wrap:wrap}select{font:inherit;padding:8px;margin-left:8px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:900px}th,td{padding:14px;text-align:left;border-bottom:1px solid #dce4eb;vertical-align:top}small{display:block;color:#526878;line-height:1.5;margin-top:7px}.note{color:#526878}nav{line-height:1.8}tr[hidden]{display:none}</style><body><main>'+NAVIGATION+
             '<h1>Find new data</h1><p>Search by market and sector. Prioritize broader coverage, then verify individual instruments.</p>'
             '<p class="note">Target window: October 2024–September 2026 · Native interval ≤15 minutes · Two years of actual history · Verified calendar and gaps.</p>'
-            '<section><h2>Source investigations</h2><p><strong>No data downloaded in this source search.</strong> Provider documentation is verified; instrument coverage and collection permission remain separate checks. No candidate below is certified eligible.</p>'
+            '<section><h2>Source investigations</h2><p>Free sources only: public archives or free access with registration. Markets without a verified free candidate remain uncovered.</p><p><strong>No data downloaded in this source search.</strong> Provider documentation is verified; instrument coverage and collection permission remain separate checks. No candidate below is certified eligible.</p>'
             '<div class="filters"><label>Market<select id="market-filter"><option value="all">All markets</option>'+options(MARKETS.items())+'</select></label>'
             '<label>Sector<select id="sector-filter"><option value="all">All sectors</option>'+options((v,v) for v in sorted({r['sector'] for r in data['sources']}))+'</select></label>'
             '<label>Status<select id="status-filter"><option value="all">All statuses</option>'+options(STATUSES.items())+'</select></label></div>'
