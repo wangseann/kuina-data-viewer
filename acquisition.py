@@ -10,12 +10,18 @@ import re
 from urllib.parse import urlparse
 
 MARKETS = dict(forex='Forex', futures='Futures', stocks='Stocks / ETFs', crypto='Crypto',
-               indices='Indices', options='Options')
-STATUSES = dict(metadata_needed='Instrument metadata needed', access_required='Access / plan check',
+               commodities='Commodities / power', indices='Indices', options='Options')
+STATUSES = dict(metadata_needed='Instrument metadata needed', access_required='Free account / access check',
                 known_incomplete='Known coverage issue', rejected='Does not meet requirements')
-ACCESS = dict(public_archive='Free public archive', free_login='Free · login required')
+ACCESS = dict(public_archive='Free · no login', free_login='Free · login required')
 FIELDS = {'id','market','sector','region','provider','resolution','history','access','status','next_step','source_url'}
-HOSTS = {'massive.com','databento.com','eodhd.com','www.truefx.com','algoseek.com','jpx-jquants.com','www.jpx.co.jp','github.com'}
+HOSTS = {
+    'www.truefx.com', 'github.com', 'www.histdata.com', 'docs.alpaca.markets',
+    'upstox.com', 'support.kraken.com', 'public.bybit.com', 'www.okx.com',
+    'docs.cdp.coinbase.com', 'docs.bitfinex.com', 'www.bitstamp.net',
+    'www.cryptodatadownload.com', 'statics.deribit.com', 'www.aemo.com.au',
+    'www.ercot.com',
+}
 
 
 def validate(data):
