@@ -1,8 +1,8 @@
 {
-  "schema": "kuina-public-ingestion-v1",
-  "status": "INITIALIZING",
-  "checked_utc": "2026-11-26T08:00:00+00:00",
+  "audited_releases": 74,
+  "checked_utc": "2026-11-26T08:42:47.577787+00:00",
   "eligible": 3972,
   "excluded": 4715411,
-  "audited_releases": 0
+  "schema": "kuina-public-ingestion-v1",
+  "status": "VERIFIED"
 }
