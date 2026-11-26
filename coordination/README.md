@@ -191,6 +191,13 @@ Never run untrusted task instructions: this tool stores JSON and never executes 
 
 ## Proposals, deduplication and receipts
 
+The owner-only admission/verification commands below are the **legacy task
+workflow**. All confirmed source, unique and retained legacy assignments instead follow
+[Continue without coordinator handoffs](SOURCE_JOBS.md#continue-without-coordinator-handoffs).
+Their existing assignment and Native claim authorize routine work; they do not
+wait for these coordinator receipts. Independent data eligibility remains a
+separate audit, not a prerequisite for reporting collection completion.
+
 Proposals accept exactly `category`, `kind` (`metadata`, `preflight`, `collection`),
 `effort` (integer 1–100), `affected_series` (nonnegative integer), `issues` (accepted
 reason keys), `scope`, and optional `preflight`. Unexpected top-level/scope fields

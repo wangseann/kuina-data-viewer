@@ -109,8 +109,10 @@ and the hub's `AGENT_TASKS.md`. A reservation is distinct from a worker claim.
 Only your own unstarted assignment offers a release request, bound to its current
 GitHub assignment issue so an old request cannot release a later reservation.
 No participant's agent is installed or run by the website. Source/window overlap
-checks prevent duplicate repairs. Completion waits for coordinator verification;
-collection repairs require a fresh matching eligibility audit.
+checks prevent duplicate repairs. Workers can proceed and report completion without coordinator admission or
+plan-verification receipts. Follow the [current self-service policy](coordination/SOURCE_JOBS.md#continue-without-coordinator-handoffs)
+for source, unique and retained legacy assignments. Collection repairs still
+require a fresh matching eligibility audit before their data become eligible.
 
 New unique batches contain at most 100 repair subjects, retaining each measured field and source version. Original review batches contain at most 500 saved catalogue records. Private selectors pin
 the source manifest, page hash and disjoint row ranges. Already-eligible records

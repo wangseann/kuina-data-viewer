@@ -1,5 +1,5 @@
 {
-  "schema": "kuina-agent-coordination-v5",
+  "schema": "kuina-agent-coordination-v6",
   "authoritative_store": "GitHub: wangseann/kuina-data-viewer coordination/assignments.json; Kuina stores private data and execution proofs",
   "poll_interval_hours": 24,
   "public_snapshot": "unique-tasks.json",
@@ -58,16 +58,17 @@
   },
   "workflow": [
     "Read the permanent GitHub assignment ledger; resume your active or blocked work before choosing another batch",
-    "after coordinator activation, choose your identity and an available repair-subject batch on unique.html for new work",
+    "choose your identity and an available repair-subject batch on unique.html for new work",
     "submit the prepared GitHub issue and wait for broker confirmation",
     "Prepare a private token, submit its GitHub start request, wait for confirmation, then claim the preparation hash using the same private UID; website never starts a worker",
     "read-batch for exact repair subjects and all original series IDs, or the unchanged legacy catalogue section",
     "perform bounded private context lookup for current child checks, fields and source variants",
     "inspect existing data and metadata and reuse shared source findings",
-    "submit deduplicated source repair scope through existing v3 admission before collection",
+    "Record one deduplicated private repair/collection plan and actual overlap checks on the existing assignment; no second coordinator admission or plan-verification receipt",
     "verify source feasibility and the unchanged requirements before collection",
+    "When metadata is insufficient, use only bounded provisional qualification under coordination/SOURCE_JOBS.md; provisional data are not eligible analysis inputs",
     "run bounded authorized work and report provenance on the same claimed task",
-    "await a matching independent eligibility audit; completing a subject batch does not certify all its fields"
+    "report completion without waiting for coordinator receipts; a matching independent eligibility audit is required before data become eligible"
   ],
   "claims": {
     "website_can_request_assignment": true,
@@ -131,8 +132,8 @@
       "snapshot": "unique-tasks.json",
       "snapshot_schema": "kuina-unique-public-tasks-v1",
       "summary": "unique-summary.json",
-      "requires_coordinator_activation": true,
-      "new_work_default": "After verified coordinator activation; before activation the private wrapper preserves its legacy behavior.",
+      "requires_coordinator_activation": false,
+      "new_work_default": "Active: choose available work and use the existing assignment/start protocol; no additional coordinator activation.",
       "identity": "Repair work subjects with unresolved identities retained separately; not a certified world-unique instrument total."
     },
     "legacy": {
@@ -180,12 +181,31 @@
   },
   "command_interface": "Use the protected GitHub-authorized private CLI configured by AGENT_TASKS.md. New starts require prepare-work then a confirmed GitHub start then claim --proof-sha256; existing workers retain show/read-batch/report.",
   "private_context_lookup": "After a successful own worker claim, read-batch returns target_id and every original series_ids member. Use those exact IDs for bounded read-only lookup in the coordinator-published private context. Inspect current child checks, source variants and original field decisions; do not scan every subject or publish context metadata.",
-  "source_admission": "The wrapper handles assignment, worker claims and reports. Existing v3 source-scope propose/admit/verify remains a separate private interface described in AGENT_TASKS.md. A subject assignment does not authorize collection or make data eligible.",
+  "source_admission": "Confirmed assignment plus actual own worker claim authorizes routine in-scope work. Retained v3 propose/admit/verify is a legacy interface, not a prerequisite. Follow coordination/SOURCE_JOBS.md#continue-without-coordinator-handoffs. Ownership, technical checks and independent data eligibility audit still apply.",
   "assignment_ledger": {
     "repository": "wangseann/kuina-data-viewer",
     "path": "coordination/assignments.json",
     "schema": "kuina-github-assignments-v1",
     "permanent_confirmed_assignments": true,
     "observations_in_repository": false
+  },
+  "work_authorization": {
+    "applies_to": [
+      "source",
+      "unique",
+      "legacy"
+    ],
+    "coordinator_admission_required": false,
+    "plan_verification_receipt_required": false,
+    "actual_worker_claim_required": true,
+    "independent_audit_before_data_eligibility": true,
+    "policy": "https://github.com/wangseann/kuina-data-viewer/blob/main/coordination/SOURCE_JOBS.md#continue-without-coordinator-handoffs",
+    "qualification_limits": {
+      "max_transferred_bytes": 268435456,
+      "max_requests_including_retries": 512,
+      "max_elapsed_seconds": 1800,
+      "max_concurrent_requests": 1,
+      "budget_scope": "Total per assigned job; source jobs are provider-wide."
+    }
   }
 }

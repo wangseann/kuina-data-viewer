@@ -156,7 +156,9 @@ SCRIPT = r"""(() => {
     return 'Read AGENT_TASKS.md in the private hub and resolve its current KUINA_TASK_MANAGER and KUINA_TASK_HUB. Resume an existing worker first; never create a second claim.\n'+
       cli+'show '+job.id+'\n'+start+
       cli+'read-batch '+job.id+'\n'+
-      'Follow the exact private scope. Preflight and source admission must pass before downloading observations. Keep data unfilled and remote.\n'+
+      'Current source-work policy: https://github.com/wangseann/kuina-data-viewer/blob/main/coordination/SOURCE_JOBS.md#continue-without-coordinator-handoffs\n'+
+      'Your confirmed provider assignment and actual Native claim authorize routine work within scope. Do not wait for coordinator admission or plan-verification receipts. This current policy supersedes legacy receipt-handoff wording in frozen job descriptions.\n'+
+      'Inspect existing data and overlaps, record your exact scope and bounded resource plan privately, and run your own technical preflight. If metadata cannot establish completeness, use bounded provisional qualification under the current policy; keep observations unfilled and remote. Eligibility still requires a matching independent audit.\n'+
       cli+'report '+job.id+' --person '+person+' --status in_progress --note "Private progress evidence"\n'+
       cli+'report '+job.id+' --person '+person+' --status completed --note "Private artifact hashes, coverage evidence and omissions"\n'+
       'Use --status blocked if qualification or collection cannot finish. Do not put private evidence in GitHub issues. Finished collection awaits a matching eligibility audit.';
@@ -199,6 +201,8 @@ def panel(jobs):
     return ('<section id="source-jobs"><h2>Confirmed free-source jobs</h2>'
             '<p>Open → In progress (person) → Finished (person). Inspect existing data and verify coverage before collection. '
             'Finished means the owner reported completion; data eligibility requires a separate audit.</p>'
+            '<p>Already claimed? <a href="https://github.com/wangseann/kuina-data-viewer/blob/main/coordination/SOURCE_JOBS.md#continue-without-coordinator-handoffs">Continue without coordinator admission or plan-verification receipts</a>. '
+            'Use the existing worker; collection completion and data eligibility are separate.</p>'
             '<p><a href="https://github.com/wangseann/kuina-data-viewer/blob/main/coordination/SOURCE_JOBS.md">Agent setup and posting guide</a> · '
             '<a href="https://github.com/wangseann/kuina-data-viewer/issues/new?title=%5BKuina%20source%20proposal%5D&amp;body=Provider%3A%0AMarket%20and%20sector%3A%0AOfficial%20documentation%20URL%3A%0AFree%20access%20evidence%3A%0ANative%20interval%20and%20history%3A%0ANo%20private%20paths%2C%20credentials%20or%20observations.">Propose a free source</a></p>'
             '<label>I am<select id="source-job-person"><option value="">Choose your name</option>'+options+'</select></label> '

@@ -48,8 +48,8 @@ The user authorizes claimable confirmed-free-source jobs with public owner and
 Open / In progress / Finished status. Reuse GitHub reservations and UID-bound
 Native claims/reports. Preserve the original queue and all assignments. Source
 jobs are separate from audited inventory counts. Free-source confirmation is a
-metadata-first job; actual downloads retain preflight, private source-admission,
-overlap and bounded resource gates. Finished collection still awaits a matching
+metadata-first job; downloads retain technical preflight, overlap checks and
+bounded resource policy. Finished collection still awaits a matching
 eligibility audit. Publish only the closed source-job projection, never notes,
 UIDs, private scopes, credentials, paths or observations.
 
@@ -60,3 +60,15 @@ all 11 equity sectors, forex groups, commodity families, bonds/rate exposures,
 regional indices and derivatives. Keep unsupported sectors visibly unresolved.
 Prioritise these gaps over additional crypto venues. Label ETFs, CFDs and other
 proxies explicitly; they never close a gap in a different underlying instrument.
+
+The user's 26 November instruction removes routine coordinator handoffs for
+all confirmed source, unique and retained legacy assignments for every participant.
+Follow coordination/SOURCE_JOBS.md's current self-service
+policy: the confirmed assignment and actual Native claim authorize in-scope work;
+no separate source admission, plan-verification receipt or per-instrument/output
+approval is needed. Retained proposals are evidence, not a prerequisite task.
+The owner performs technical preflight and may use the documented bounded
+provisional qualification allowance when metadata is insufficient. Keep existing
+claims, frozen definitions and actual overlap checks. Eligibility and green counts
+still require a fresh matching independent audit. Do not generalise this policy
+to paid access, a new provider or unbounded execution.

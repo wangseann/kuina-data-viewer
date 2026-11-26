@@ -12,15 +12,23 @@ def protocol():return json.loads((ROOT/'docs/agent-protocol.json').read_text())
 
 class AgentProtocolTests(unittest.TestCase):
     def test_new_default_counts_subjects_and_retains_original_variants_and_legacy(self):
-        p=protocol();self.assertEqual(p['schema'],'kuina-agent-coordination-v5')
+        p=protocol();self.assertEqual(p['schema'],'kuina-agent-coordination-v6')
         self.assertEqual(p['default_queue'],'unique')
         self.assertEqual(p['review_batches']['maximum_repair_subjects'],100)
         self.assertTrue(p['review_batches']['all_original_fields_and_variants_retained'])
         self.assertEqual(p['queues']['legacy']['maximum_catalogue_records'],500)
         self.assertTrue(p['queues']['legacy']['existing_claims_and_reports_preserved'])
-        self.assertTrue(p['queues']['unique']['requires_coordinator_activation'])
+        self.assertFalse(p['queues']['unique']['requires_coordinator_activation'])
         self.assertEqual(p['queues']['unique']['page'],'unique.html')
         self.assertEqual(p['queues']['legacy']['page'],'tasks.html')
+    def test_confirmed_workers_do_not_wait_for_coordinator_security_receipts(self):
+        p=protocol();a=p['work_authorization']
+        self.assertEqual(set(a['applies_to']), {'source', 'unique', 'legacy'})
+        self.assertFalse(a['coordinator_admission_required'])
+        self.assertFalse(a['plan_verification_receipt_required'])
+        self.assertTrue(a['actual_worker_claim_required'])
+        self.assertTrue(a['independent_audit_before_data_eligibility'])
+        self.assertNotIn('v3 admission before collection', ' '.join(p['workflow']))
     def test_transport_roster_requirements_privacy_and_claim_boundary_unchanged(self):
         p=protocol();self.assertEqual({v['id']:v['name']for v in p['participants']},PEOPLE)
         self.assertEqual(len(p['participants']),11)

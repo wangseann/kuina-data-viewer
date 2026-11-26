@@ -26,6 +26,11 @@ async function test(){
   await cards()[1].children.find(x=>x.textContent==='Copy agent instructions').listeners.click();
   assert(!copied.includes('prepare-work'),'An existing worker must not prepare another claim');
   assert(copied.includes('--status completed'));
+  assert(copied.includes('Do not wait for coordinator admission or plan-verification receipts'),
+    'Claimed source owners must receive the self-service policy, not a second approval handoff');
+  assert(copied.includes('coordination/SOURCE_JOBS.md'), 'Copy the authoritative current source policy');
+  assert(copied.includes('bounded provisional qualification'), 'Explain how to check content when metadata is insufficient');
+  assert(!copied.includes('source admission must pass'), 'Do not restore the retired manual handoff');
   await cards()[2].children.find(x=>x.textContent==='Copy agent instructions').listeners.click();
   assert(!copied.includes('prepare-work'));assert(copied.includes('already reported finished'));
   response={schema:'bad'};

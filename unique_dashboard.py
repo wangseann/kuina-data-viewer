@@ -237,6 +237,7 @@ def build(summary,tasks,output_dir):
 <meta http-equiv="Content-Security-Policy" content="POLICY"><title>Kuina · Unique repair work</title><style>STYLE</style></head>
 <body><main><header>NAVIGATION
 <h1>Assignments</h1><p>Current ownership and investigations. Collection does not start automatically.</p>
+<p>Already assigned and claimed? Continue within scope without coordinator admission or plan-verification receipts. <a href="https://github.com/wangseann/kuina-data-viewer/blob/main/coordination/SOURCE_JOBS.md#continue-without-coordinator-handoffs">Current self-service policy for all participants</a>. Existing legacy workers resume their original claims.</p>
 RECOVERY_NOTICE
 <p class="small">At least two years of history · 15 minutes or finer · Verified calendar. No unexplained gaps.</p>
 </header><details class="panel"><summary>Inventory grouping details</summary><p>An eligible field does not make a whole target eligible.</p><p class="small">ELIGIBILITY_NOTE</p><p class="small">Summary generated SUMMARY_TIME · Task snapshot TASK_TIME.</p><div class="scroll"><table><thead><tr><th>Category</th><th>Stored numeric series</th><th>Repair subjects</th><th>Field groups</th><th>Subjects with eligible data<br><small>At least one numeric field passes</small></th><th>Unresolved identities</th></tr></thead><tbody id="counts"></tbody></table></div></details>
