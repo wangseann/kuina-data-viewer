@@ -153,3 +153,7 @@ assignment and worker. Publish the generated public definitions to
 `coordination/source_job_definitions.json`. The existing publisher derives job
 ownership from GitHub and completion from proof-bound Native reports. Do not
 edit snapshots, assignment receipts, frozen queues or worker claims by hand.
+
+## Publish collected data
+
+Follow the shared Kuina root README and its self-service upload command. Publish original unfilled observations, exact native series mappings and provenance as a new immutable provisional release. Report its release ID on your existing assignment; no additional coordinator receipt is required. The daily ingestion service audits supported new or changed releases and updates eligible counts only after verification. Unsupported mappings or incomplete evidence remain pending; a completed collection job is not an eligibility pass. Do not manually change counts or duplicate existing histories.

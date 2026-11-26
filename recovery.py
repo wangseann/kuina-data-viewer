@@ -47,7 +47,8 @@ def retire_catalogue(catalogue, ledger):
 def panel(counts):
     """Numeric-series units only; candidates are never called confirmed rescues."""
     total = sum(r['confirmed_series'] + r['excluded_series'] for r in counts['types'])
-    if counts['schema'] != 4 or total != TOTAL or counts['audit_utc'] != AUDIT_UTC:
+    incremental = counts.get('assessment_utc','') > '2026-11-20T02:40:59.188348+00:00'
+    if counts['schema'] != 4 or (total != TOTAL and not (total > TOTAL and incremental)) or counts['audit_utc'] != AUDIT_UTC:
         return ''
     eligible = sum(r['confirmed_series'] for r in counts['types'])
     unresolved = total - eligible - IMPOSSIBLE

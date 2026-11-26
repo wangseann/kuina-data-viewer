@@ -455,6 +455,8 @@ def render_full(data):
             script+'<title>Kuina · Data overview</title><style>'+style+'</style></head><body><main>'+NAVIGATION+
             '<h1>Kuina data</h1><p>Use qualified time series. Find new data where coverage is missing.</p>'
             '<p class="small">Current experiment: at least two years · native interval ≤15 minutes · verified calendar and gaps. Eligibility checked '+html.escape(assessed[:10])+'.</p>'
+            '<p class="small">New uploads are provisional. Daily incremental audits retain the original decisions and check new or changed releases. '
+            '<a href="ingestion-status.json">Upload audit status</a>. The daily service runs while the maintainer Mac is connected.</p>'
             '<section class="panel"><h2>Current usable data</h2><table><thead><tr><th>Market / context</th><th>Eligible numeric series</th><th>Eligible instruments / subjects</th></tr></thead><tbody>'+''.join(market_rows)+'</tbody></table>'
             '<p class="small">Fields such as open, close and volume count separately. An eligible quantity is not necessarily an eligible price.</p></section>'
             '<section class="panel"><h2>Next: acquire new data</h2><p>Track providers by market and sector, verify availability, then collect only qualified instruments.</p>'
