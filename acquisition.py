@@ -21,16 +21,17 @@ HOSTS = {
     'upstox.com', 'support.kraken.com', 'public.bybit.com', 'www.okx.com',
     'docs.cdp.coinbase.com', 'docs.bitfinex.com', 'www.bitstamp.net',
     'www.cryptodatadownload.com', 'statics.deribit.com', 'www.aemo.com.au',
-    'www.ercot.com', 'evtradelabs.com',
+    'www.ercot.com', 'evtradelabs.com', 'hfdatalibrary.com',
+    'www.icicidirect.com', 'opendata.elia.be',
 }
 
 COVERAGE_PRIORITIES = (
     ('Equities', 'All 11 sectors; US first, then geographic breadth',
-     'Classify existing qualified price instruments before collecting. Alpaca Basic and Upstox are free routes to investigate.'),
+     'Classify existing qualified prices first. HF Data Library adds a US sector lead; Breeze adds India for eligible resident customers. Check IEX overlap before collecting.'),
     ('Forex', 'G10 majors, non-USD crosses and emerging-market currencies',
      'Prioritise HistData, TrueFX and EV Trading Labs; verify each pair and quote variant.'),
     ('Commodities', 'Energy, precious and industrial metals, agriculture, softs and livestock',
-     'Expand beyond WTI/Brent. Power archives and metal quotes have free leads; underlying agriculture/softs/livestock gaps remain open. Fund proxies are separate instruments.'),
+     'Expand beyond WTI/Brent. Elia adds a Belgian power lead alongside existing power and metal routes. Agriculture, softs and livestock gaps remain open; fund proxies are separate instruments.'),
     ('Bonds / rates', 'Treasury duration, inflation-linked bonds, investment-grade and high-yield credit',
      'Free ETF-bar routes are supplementary proxies. They are not yields, policy rates or measured inflation.'),
     ('Indices', 'US, Europe and Asia',

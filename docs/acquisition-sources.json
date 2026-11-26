@@ -1,9 +1,48 @@
 {
   "schema": "kuina-acquisition-search-v1",
-  "checked_at": "2026-11-26T04:07:36.460647Z",
+  "checked_at": "2026-11-26T06:04:51.713014Z",
   "window_start": "2024-10-01",
   "window_end_exclusive": "2026-10-01",
   "sources": [
+    {
+      "id": "equity-hf-sector-library",
+      "market": "stocks",
+      "sector": "US equity sectors and ETFs",
+      "region": "United States",
+      "provider": "HF Data Library",
+      "resolution": "1-minute IEX-only OHLCV",
+      "history": "Provider documents 1,253 stocks/ETFs from March 2022; fixed universe, individual listing dates vary.",
+      "access": "free_login",
+      "status": "access_required",
+      "next_step": "Academic use only; free verified account/key. Compare missing sectors against existing IEX histories before download. Prefer raw unfilled bars; audit sparse trades, splits and exchange calendars. Clean data uses a centered filter. Public symbol API returned 403 during this check.",
+      "source_url": "https://hfdatalibrary.com/pages/docs"
+    },
+    {
+      "id": "equity-india-breeze",
+      "market": "stocks",
+      "sector": "Indian cash equities across sectors",
+      "region": "India",
+      "provider": "ICICI Direct Breeze",
+      "resolution": "Historical 1-second LTP and minute bars",
+      "history": "Provider advertises three years of history without API data charges; instrument-specific retention and gaps remain unverified.",
+      "access": "free_login",
+      "status": "access_required",
+      "next_step": "Only eligible resident-Indian customers; not NRI accounts. Confirm collaborator access, sector universe, redistribution terms and actual two-year cash-equity coverage. Futures/options history does not make one short-lived contract a two-year series.",
+      "source_url": "https://www.icicidirect.com/futures-and-options/api/breeze"
+    },
+    {
+      "id": "power-belgium-elia",
+      "market": "commodities",
+      "sector": "Electricity imbalance settlement prices",
+      "region": "Belgium",
+      "provider": "Elia Open Data",
+      "resolution": "15-minute historical imbalance prices (ods134)",
+      "history": "Official dataset starts 22 May 2024 and updates daily, covering the requested window in principle; completeness is not audited.",
+      "access": "public_archive",
+      "status": "metadata_needed",
+      "next_step": "Portal currently reports an outage. Check Elia Open Data Licence and API metadata after recovery; audit timestamps, DST, revisions and gaps. Prices validate after mid-next-month. Settlement prices are distinct from spot/futures; minute estimates are a different product.",
+      "source_url": "https://opendata.elia.be/explore/dataset/ods134/"
+    },
     {
       "id": "equity-sector-communication-services",
       "market": "stocks",
