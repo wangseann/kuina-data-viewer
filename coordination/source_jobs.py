@@ -92,7 +92,8 @@ def confirm(sources, source_ids, generation, previous=None):
     validate_manifest(value)
     require(value['base_generation'] == generation, 'Existing source-job generation differs')
     provider = selected[0]['provider']
-    category = {'forex': 'currencies', 'indices': 'other-markets'}.get(selected[0]['market'], selected[0]['market'])
+    category = {'forex': 'currencies', 'indices': 'other-markets', 'bonds': 'other-markets'}.get(
+        selected[0]['market'], selected[0]['market'])
     identity = dict(provider=provider, source_ids=sorted(source_ids), generation=generation)
     job = dict(id=PREFIX+sha(encoded(identity))[:24], source_ids=sorted(source_ids), provider=provider,
                category=category, confirmed_at=now(), window_start='2024-10-01',

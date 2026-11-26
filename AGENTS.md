@@ -52,3 +52,11 @@ metadata-first job; actual downloads retain preflight, private source-admission,
 overlap and bounded resource gates. Finished collection still awaits a matching
 eligibility audit. Publish only the closed source-job projection, never notes,
 UIDs, private scopes, credentials, paths or observations.
+
+Source discovery is coverage-led: market first, then sector and geography. Map
+existing qualified price instruments to sectors before proposing duplicates;
+eligible volume/trade-count fields alone do not establish price coverage. Cover
+all 11 equity sectors, forex groups, commodity families, bonds/rate exposures,
+regional indices and derivatives. Keep unsupported sectors visibly unresolved.
+Prioritise these gaps over additional crypto venues. Label ETFs, CFDs and other
+proxies explicitly; they never close a gap in a different underlying instrument.

@@ -2,6 +2,12 @@
 
 Use **Find new data → Confirmed free-source jobs** on the dashboard. Jobs are
 provider-wide, so several sectors from the same provider share one owner.
+Resume active assignments first. For new discovery, follow the dashboard's
+market/sector coverage priorities: classify existing qualified price instruments,
+then pursue missing sectors and regions. Do not treat a passing volume or trade
+count as a passing price history. Additional crypto venues are lower priority
+than an uncovered market. ETF/CFD proxies stay distinct from the underlying
+commodity, future, yield or index and cannot close its coverage gap.
 
 1. Choose your participant name and submit **Claim via GitHub**. Wait for the
    confirmation; opening the form does not reserve anything.

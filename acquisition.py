@@ -10,7 +10,8 @@ import re
 from urllib.parse import urlparse
 
 MARKETS = dict(forex='Forex', futures='Futures', stocks='Stocks / ETFs', crypto='Crypto',
-               commodities='Commodities / power', indices='Indices', options='Options')
+               commodities='Commodities / power', bonds='Bonds / rate proxies',
+               indices='Indices', options='Options')
 STATUSES = dict(metadata_needed='Instrument metadata needed', access_required='Free account / access check',
                 known_incomplete='Known coverage issue', rejected='Does not meet requirements')
 ACCESS = dict(public_archive='Free · no login', free_login='Free · login required')
@@ -20,8 +21,37 @@ HOSTS = {
     'upstox.com', 'support.kraken.com', 'public.bybit.com', 'www.okx.com',
     'docs.cdp.coinbase.com', 'docs.bitfinex.com', 'www.bitstamp.net',
     'www.cryptodatadownload.com', 'statics.deribit.com', 'www.aemo.com.au',
-    'www.ercot.com',
+    'www.ercot.com', 'evtradelabs.com',
 }
+
+COVERAGE_PRIORITIES = (
+    ('Equities', 'All 11 sectors; US first, then geographic breadth',
+     'Classify existing qualified price instruments before collecting. Alpaca Basic and Upstox are free routes to investigate.'),
+    ('Forex', 'G10 majors, non-USD crosses and emerging-market currencies',
+     'Prioritise HistData, TrueFX and EV Trading Labs; verify each pair and quote variant.'),
+    ('Commodities', 'Energy, precious and industrial metals, agriculture, softs and livestock',
+     'Expand beyond WTI/Brent. Power archives and metal quotes have free leads; underlying agriculture/softs/livestock gaps remain open. Fund proxies are separate instruments.'),
+    ('Bonds / rates', 'Treasury duration, inflation-linked bonds, investment-grade and high-yield credit',
+     'Free ETF-bar routes are supplementary proxies. They are not yields, policy rates or measured inflation.'),
+    ('Indices', 'US, Europe and Asia',
+     'HistData, Upstox and EV Trading Labs have leads. Broker/CFD quotes remain distinct from official cash-index values.'),
+    ('Futures / options', 'Equity-index, rates, commodity and option-price coverage',
+     'No qualifying free direct-price archive confirmed across these sectors. Keep gaps visible; indicative quotes, short samples and expired short-lived contracts do not satisfy the requirement.'),
+    ('Crypto', 'Economic families and useful existing price coverage',
+     'Reuse existing qualified histories. Another venue for the same coin is lower priority than a missing market or sector.'),
+)
+
+
+def coverage_panel():
+    rows = ''.join('<tr>'+''.join('<td>'+html.escape(cell)+'</td>' for cell in row)+'</tr>'
+                   for row in COVERAGE_PRIORITIES)
+    return ('<section id="coverage-priorities"><h2>Market and sector coverage priorities</h2>'
+            '<p>Fill missing coverage first. A provider or investigation count does not establish sector coverage. '
+            'All candidates still need free access, two years of actual history, native intervals ≤15 minutes and verified calendar gaps.</p>'
+            '<div class="scroll"><table><thead><tr><th>Market</th><th>Coverage sought</th><th>Free routes / remaining gaps</th></tr></thead><tbody>'
+            +rows+'</tbody></table></div><p class="note">Equity sector labels follow the '
+            '<a href="https://www.ssga.com/us/en/individual/capabilities/equities/sector-investing/select-sector-etfs">11-sector framework</a>. '
+            'Resume active work first. ETFs and CFDs are labelled proxies and do not close gaps in their underlying instruments.</p></section>')
 
 
 def validate(data):
@@ -102,7 +132,7 @@ def render(data, jobs=None):
             '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'sha256-'+script_hash+'\'; connect-src \'self\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'">'
             '<title>Kuina · Find new data</title><style>body{font:15px system-ui;color:#193247;background:#f5f7fa;max-width:1550px;margin:30px auto;padding:0 22px}a{color:#17658b}p{line-height:1.6}h1{font-size:32px}section{background:white;border:1px solid #dce4eb;border-radius:12px;padding:22px;margin:20px 0}.filters{display:flex;gap:18px;flex-wrap:wrap}select{font:inherit;padding:8px;margin-left:8px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:900px}th,td{padding:14px;text-align:left;border-bottom:1px solid #dce4eb;vertical-align:top}small{display:block;color:#526878;line-height:1.5;margin-top:7px}.note{color:#526878}nav{line-height:1.8}tr[hidden]{display:none}.source-job-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}.source-job{border:1px solid #dce4eb;border-radius:10px;padding:18px}.source-job h3{margin:0}.source-job a,.source-job button{display:inline-block;margin:12px 12px 0 0}button{font:inherit;padding:7px;cursor:pointer}</style><body><main>'+NAVIGATION+
             '<h1>Find new data</h1><p>Search by market and sector. Prioritize broader coverage, then verify individual instruments.</p>'
-            '<p class="note">Target window: October 2024–September 2026 · Native interval ≤15 minutes · Two years of actual history · Verified calendar and gaps.</p>'+job_panel+
+            '<p class="note">Target window: October 2024–September 2026 · Native interval ≤15 minutes · Two years of actual history · Verified calendar and gaps.</p>'+coverage_panel()+job_panel+
             '<section><h2>Source investigations</h2><p>Free sources only: public archives or free access with registration. Markets without a verified free candidate remain uncovered.</p><p><strong>No data downloaded in this source search.</strong> Provider documentation is verified; instrument coverage and collection permission remain separate checks. No candidate below is certified eligible.</p>'
             '<div class="filters"><label>Market<select id="market-filter"><option value="all">All markets</option>'+options(MARKETS.items())+'</select></label>'
             '<label>Sector<select id="sector-filter"><option value="all">All sectors</option>'+options((v,v) for v in sorted({r['sector'] for r in data['sources']}))+'</select></label>'
