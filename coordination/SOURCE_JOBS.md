@@ -149,7 +149,13 @@ python3 -B -m coordination.source_jobs \
 Omit `--previous` only for the first package. Output files must be new. The
 coordinator publishes a new immutable package and updates the protected pointer
 and pinned public catalogue together, retaining every prior job definition,
-assignment and worker. Publish the generated public definitions to
+assignment and worker. Source-pointer updates have one coordinator writer. Before
+changing `source-jobs-current.json`, hold the existing maintainer publisher lock
+and exclusively create the shared hub directory `.source-jobs-publication-lock`.
+Recheck the prior pointer while holding both locks. Every source-pointer writer
+must use this same shared directory; a present lock means stop and reconcile,
+never remove another or an uncertain operation. Remove your lock only after
+verifying the new immutable package and unchanged prior definitions. Publish the generated public definitions to
 `coordination/source_job_definitions.json`. The existing publisher derives job
 ownership from GitHub and completion from proof-bound Native reports. Do not
 edit snapshots, assignment receipts, frozen queues or worker claims by hand.

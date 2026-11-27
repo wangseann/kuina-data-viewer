@@ -22,7 +22,7 @@ HOSTS = {
     'docs.cdp.coinbase.com', 'docs.bitfinex.com', 'www.bitstamp.net',
     'www.cryptodatadownload.com', 'statics.deribit.com', 'www.aemo.com.au',
     'www.ercot.com', 'evtradelabs.com', 'hfdatalibrary.com',
-    'www.icicidirect.com', 'opendata.elia.be',
+    'www.icicidirect.com', 'opendata.elia.be', 'mis.nyiso.com',
 }
 
 COVERAGE_PRIORITIES = (

@@ -1,6 +1,6 @@
 {
   "schema": "kuina-acquisition-search-v1",
-  "checked_at": "2026-11-26T06:04:51.713014Z",
+  "checked_at": "2026-11-27T06:55:00Z",
   "window_start": "2024-10-01",
   "window_end_exclusive": "2026-10-01",
   "sources": [
@@ -666,6 +666,19 @@
       "status": "metadata_needed",
       "next_step": "Use include_old=true where required; verify perpetual history and 15-minute trade coverage. Dated options/futures cannot be assumed to span two years individually.",
       "source_url": "https://statics.deribit.com/files/DeribitInstitutionalSetupGuide.pdf"
+    },
+    {
+      "id": "electricity-nyiso",
+      "market": "commodities",
+      "sector": "Wholesale electricity zonal real-time prices",
+      "region": "New York, United States",
+      "provider": "NYISO",
+      "resolution": "5-minute real-time zonal prices",
+      "history": "Monthly archives are listed for October2024-September2026; the September2024 boundary archive is also accessible. Full contents still need checking.",
+      "access": "public_archive",
+      "status": "metadata_needed",
+      "next_step": "Check zone identifiers, USD/MWh fields, daylight saving timestamps, price corrections and gaps across the full window. Keep negative prices and original archives; do not fill missing values.",
+      "source_url": "https://mis.nyiso.com/public/P-24Alist.htm"
     }
   ]
 }
