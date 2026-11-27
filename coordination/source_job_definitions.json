@@ -69,6 +69,14 @@
         "equity-sector-utilities",
         "stocks-alpaca-basic"
       ]
+    },
+    {
+      "confirmed_at": "2026-11-27T07:51:00.919435+00:00",
+      "definition_sha256": "bc5bc50475d30bde185ae2701cb1479932fdeec44669bc995dee043231b93010",
+      "id": "unique-source-be8a0bf1ccdc675cf2127b89",
+      "source_ids": [
+        "fx-forexsb"
+      ]
     }
   ],
   "schema": "kuina-public-source-job-definitions-v1"

@@ -679,6 +679,19 @@
       "status": "metadata_needed",
       "next_step": "Check zone identifiers, USD/MWh fields, daylight saving timestamps, price corrections and gaps across the full window. Keep negative prices and original archives; do not fill missing values.",
       "source_url": "https://mis.nyiso.com/public/P-24Alist.htm"
+    },
+    {
+      "id": "fx-forexsb",
+      "market": "forex",
+      "sector": "G10 major and cross-currency quotes",
+      "provider": "Forex Software Ltd",
+      "region": "Global",
+      "access": "public_archive",
+      "history": "Official service precompiles up to 200000 M1/M5/M15/M30 bars from Dukascopy tick data. Exact fixed-window coverage remains unverified.",
+      "next_step": "Confirm distinct redistributed provider job; inspect M5/M15 metadata and bounded provisional originals for quote side, no-fill policy, strict real-calendar gaps and complete 2024-10-01 through 2026-10-01 UTC support. M1 cap may be too short. Preserve originals; never treat as direct-Dukascopy repair or rate-limit bypass.",
+      "source_url": "https://forexsb.com/historical-forex-data",
+      "resolution": "Provider precompiled M1/M5/M15; native variant and lineage require verification",
+      "status": "metadata_needed"
     }
   ]
 }
