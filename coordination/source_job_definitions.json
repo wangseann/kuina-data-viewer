@@ -1,1 +1,75 @@
-{"jobs":[{"confirmed_at":"2026-11-25T08:22:39.798296+00:00","definition_sha256":"dfa0335c9fbf08c7f0d997523440b26492cf15489aa7b8be7af115ca018d2f55","id":"unique-source-025154a081fd8a95525fbfb0","source_ids":["crypto-spot-kraken"]},{"confirmed_at":"2026-11-25T08:22:39.798706+00:00","definition_sha256":"227189ae17061cdfd2abb4c964831a786ae2a9ff286aa93fa2972a63afd58759","id":"unique-source-c2d7a74a12cb68d4ed5b45a3","source_ids":["crypto-perpetual-bybit","crypto-spot-bybit"]},{"confirmed_at":"2026-11-25T08:22:39.798887+00:00","definition_sha256":"b25a9676f16b8326a64790bfcf5d5c7e802fe320472bbeffda25e20578195b63","id":"unique-source-102795310e614f12d5e64816","source_ids":["energy-histdata","fx-histdata","indices-histdata","metals-histdata"]},{"confirmed_at":"2026-11-25T08:22:39.799073+00:00","definition_sha256":"31d8beabe3148c7f0e88064a4e78a8ab8a3867b06caf16666848f2c90e2de4d6","id":"unique-source-557840fad465de9dc2222313","source_ids":["electricity-aemo"]},{"confirmed_at":"2026-11-27T06:54:14.867631+00:00","definition_sha256":"b2382cbced37b2813e216243e2d8a001b79bb1948cfdb3f219ca6141c2a3f8e0","id":"unique-source-7c4fb3603edecbd9cc0805ae","source_ids":["electricity-nyiso"]}],"schema":"kuina-public-source-job-definitions-v1"}
+{
+  "jobs": [
+    {
+      "confirmed_at": "2026-11-25T08:22:39.798296+00:00",
+      "definition_sha256": "dfa0335c9fbf08c7f0d997523440b26492cf15489aa7b8be7af115ca018d2f55",
+      "id": "unique-source-025154a081fd8a95525fbfb0",
+      "source_ids": [
+        "crypto-spot-kraken"
+      ]
+    },
+    {
+      "confirmed_at": "2026-11-25T08:22:39.798706+00:00",
+      "definition_sha256": "227189ae17061cdfd2abb4c964831a786ae2a9ff286aa93fa2972a63afd58759",
+      "id": "unique-source-c2d7a74a12cb68d4ed5b45a3",
+      "source_ids": [
+        "crypto-perpetual-bybit",
+        "crypto-spot-bybit"
+      ]
+    },
+    {
+      "confirmed_at": "2026-11-25T08:22:39.798887+00:00",
+      "definition_sha256": "b25a9676f16b8326a64790bfcf5d5c7e802fe320472bbeffda25e20578195b63",
+      "id": "unique-source-102795310e614f12d5e64816",
+      "source_ids": [
+        "energy-histdata",
+        "fx-histdata",
+        "indices-histdata",
+        "metals-histdata"
+      ]
+    },
+    {
+      "confirmed_at": "2026-11-25T08:22:39.799073+00:00",
+      "definition_sha256": "31d8beabe3148c7f0e88064a4e78a8ab8a3867b06caf16666848f2c90e2de4d6",
+      "id": "unique-source-557840fad465de9dc2222313",
+      "source_ids": [
+        "electricity-aemo"
+      ]
+    },
+    {
+      "confirmed_at": "2026-11-27T06:54:14.867631+00:00",
+      "definition_sha256": "b2382cbced37b2813e216243e2d8a001b79bb1948cfdb3f219ca6141c2a3f8e0",
+      "id": "unique-source-7c4fb3603edecbd9cc0805ae",
+      "source_ids": [
+        "electricity-nyiso"
+      ]
+    },
+    {
+      "confirmed_at": "2026-11-27T07:47:57.876739+00:00",
+      "definition_sha256": "94e18870c8a34d45967ff55a90c571aa84af1969e06b4a9ca44b47c55a0fe6c6",
+      "id": "unique-source-a45d85be23e7f2b4a1a8be49",
+      "source_ids": [
+        "bond-sector-high-yield",
+        "bond-sector-inflation-linked",
+        "bond-sector-investment-grade",
+        "bond-sector-treasury",
+        "commodity-proxy-grains",
+        "commodity-proxy-industrial-metals",
+        "commodity-proxy-sugar",
+        "equity-sector-communication-services",
+        "equity-sector-consumer-discretionary",
+        "equity-sector-consumer-staples",
+        "equity-sector-energy",
+        "equity-sector-financials",
+        "equity-sector-health-care",
+        "equity-sector-industrials",
+        "equity-sector-materials",
+        "equity-sector-real-estate",
+        "equity-sector-technology",
+        "equity-sector-utilities",
+        "stocks-alpaca-basic"
+      ]
+    }
+  ],
+  "schema": "kuina-public-source-job-definitions-v1"
+}
