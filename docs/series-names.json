@@ -3,7 +3,7 @@
   "audit_utc": "2026-11-09T14:39:02.217131+00:00",
   "assessment_utc": "2026-11-26T08:38:59.607895+00:00",
   "counts_sha256": "f586d32195f8c371ba1773903a88f0786c9746b0ead8fafcc71d8d2be8a1e69e",
-  "catalogue_sha256": "83ff6d78cbd9d3aab75512c7039c007aaf1c97ac2122963c7d5128e09e607834",
+  "catalogue_sha256": "44c7b3ed4bc326a0427d84d7b60619e4e896cd7c6e054147d4476bf861c380e7",
   "types": [
     {
       "id": "stocks",
